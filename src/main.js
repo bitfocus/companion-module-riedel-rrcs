@@ -1,75 +1,72 @@
-const { InstanceBase, runEntrypoint, InstanceStatus } = require('@companion-module/base')
-const UpgradeScripts = require('./upgrades')
-const UpdateActions = require('./actions')
-const UpdateFeedbacks = require('./feedbacks')
-const UpdateVariableDefinitions = require('./variables')
-const config = require('./config.js')
-const os = require('os')
-const { RRCS_Server, RRCS_Client} = require('riedel_rrcs')
-const { serverCallbacks } = require('./callbacks.js')
+import { InstanceBase, runEntrypoint, InstanceStatus } from '@companion-module/base'
+import UpgradeScripts from './upgrades.js'
+import UpdateActions from './actions.js'
+import UpdateFeedbacks from './feedbacks.js'
+import UpdateVariableDefinitions from './variables.js'
+import * as config from './config.js'
+import * as transkey from './transKey.js'
+import os from 'os'
+import { XmlRpcFault, XmlRpcServer, XmlRpcClient } from '@foxglove/xmlrpc'
+import { HttpServerNodejs } from '@foxglove/xmlrpc/nodejs'
+import { serverCallbacks } from './callbacks.js'
 
 class Riedel_RRCS extends InstanceBase {
 	constructor(internal) {
 		super(internal)
-		Object.assign(this, { ...config })
-		this.localIPs =[]
+		Object.assign(this, { ...config, ...transkey })
+		this.localIPs = []
 		let interfaces = os.networkInterfaces()
 		let interface_names = Object.keys(interfaces)
 		interface_names.forEach((nic) => {
 			interfaces[nic].forEach((ip) => {
-				if (ip.family == 'IPv4'){
-					this.localIPs.push({id: ip.address, label: `${nic}: ${ip.address}`})
+				if (ip.family == 'IPv4') {
+					this.localIPs.push({ id: ip.address, label: `${nic}: ${ip.address}` })
 				}
 			})
 		})
 	}
 
 	destroyRRCS() {
-		if (this.rrcs_server_pri) {
-			delete this.rrcs_server_pri
+		if (this.localXmlRpc) {
+			this.localXmlRpc.close()
+			delete this.localXmlRpc
 		}
-		if (this.rrcs_server_sec) {
-			delete this.rrcs_server_sec
+		if (this.rrcsPri) {
+			delete this.rrcsPri
 		}
-		if (this.rrcs_client_pri) {
-			delete this.rrcs_client_pri
-		}
-		if (this.rrcs_client_sec) {
-			delete this.rrcs_client_sec
+		if (this.rrcsSec) {
+			delete this.rrcsSec
 		}
 	}
 
-	initRRCS(){
-		this.destoryRRCS()
-		let local = {ip: this.config.localIP, port: this.config.localPort}
-		let remote_pri = {ip: this.config.hostPri, port: this.config.portPri}
-		let remote_sec = {ip: this.config.hostSec, port: this.config.portSec}
-		this.rrcs_server_pri = new RRCS_Server(local, remote_pri, serverCallbacks)
-		this.rrcs_client_pri = new RRCS_Client(this.config.hostPri, this.config.portPri)
+	async initRRCS() {
+		this.destroyRRCS()
+		this.localXmlRpc = new XmlRpcServer(new HttpServerNodejs())
+		await this.localXmlRpc.listen(this.config.portLocal, this.config.hostLocal)
+		this.rrcsPri = new XmlRpcClient(`http://${this.config.hostPri}:${this.config.portPri}`)
 		if (this.config.redundant) {
-			this.rrcs_server_sec = new RRCS_Server(local, remote_sec, serverCallbacks)
-			this.rrcs_client_sec = new RRCS_Client(this.config.hostSec, this.config.portSec)
+			this.rrcsSec = new XmlRpcClient(`http://${this.config.hostSec}:${this.config.portSec}`)
 		}
+		const ports = await this.rrcsPri.methodCall("GetObjectList", [this.returnTransKey(), 'port'])
+		console.log(`Ports: ${JSON.stringify(ports)}`)
 	}
 
 	async init(config) {
-		this.config = config
-		
-		this.updateStatus(InstanceStatus.Connecting)
-
-		this.updateActions() // export actions
-		this.updateFeedbacks() // export feedbacks
-		this.updateVariableDefinitions() // export variable definitions
+		this.configUpdated(config)
 	}
 	// When module gets deleted
 	async destroy() {
 		this.log('debug', 'destroy')
-		this.destoryRRCS()
+		this.destroyRRCS()
 	}
 
 	async configUpdated(config) {
 		this.config = config
 		this.updateStatus(InstanceStatus.Connecting)
+		this.initRRCS()
+		this.updateActions() // export actions
+		this.updateFeedbacks() // export feedbacks
+		this.updateVariableDefinitions() // export variable definitions
 	}
 
 	updateActions() {
