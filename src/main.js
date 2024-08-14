@@ -27,6 +27,9 @@ class Riedel_RRCS extends InstanceBase {
 	}
 
 	destroyRRCS() {
+		if (this.rrcs) {
+			delete this.rrcs
+		}
 		if (this.localXmlRpc) {
 			this.localXmlRpc.close()
 			delete this.localXmlRpc
@@ -41,14 +44,52 @@ class Riedel_RRCS extends InstanceBase {
 
 	async initRRCS() {
 		this.destroyRRCS()
+		this.rrcs = {
+			ports: [],
+			conferences: [],
+			ifbs: [],
+			logicSrc: [],
+			logicDst: [],
+			gpInputs: [],
+			gpOutputs: [],
+			users: [],
+			audioPatch: [],
+			clientCards: [],
+		}
 		this.localXmlRpc = new XmlRpcServer(new HttpServerNodejs())
 		await this.localXmlRpc.listen(this.config.portLocal, this.config.hostLocal)
 		this.rrcsPri = new XmlRpcClient(`http://${this.config.hostPri}:${this.config.portPri}`)
 		if (this.config.redundant) {
 			this.rrcsSec = new XmlRpcClient(`http://${this.config.hostSec}:${this.config.portSec}`)
 		}
-		const ports = await this.rrcsPri.methodCall("GetObjectList", [this.returnTransKey(), 'port'])
+		const ports = await this.rrcsPri.methodCall('GetObjectList', [this.returnTransKey(), 'port'])
 		console.log(`Ports: ${JSON.stringify(ports)}`)
+		this.rrcs.ports = ports.ObjectList
+		const conference = await this.rrcsPri.methodCall('GetObjectList', [this.returnTransKey(), 'conference'])
+		console.log(`Conferences: ${JSON.stringify(conference)}`)
+		this.rrcs.conferences = conference.ObjectList
+		const ifb = await this.rrcsPri.methodCall('GetObjectList', [this.returnTransKey(), 'ifb'])
+		console.log(`IFBs: ${JSON.stringify(ifb)}`)
+		this.rrcs.ifbs = ifb.ObjectList
+		const logicSource = await this.rrcsPri.methodCall('GetObjectList', [this.returnTransKey(), 'logic-source'])
+		console.log(`Logic Sources: ${JSON.stringify(logicSource)}`)
+		this.rrcs.logicSrc = logicSource.ObjectList
+		const logicDest = await this.rrcsPri.methodCall('GetObjectList', [this.returnTransKey(), 'logic-destination'])
+		console.log(`Logic Destinations: ${JSON.stringify(logicDest)}`)
+		this.rrcs.logicDst = logicDest.ObjectList
+		const gpInput = await this.rrcsPri.methodCall('GetObjectList', [this.returnTransKey(), 'gp-input'])
+		console.log(`GP Inputs: ${JSON.stringify(gpInput)}`)
+		const gpOutput = await this.rrcsPri.methodCall('GetObjectList', [this.returnTransKey(), 'gp-output'])
+		console.log(`GP Outputs: ${JSON.stringify(gpOutput)}`)
+		const users = await this.rrcsPri.methodCall('GetObjectList', [this.returnTransKey(), 'user'])
+		console.log(`Users: ${JSON.stringify(users)}`)
+		this.rrcs.users = users.ObjectList
+		const audioPatch = await this.rrcsPri.methodCall('GetObjectList', [this.returnTransKey(), 'audiopatch'])
+		console.log(`Audio Patch: ${JSON.stringify(audioPatch)}`)
+		this.rrcs.audioPatch = audioPatch.ObjectList
+		const clientCards = await this.rrcsPri.methodCall('GetObjectList', [this.returnTransKey(), 'client-card'])
+		console.log(`Client Cards: ${JSON.stringify(clientCards)}`)
+		this.rrcs.clientCards = clientCards.ObjectList
 	}
 
 	async init(config) {
