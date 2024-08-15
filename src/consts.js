@@ -14,7 +14,7 @@ export const limits = {
 	port: {
 		min: 0,
 		max: 1151,
-		default: 0,
+		default: 1,
 	},
 	clientCardSlot: {
 		min: 1,
@@ -77,5 +77,56 @@ export const lookUps = {
 		1: 'Line is Free',
 		2: 'Waiting for Connection',
 		3: 'Line is Busy',
+	},
+}
+
+export const options = {
+	sourceNet: {
+		id: 'sourceNet',
+		type: 'number',
+		label: 'Source Net',
+		default: limits.net.default,
+		min: limits.net.min,
+		max: limits.net.max,
+	},
+	sourceNode: {
+		id: 'sourceNode',
+		type: 'number',
+		label: 'Source Node',
+		default: limits.node.default,
+		min: limits.node.min,
+		max: limits.node.max,
+	},
+	sourcePort: {
+		id: 'sourcePort',
+		type: 'number',
+		label: 'Source Port',
+		default: limits.port.default,
+		min: limits.port.min,
+		max: limits.port.max,
+	},
+	destNet: {
+		id: 'destNet',
+		type: 'number',
+		label: 'Destination Net',
+		default: limits.net.default,
+		min: limits.net.min,
+		max: limits.net.max,
+	},
+	destNode: {
+		id: 'destNode',
+		type: 'number',
+		label: 'Destination Node',
+		default: limits.node.default,
+		min: limits.node.min,
+		max: limits.node.max,
+	},
+	destPort: {
+		id: 'destPort',
+		type: 'number',
+		label: 'Destination Port',
+		default: limits.port.default,
+		min: limits.port.min,
+		max: limits.port.max,
 	},
 }

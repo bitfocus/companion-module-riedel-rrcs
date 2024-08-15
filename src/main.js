@@ -4,16 +4,18 @@ import UpdateActions from './actions.js'
 import UpdateFeedbacks from './feedbacks.js'
 import UpdateVariableDefinitions from './variables.js'
 import * as config from './config.js'
+import * as localServer from './localserver.js'
+import * as notifications from './notifications.js'
+import { rrcsMethods } from './methods.js'
 import * as transkey from './transKey.js'
 import os from 'os'
-import { XmlRpcFault, XmlRpcServer, XmlRpcClient } from '@foxglove/xmlrpc'
-import { HttpServerNodejs } from '@foxglove/xmlrpc/nodejs'
-import { serverCallbacks } from './callbacks.js'
+import { XmlRpcClient } from '@foxglove/xmlrpc'
+import PQueue from 'p-queue'
 
 class Riedel_RRCS extends InstanceBase {
 	constructor(internal) {
 		super(internal)
-		Object.assign(this, { ...config, ...transkey })
+		Object.assign(this, { ...config, ...localServer, ...notifications, ...transkey })
 		this.localIPs = []
 		let interfaces = os.networkInterfaces()
 		let interface_names = Object.keys(interfaces)
@@ -45,6 +47,7 @@ class Riedel_RRCS extends InstanceBase {
 	async initRRCS() {
 		this.destroyRRCS()
 		this.rrcs = {
+			crosspoint: [],
 			ports: [],
 			conferences: [],
 			ifbs: [],
@@ -56,40 +59,27 @@ class Riedel_RRCS extends InstanceBase {
 			audioPatch: [],
 			clientCards: [],
 		}
-		this.localXmlRpc = new XmlRpcServer(new HttpServerNodejs())
-		await this.localXmlRpc.listen(this.config.portLocal, this.config.hostLocal)
+		
 		this.rrcsPri = new XmlRpcClient(`http://${this.config.hostPri}:${this.config.portPri}`)
+		this.rrcsPriQueue = new PQueue({ concurrency: 1 })
 		if (this.config.redundant) {
-			this.rrcsSec = new XmlRpcClient(`http://${this.config.hostSec}:${this.config.portSec}`)
+			if (this.config.hostSec && this.config.portSec) {
+				this.rrcsSec = new XmlRpcClient(`http://${this.config.hostSec}:${this.config.portSec}`)
+				this.rrcsSecQueue = new PQueue({ concurrency: 1 })
+			} else {
+				this.updateStatus(InstanceStatus.BadConfig)
+				return
+			}
 		}
-		const ports = await this.rrcsPri.methodCall('GetObjectList', [this.returnTransKey(), 'port'])
-		console.log(`Ports: ${JSON.stringify(ports)}`)
-		this.rrcs.ports = ports.ObjectList
-		const conference = await this.rrcsPri.methodCall('GetObjectList', [this.returnTransKey(), 'conference'])
-		console.log(`Conferences: ${JSON.stringify(conference)}`)
-		this.rrcs.conferences = conference.ObjectList
-		const ifb = await this.rrcsPri.methodCall('GetObjectList', [this.returnTransKey(), 'ifb'])
-		console.log(`IFBs: ${JSON.stringify(ifb)}`)
-		this.rrcs.ifbs = ifb.ObjectList
-		const logicSource = await this.rrcsPri.methodCall('GetObjectList', [this.returnTransKey(), 'logic-source'])
-		console.log(`Logic Sources: ${JSON.stringify(logicSource)}`)
-		this.rrcs.logicSrc = logicSource.ObjectList
-		const logicDest = await this.rrcsPri.methodCall('GetObjectList', [this.returnTransKey(), 'logic-destination'])
-		console.log(`Logic Destinations: ${JSON.stringify(logicDest)}`)
-		this.rrcs.logicDst = logicDest.ObjectList
-		const gpInput = await this.rrcsPri.methodCall('GetObjectList', [this.returnTransKey(), 'gp-input'])
-		console.log(`GP Inputs: ${JSON.stringify(gpInput)}`)
-		const gpOutput = await this.rrcsPri.methodCall('GetObjectList', [this.returnTransKey(), 'gp-output'])
-		console.log(`GP Outputs: ${JSON.stringify(gpOutput)}`)
-		const users = await this.rrcsPri.methodCall('GetObjectList', [this.returnTransKey(), 'user'])
-		console.log(`Users: ${JSON.stringify(users)}`)
-		this.rrcs.users = users.ObjectList
-		const audioPatch = await this.rrcsPri.methodCall('GetObjectList', [this.returnTransKey(), 'audiopatch'])
-		console.log(`Audio Patch: ${JSON.stringify(audioPatch)}`)
-		this.rrcs.audioPatch = audioPatch.ObjectList
-		const clientCards = await this.rrcsPri.methodCall('GetObjectList', [this.returnTransKey(), 'client-card'])
-		console.log(`Client Cards: ${JSON.stringify(clientCards)}`)
-		this.rrcs.clientCards = clientCards.ObjectList
+		await this.initLocalServer(this.config.portLocal, this.config.hostLocal)
+		const eventRegister = await this.rrcsPri.methodCall(rrcsMethods.notifications.registerForAllEvents.rpc, [
+			this.returnTransKey(),
+			this.config.portLocal,
+			this.config.hostLocal,
+			false,
+			false,
+		])
+		console.log(`Event Registraton: ${eventRegister}`)
 	}
 
 	async init(config) {
@@ -98,16 +88,25 @@ class Riedel_RRCS extends InstanceBase {
 	// When module gets deleted
 	async destroy() {
 		this.log('debug', 'destroy')
+		const unRegister = await this.rrcsPri.methodCall(rrcsMethods.notifications.unregisterForAllEvents.rpc, [
+			this.returnTransKey(),
+			this.config.portLocal,
+			this.config.hostLocal,
+		])
 		this.destroyRRCS()
 	}
 
 	async configUpdated(config) {
 		this.config = config
-		this.updateStatus(InstanceStatus.Connecting)
-		this.initRRCS()
-		this.updateActions() // export actions
-		this.updateFeedbacks() // export feedbacks
-		this.updateVariableDefinitions() // export variable definitions
+		if (this.config.hostPri && this.config.portPri) {
+			this.updateStatus(InstanceStatus.Connecting)
+			this.initRRCS()
+			this.updateActions() // export actions
+			this.updateFeedbacks() // export feedbacks
+			this.updateVariableDefinitions() // export variable definitions
+		} else {
+			this.updateStatus(InstanceStatus.BadConfig)
+		}
 	}
 
 	updateActions() {

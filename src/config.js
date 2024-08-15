@@ -90,5 +90,12 @@ export function getConfigFields() {
 			default: 8999,
 			tooltip: `Port for the local XML-RPC server`,
 		},
+		{
+			type: 'checkbox',
+			id: 'verbose',
+			label: 'Verbose Logs',
+			default: false,
+			width: 6,
+		},
 	]
 }
