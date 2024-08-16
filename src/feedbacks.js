@@ -72,9 +72,9 @@ export default async function (self) {
 			}
 			try {
 				const xpt =
-					self.rrcs.crosspoints[`src_net_${src[0]}`][`src_node_${src[1]}`][`src_port_${src[2]}`][
-						`dst_net_${dst[0]}`
-					][`dst_node_${dst[1]}`][`dst_port_${dst[2]}`]
+					self.rrcs.crosspoints[`src_net_${src[0]}`][`src_node_${src[1]}`][`src_port_${src[2]}`][`dst_net_${dst[0]}`][
+						`dst_node_${dst[1]}`
+					][`dst_port_${dst[2]}`]
 				return xpt
 			} catch {
 				if (self.config.verbose) {
