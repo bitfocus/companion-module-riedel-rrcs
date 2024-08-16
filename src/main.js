@@ -10,6 +10,7 @@ import * as notifications from './notifications.js'
 import { rrcsMethods } from './methods.js'
 import * as methodCallQueue from './methodCallQueue.js'
 import * as transkey from './transKey.js'
+import * as utils from './utils.js'
 import os from 'os'
 import { XmlRpcClient } from '@foxglove/xmlrpc'
 import PQueue from 'p-queue'
@@ -24,6 +25,7 @@ class Riedel_RRCS extends InstanceBase {
 			...methodCallQueue,
 			...notifications,
 			...transkey,
+			...utils,
 		})
 		this.localIPs = []
 		let interfaces = os.networkInterfaces()
