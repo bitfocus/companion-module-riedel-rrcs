@@ -129,4 +129,20 @@ export const options = {
 		min: limits.port.min,
 		max: limits.port.max,
 	},
+	sourceVar: {
+		id: 'sourceVar',
+		type: 'textinput',
+		label: 'Source',
+		default: '1.2.3',
+		useVariables: true,
+		tooltip: 'Input should be three period seperated integers <net>.<node>.<port>',
+	},
+	destVar: {
+		id: 'destVar',
+		type: 'textinput',
+		label: 'Destination',
+		default: '1.2.3',
+		useVariables: true,
+		tooltip: 'Input should be three period seperated integers <net>.<node>.<port>',
+	},
 }
