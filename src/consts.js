@@ -1,4 +1,29 @@
+import { combineRgb } from '@companion-module/base'
+
 export const default_port = 8193
+
+const colours = {
+	black: combineRgb(0, 0, 0),
+	white: combineRgb(255, 255, 255),
+	red: combineRgb(255, 0, 0),
+	green: combineRgb(0, 204, 0),
+	darkblue: combineRgb(0, 0, 102),
+}
+
+export const styles = {
+	red: {
+		bgcolor: colours.red,
+		color: colours.black,
+	},
+	green: {
+		bgcolor: colours.green,
+		color: colours.black,
+	},
+	blue: {
+		bgcolor: colours.darkblue,
+		color: colours.white,
+	},
+}
 
 export const limits = {
 	net: {
@@ -80,6 +105,16 @@ export const lookUps = {
 	},
 }
 
+export const choices = {
+	priority: [
+		{ id: 0, label: lookUps.priority[0] },
+		{ id: 1, label: lookUps.priority[1] },
+		{ id: 2, label: lookUps.priority[2] },
+		{ id: 3, label: lookUps.priority[3] },
+		{ id: 4, label: lookUps.priority[4] },
+	],
+}
+
 export const options = {
 	sourceNet: {
 		id: 'sourceNet',
@@ -135,7 +170,7 @@ export const options = {
 		label: 'Source',
 		default: '1.2.3',
 		useVariables: true,
-		tooltip: 'Input should be three period seperated integers <net>.<node>.<port>',
+		tooltip: 'Source should be three period seperated integers <net>.<node>.<port>',
 	},
 	destVar: {
 		id: 'destVar',
@@ -143,6 +178,20 @@ export const options = {
 		label: 'Destination',
 		default: '1.2.3',
 		useVariables: true,
-		tooltip: 'Input should be three period seperated integers <net>.<node>.<port>',
+		tooltip: 'Destination should be three period seperated integers <net>.<node>.<port>',
+	},
+	priority: {
+		id: 'priority',
+		type: 'dropdown',
+		label: 'Priority',
+		default: choices.priority[1].id,
+		choices: choices.priority,
+	},
+	destructXpInfo: {
+		id: 'destructXpInfo',
+		type: 'static-text',
+		label: '',
+		value:
+			'An existing route to the given destination will be removed.The values Net = 0, Node = 0, port = 0 remove all existing routes for the given source or destination.',
 	},
 }

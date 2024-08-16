@@ -31,7 +31,7 @@ export function addCrosspoint(src, dst, state) {
 		this.log('debug', `adding crosspoint: ${JSON.stringify(xpt)}`)
 	}
 	this.rrcs.crosspoints = _.merge(this.rrcs.crosspoints, xpt)
-	this.checkFeedbacks('crosspoint', 'crosspointVar')
+	this.checkFeedbacks('crosspoint')
 }
 
 export function calcAddress(arg) {
@@ -46,7 +46,9 @@ export function calcAddress(arg) {
 	if (isNaN(address[0]) || isNaN(address[1]) || isNaN(address[2])) {
 		return undefined
 	}
-	if (
+	if (address[0] === 0 && address[1] === 0 && address[2] === 0) {
+		//ok
+	} else if (
 		address[0] < limits.net.min ||
 		address[0] > limits.net.max ||
 		address[1] < limits.node.min ||
