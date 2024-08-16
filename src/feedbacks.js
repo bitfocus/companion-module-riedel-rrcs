@@ -41,14 +41,24 @@ export default async function (self) {
 				}
 				return false
 			}
-			self.rrcsQueue.add(async() => {
-				const xp = await self.rrcsMethodCall(rrcsMethods.crosspoint.get.rpc, [src[0], src[1], src[2], dst[0], dst[1], dst[2]])
+			self.rrcsQueue.add(async () => {
+				const xp = await self.rrcsMethodCall(rrcsMethods.crosspoint.get.rpc, [
+					src[0],
+					src[1],
+					src[2],
+					dst[0],
+					dst[1],
+					dst[2],
+				])
 				if (xp === undefined) {
 					return
 				}
-				self.log('info', `Subscribe crosspoint ${xp}`)
 				if (xp.length === 3 && xp[1] === 0) {
-					self.addCrosspoint({net: src[0], node: src[1], port: src[2]}, {net: dst[0], node: dst[1], port: dst[2]}, xp[2])
+					self.addCrosspoint(
+						{ net: src[0], node: src[1], port: src[2] },
+						{ net: dst[0], node: dst[1], port: dst[2] },
+						xp[2]
+					)
 				} else if (xp[1] !== undefined) {
 					self.log('warn', `crosspoint subscribe: ${rrcsErrorCodes[xp[1]]} src: ${src} dst: ${dst}`)
 				}
