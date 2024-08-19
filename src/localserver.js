@@ -51,8 +51,7 @@ export async function initLocalServer(port, host, name) {
 		}
 		const xpoints = args[2]
 		for (const xpt in xpoints) {
-			this.log('info', xpt)
-			this.log('info', xpoints[xpt])
+			this.log('info', `${xpt}: ${xpoints[xpt]}`)
 			const data = xpoints[xpt]
 			if (data.length !== 7) {
 				break

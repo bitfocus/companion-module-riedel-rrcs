@@ -29,7 +29,7 @@ export function addCrosspoint(src, dst, state) {
 		},
 	}
 	if (this.config.verbose) {
-		this.log('debug', `adding crosspoint: ${JSON.stringify(xpt)}`)
+		this.log('debug', `adding crosspoint: ${JSON.stringify(xpt)} ${state ? 'active' : 'inactive'}`)
 	}
 	this.rrcs.crosspoints = _.merge(this.rrcs.crosspoints, xpt)
 	this.checkFeedbacks('crosspoint')
@@ -89,18 +89,20 @@ export function getAllXp() {
 		if (xps === undefined) {
 			return
 		}
-		this.log('info', `getAllXP: \n${xps}`)
-		/* if (xp.length === 3 && xp[1] === 0) {
-			this.addCrosspoint(
-				{ net: src.net, node: src.node, port: src.port },
-				{ net: dst.net, node: dst.node, port: dst.port },
-				xp[2]
-			)
-		} else if (xp[1] !== undefined) {
-			this.log(
-				'warn',
-				`crosspoint subscribe: ${rrcsErrorCodes[xp[1]]} src: ${JSON.stringify(src)} dst: ${JSON.stringify(dst)}`
-			)
-		} */
+		if (this.config.verbose) {
+			this.log('debug', `getAllXP: \n${JSON.stringify(xps)}`)
+		}
+		if (xps[`ErrorCode`] !== 0) {
+			this.log('warn', `getAllXp: ${rrcsErrorCodes[xps.ErrorCode]}`)
+			return undefined
+		}
+		if (xps[`XP Count`] > 0) {
+			for (let i = 1; i <= xps[`XP Count`]; i++) {
+				const xp = xps[`XP#${i}`]
+				if (Array.isArray(xp) && xp.length === 6) {
+					this.addCrosspoint({ net: xp[0], node: xp[1], port: xp[2] }, { net: xp[3], node: xp[4], port: xp[5] }, true)
+				}
+			}
+		}
 	})
 }
