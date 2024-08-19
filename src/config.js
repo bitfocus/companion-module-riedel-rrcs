@@ -73,22 +73,78 @@ export function getConfigFields() {
 		},
 		{
 			type: 'dropdown',
-			id: 'hostLocal',
-			label: 'Local Interface',
+			id: 'hostLocalPri',
+			label: 'Local Interface for Primary RPC Server',
 			width: 12,
 			choices: this.localIPs,
 			allowCustom: true,
 			regex: Regex.HOSTNAME,
-			tooltip: 'The interface on this machine that RRCS will send messages to',
+			tooltip: 'The interface on this machine that the Primary RRCS server will send messages to',
 		},
 		{
 			type: 'textinput',
-			id: 'portLocal',
-			label: 'Local Port',
+			id: 'portLocalPri',
+			label: 'Local Port Primary',
 			width: 6,
 			regex: Regex.PORT,
-			default: 8999,
+			default: 8195,
 			tooltip: `Port for the local XML-RPC server`,
+		},
+		{
+			type: 'number',
+			id: 'hostLocalSec',
+			label: 'Local Interface for Secondary RPC Server',
+			width: 12,
+			choices: this.localIPs,
+			allowCustom: true,
+			regex: Regex.HOSTNAME,
+			tooltip: 'The interface on this machine that the Secondary RRCS server will send messages to',
+			isVisible: (options) => {
+				return options.redundant
+			},
+		},
+		{
+			type: 'number',
+			id: 'portLocalSec',
+			label: 'Local Port Secondary',
+			width: 6,
+			regex: Regex.PORT,
+			default: 8196,
+			tooltip: `Port for the local XML-RPC server`,
+			isVisible: (options) => {
+				return options.redundant
+			},
+		},
+		{
+			type: 'static-text',
+			id: 'place-holder-3',
+			label: '',
+			value: '',
+			width: 12,
+			isVisible: (options) => {
+				return !options.redundant
+			},
+		},
+		{
+			type: 'static-text',
+			id: 'place-holder-4',
+			label: '',
+			value: '',
+			width: 6,
+			isVisible: (options) => {
+				return !options.redundant
+			},
+		},
+		{
+			type: 'checkbox',
+			id: 'witness',
+			label: 'Witness',
+			default: false,
+			width: 6,
+			tooltip: 'Manage redundacy between primary and secondary RRCS server. Only 1 witness should be configured',
+			isVisible: (options) => {
+				return options.redundant
+			},
 		},
 		{
 			type: 'checkbox',

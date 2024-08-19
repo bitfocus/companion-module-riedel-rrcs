@@ -1,15 +1,32 @@
 import { InstanceStatus } from '@companion-module/base'
 
-export async function rrcsMethodCall(method, params) {
+export async function rrcsMethodCall(method, params, server) {
 	let data
 	try {
 		if (this.config.verbose) {
 			this.log('debug', `Initating Method Call: ${method}\nParameters: ${params}`)
 		}
-		if (this.rrcsPri) {
-			data = await this.rrcsPri.methodCall(method, [this.returnTransKey(), ...params])
+		const transKey = this.returnTransKey()
+		if (this.rrcsSec && (server === 'sec' || this.rrcs.activeServer === 'sec')) {
+			data = await this.rrcsSec.methodCall(method, [transKey, ...params])
 			if (this.config.verbose) {
-				this.log('debug', `Response to Method Call: ${method}\nData: ${JSON.stringify(params)}`)
+				this.log(
+					'debug',
+					`RRCS Secondary Server Response to Method Call: ${method}\nTransaction Key: ${transKey} Data: ${JSON.stringify(
+						params
+					)}`
+				)
+			}
+			this.updateStatus(InstanceStatus.Ok)
+		} else if (this.rrcsPri) {
+			data = await this.rrcsPri.methodCall(method, [transKey, ...params])
+			if (this.config.verbose) {
+				this.log(
+					'debug',
+					`RRCS Primary Server Response to Method Call: ${method}\nTransaction Key: ${transKey} Data: ${JSON.stringify(
+						params
+					)}`
+				)
 			}
 			this.updateStatus(InstanceStatus.Ok)
 		} else {

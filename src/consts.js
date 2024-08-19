@@ -1,4 +1,5 @@
 import { combineRgb } from '@companion-module/base'
+import { rrcsMethods } from './methods.js'
 
 export const default_port = 8193
 
@@ -106,6 +107,12 @@ export const lookUps = {
 }
 
 export const choices = {
+	xpMethods: [
+		{ id: rrcsMethods.crosspoint.set.rpc, label: rrcsMethods.crosspoint.set.name },
+		{ id: rrcsMethods.crosspoint.setPrio.rpc, label: rrcsMethods.crosspoint.setPrio.name },
+		{ id: rrcsMethods.crosspoint.setDestruct.rpc, label: rrcsMethods.crosspoint.setDestruct.name },
+		{ id: rrcsMethods.crosspoint.kill.rpc, label: rrcsMethods.crosspoint.kill.name },
+	],
 	priority: [
 		{ id: 0, label: lookUps.priority[0] },
 		{ id: 1, label: lookUps.priority[1] },
@@ -116,6 +123,13 @@ export const choices = {
 }
 
 export const options = {
+	xpMethod: {
+		id: 'xpMethod',
+		type: 'dropdown',
+		label: 'Method',
+		choices: choices.xpMethods,
+		default: rrcsMethods.crosspoint.set.rpc,
+	},
 	sourceNet: {
 		id: 'sourceNet',
 		type: 'number',
@@ -170,7 +184,7 @@ export const options = {
 		label: 'Source',
 		default: '1.2.3',
 		useVariables: true,
-		tooltip: 'Source should be three period seperated integers <net>.<node>.<port>',
+		tooltip: 'Source address should be three period seperated integers <net>.<node>.<port>',
 	},
 	destVar: {
 		id: 'destVar',
@@ -178,7 +192,7 @@ export const options = {
 		label: 'Destination',
 		default: '1.2.3',
 		useVariables: true,
-		tooltip: 'Destination should be three period seperated integers <net>.<node>.<port>',
+		tooltip: 'Destination address should be three period seperated integers <net>.<node>.<port>',
 	},
 	priority: {
 		id: 'priority',
@@ -186,12 +200,26 @@ export const options = {
 		label: 'Priority',
 		default: choices.priority[1].id,
 		choices: choices.priority,
+		isVisible: (options) => {
+			return options.xpMethod === 'SetXpPrio' || options.xpMethod === 'SetXpDestructive'
+		},
 	},
 	destructXpInfo: {
 		id: 'destructXpInfo',
 		type: 'static-text',
 		label: '',
-		value:
-			'An existing route to the given destination will be removed.The values Net = 0, Node = 0, port = 0 remove all existing routes for the given source or destination.',
+		value: rrcsMethods.crosspoint.setDestruct.description,
+		isVisible: (options) => {
+			return options.xpMethod === 'SetXpDestructive'
+		},
+	},
+	killXpInfo: {
+		id: 'killXpInfo',
+		type: 'static-text',
+		label: '',
+		value: rrcsMethods.crosspoint.kill.description,
+		isVisible: (options) => {
+			return options.xpMethod === 'KillXp'
+		},
 	},
 }

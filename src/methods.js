@@ -22,13 +22,18 @@ export const rrcsMethods = {
 			rpc: 'KillXp',
 			name: 'Kill Crosspoint',
 			description:
-				'Kill all crosspoints between the given source,destination. The method deletes only those crosspoints, which have been activated by RRCS.',
+				'Kill all crosspoints between the given source, destination. The method deletes only those crosspoints, which have been activated by RRCS.',
 		},
 		get: {
 			rpc: 'GetXpStatus',
 			name: 'Get Crosspoint Status',
 			description:
 				'Query status of XP source, destination Hint: The method can return trueeven if KillXp has been called beforehand.',
+		},
+		getAllActive: {
+			rpc: 'GetAllActiveXps',
+			name: 'Get All Active Crosspoints',
+			description: 'Dump active XPs.',
 		},
 		getActiveXpsRange: {
 			rpc: 'GetActiveXpsRange',

@@ -9,7 +9,6 @@ import * as localServer from './localserver.js'
 import * as notifications from './notifications.js'
 import { rrcsMethods } from './methods.js'
 import * as methodCallQueue from './methodCallQueue.js'
-import * as transkey from './transKey.js'
 import * as utils from './utils.js'
 import os from 'os'
 import { XmlRpcClient } from '@foxglove/xmlrpc'
@@ -24,7 +23,6 @@ class Riedel_RRCS extends InstanceBase {
 			...localServer,
 			...methodCallQueue,
 			...notifications,
-			...transkey,
 			...utils,
 		})
 		this.localIPs = []
@@ -40,6 +38,8 @@ class Riedel_RRCS extends InstanceBase {
 	}
 
 	destroyRRCS() {
+		this.rrcsQueue.clear()
+
 		if (this.rrcs) {
 			delete this.rrcs
 		}
@@ -58,6 +58,7 @@ class Riedel_RRCS extends InstanceBase {
 	async initRRCS() {
 		this.destroyRRCS()
 		this.rrcs = {
+			activeServer: 'pri',
 			crosspoints: {},
 			ports: [],
 			conferences: [],
@@ -70,49 +71,49 @@ class Riedel_RRCS extends InstanceBase {
 			audioPatch: [],
 			clientCards: [],
 		}
-		this.rrcsQueue = new PQueue({ concurrency: 1 })
 
 		this.rrcsPri = new XmlRpcClient(`http://${this.config.hostPri}:${this.config.portPri}`)
-
+		await this.initLocalServer(this.config.portLocalPri, this.config.hostLocalPri, `localXmlRpcPri`)
 		if (this.config.redundant) {
-			if (this.config.hostSec && this.config.portSec) {
+			if (this.config.hostSec && this.config.portSec && this.config.hostLocalSec) {
 				this.rrcsSec = new XmlRpcClient(`http://${this.config.hostSec}:${this.config.portSec}`)
-				this.rrcsSecQueue = new PQueue({ concurrency: 1 })
+				await this.initLocalServer(this.config.portLocalSec, this.config.hostLocalSec, `localXmlRpcSec`)
 			} else {
 				this.updateStatus(InstanceStatus.BadConfig)
 				return
 			}
 		}
-		await this.initLocalServer(this.config.portLocal, this.config.hostLocal)
+
 		this.rrcsQueue.add(() =>
-			this.rrcsMethodCall(rrcsMethods.notifications.registerForAllEvents.rpc, [
-				this.config.portLocal,
-				this.config.hostLocal,
-				false,
-				false,
-			])
+			this.rrcsMethodCall(
+				rrcsMethods.notifications.registerForAllEvents.rpc,
+				[parseInt(this.config.portLocalPri), this.config.hostLocalPri, false, false],
+				'pri'
+			)
 		)
+		this.getAllXp()
 	}
 
 	async init(config) {
+		this.rrcsQueue = new PQueue({ concurrency: 1, interval: 5, intervalCap: 1 })
 		this.configUpdated(config)
 	}
 	// When module gets deleted
 	async destroy() {
 		this.log('debug', 'destroy')
 		this.rrcsQueue.add(() =>
-			this.rrcsMethodCall(rrcsMethods.notifications.unregisterForAllEvents.rpc, [
-				this.config.portLocal,
-				this.config.hostLocal,
-			])
+			this.rrcsMethodCall(
+				rrcsMethods.notifications.unregisterForAllEvents.rpc,
+				[this.config.portLocalPri, this.config.hostLocalPri],
+				'pri'
+			)
 		)
-		this.rrcsQueue.on('idle', () => {
-			this.destroyRRCS()
-		})
+		this.destroyRRCS()
 	}
 
 	async configUpdated(config) {
 		this.config = config
+		this.rrcsQueue.clear()
 		if (this.config.hostPri && this.config.portPri) {
 			this.updateStatus(InstanceStatus.Connecting)
 			this.initRRCS()

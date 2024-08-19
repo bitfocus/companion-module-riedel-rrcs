@@ -1,5 +1,6 @@
 import _ from 'lodash-es'
-import { limits } from './consts.js'
+import { rrcsMethods } from './methods.js'
+import { rrcsErrorCodes } from './errorcodes.js'
 
 export function addCrosspoint(src, dst, state) {
 	if (
@@ -34,29 +35,72 @@ export function addCrosspoint(src, dst, state) {
 	this.checkFeedbacks('crosspoint')
 }
 
-export function calcAddress(arg) {
-	if (this.config.verbose) {
-		this.log('debug', `calcAddress ${arg}`)
-	}
-	let address = arg.split('.')
-	if (address.length !== 3) {
-		return undefined
-	}
-	address = address.map((x) => parseInt(x))
-	if (isNaN(address[0]) || isNaN(address[1]) || isNaN(address[2])) {
-		return undefined
-	}
-	if (address[0] === 0 && address[1] === 0 && address[2] === 0) {
-		//ok
-	} else if (
-		address[0] < limits.net.min ||
-		address[0] > limits.net.max ||
-		address[1] < limits.node.min ||
-		address[1] > limits.node.max ||
-		address[2] < limits.port.min ||
-		address[2] > limits.port.max
-	) {
-		return undefined
-	}
-	return address
+export function setXp(method, src, dst, prio) {
+	const args =
+		method === rrcsMethods.crosspoint.setPrio.rpc || method === rrcsMethods.crosspoint.setDestruct.rpc
+			? [src.net, src.node, src.port, dst.net, dst.node, dst.port, prio]
+			: [src.net, src.node, src.port, dst.net, dst.node, dst.port]
+	this.rrcsQueue.add(async () => {
+		const xp = await this.rrcsMethodCall(method, args)
+		if (xp.length === 2 && xp[1] === 0) {
+			if (method === rrcsMethods.crosspoint.kill.rpc) {
+				//since its possible for kill to return true and a crosspoint still be active, check the xp state
+				this.getXp(src, dst)
+			} else {
+				this.addCrosspoint(src, dst, true)
+			}
+		} else if (xp[1] !== undefined) {
+			this.log('warn', `setXp callback: ${rrcsErrorCodes[xp[1]]} src: ${src} dst: ${dst}`)
+		}
+	})
+}
+
+export function getXp(src, dst) {
+	this.rrcsQueue.add(async () => {
+		const xp = await this.rrcsMethodCall(rrcsMethods.crosspoint.get.rpc, [
+			src.net,
+			src.node,
+			src.port,
+			dst.net,
+			dst.node,
+			dst.port,
+		])
+		if (xp === undefined) {
+			return
+		}
+		if (xp.length === 3 && xp[1] === 0) {
+			this.addCrosspoint(
+				{ net: src.net, node: src.node, port: src.port },
+				{ net: dst.net, node: dst.node, port: dst.port },
+				xp[2]
+			)
+		} else if (xp[1] !== undefined) {
+			this.log(
+				'warn',
+				`crosspoint subscribe: ${rrcsErrorCodes[xp[1]]} src: ${JSON.stringify(src)} dst: ${JSON.stringify(dst)}`
+			)
+		}
+	})
+}
+
+export function getAllXp() {
+	this.rrcsQueue.add(async () => {
+		const xps = await this.rrcsMethodCall(rrcsMethods.crosspoint.getAllActive.rpc, [])
+		if (xps === undefined) {
+			return
+		}
+		this.log('info', `getAllXP: \n${xps}`)
+		/* if (xp.length === 3 && xp[1] === 0) {
+			this.addCrosspoint(
+				{ net: src.net, node: src.node, port: src.port },
+				{ net: dst.net, node: dst.node, port: dst.port },
+				xp[2]
+			)
+		} else if (xp[1] !== undefined) {
+			this.log(
+				'warn',
+				`crosspoint subscribe: ${rrcsErrorCodes[xp[1]]} src: ${JSON.stringify(src)} dst: ${JSON.stringify(dst)}`
+			)
+		} */
+	})
 }

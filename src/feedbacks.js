@@ -19,9 +19,9 @@ export default async function (self) {
 			}
 			try {
 				const xpt =
-					self.rrcs.crosspoints[`src_net_${src[0]}`][`src_node_${src[1]}`][`src_port_${src[2]}`][`dst_net_${dst[0]}`][
-						`dst_node_${dst[1]}`
-					][`dst_port_${dst[2]}`]
+					self.rrcs.crosspoints[`src_net_${src.net}`][`src_node_${src.node}`][`src_port_${src.port}`][`dst_net_${dst.net}`][
+						`dst_node_${dst.node}`
+					][`dst_port_${dst.port}`]
 				return xpt
 			} catch {
 				if (self.config.verbose) {
@@ -39,7 +39,7 @@ export default async function (self) {
 				}
 				return false
 			}
-			this.getXp({ net: src[0], node: src[1], port: src[2] }, { net: dst[0], node: dst[1], port: dst[2] })
+			self.getXp(src, dst)
 		},
 	}
 	self.setFeedbackDefinitions(feedbackDefs)
