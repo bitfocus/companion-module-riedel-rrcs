@@ -43,5 +43,30 @@ export default async function (self) {
 		},
 	}
 
+	if (self.rrcs.choices.logicSources.length > 0) {
+		actionDefs['setLogicSource'] = {
+			name: 'Set Logic Source',
+			label: 'Set Logic Source',
+			options: [
+				{
+					...options.logicSrc,
+					choices: self.rrcs.choices.logicSources,
+					default: self.rrcs.choices.logicSources[0].id,
+				},
+				options.logicState,
+			],
+			callback: async ({ options }, context) => {
+				const src = parseInt(await context.parseVariablesInString(options.logicSrc))
+				if (isNaN(src)) {
+					if (self.config.verbose) {
+						self.log('debug', `invalid variables supplied to logic source feedback ${src}`)
+					}
+					return false
+				}
+				self.setLogicSource(src, options.logicState)
+			},
+		}
+	}
+
 	self.setActionDefinitions(actionDefs)
 }

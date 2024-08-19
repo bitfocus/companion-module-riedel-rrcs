@@ -174,4 +174,17 @@ export const options = {
 			return options.xpMethod === 'KillXp'
 		},
 	},
+	logicSrc: {
+		id: 'logicSrc',
+		type: 'dropdown',
+		label: 'Logic Source',
+		allowCustom: true,
+		tooltip: 'Variable must return logic source Object ID',
+	},
+	logicState: {
+		id: 'logicState',
+		type: 'checkbox',
+		label: 'State',
+		default: false,
+	},
 }

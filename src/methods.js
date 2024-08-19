@@ -134,7 +134,7 @@ export const rrcsMethods = {
 			description: `Queries all logic sources in the system.`,
 		},
 		getAllSourcesV2: {
-			rpc: 'GetAllLogicSources',
+			rpc: 'GetAllLogicSources_v2',
 			name: 'Get All Logic Sources (V2)',
 			description: `Queries all logic sources in the system including the current state.`,
 		},

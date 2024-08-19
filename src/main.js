@@ -6,6 +6,7 @@ import UpdateVariableDefinitions from './variables.js'
 import * as config from './config.js'
 import * as crosspoints from './crosspoints.js'
 import * as localServer from './localserver.js'
+import * as logic from './logic.js'
 import * as notifications from './notifications.js'
 import { rrcsMethods } from './methods.js'
 import * as methodCallQueue from './methodCallQueue.js'
@@ -21,6 +22,7 @@ class Riedel_RRCS extends InstanceBase {
 			...config,
 			...crosspoints,
 			...localServer,
+			...logic,
 			...methodCallQueue,
 			...notifications,
 			...utils,
@@ -70,6 +72,9 @@ class Riedel_RRCS extends InstanceBase {
 			users: [],
 			audioPatch: [],
 			clientCards: [],
+			choices: {
+				logicSources: [],
+			},
 		}
 
 		this.rrcsPri = new XmlRpcClient(`http://${this.config.hostPri}:${this.config.portPri}`)
@@ -92,6 +97,7 @@ class Riedel_RRCS extends InstanceBase {
 			)
 		)
 		this.getAllXp()
+		this.getAllLogicSources()
 	}
 
 	async init(config) {

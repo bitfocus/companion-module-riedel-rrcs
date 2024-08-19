@@ -42,5 +42,38 @@ export default async function (self) {
 			self.getXp(src, dst)
 		},
 	}
+	if (self.rrcs.choices.logicSources.length > 0) {
+		feedbackDefs['logicSource'] = {
+			name: 'Logic Source',
+			type: 'boolean',
+			label: 'Logic Source',
+			defaultStyle: styles.green,
+			options: [
+				{
+					...options.logicSrc,
+					choices: self.rrcs.choices.logicSources,
+					default: self.rrcs.choices.logicSources[0].id,
+				},
+			],
+			callback: async ({ options }, context) => {
+				const src = parseInt(await context.parseVariablesInString(options.logicSrc))
+				if (isNaN(src)) {
+					if (self.config.verbose) {
+						self.log('debug', `invalid variables supplied to logic source feedback ${src}`)
+					}
+					return false
+				}
+				try {
+					return self.rrcs.logicSrc[src].state
+				} catch {
+					if (self.config.verbose) {
+						self.log(`logic source not found`)
+					}
+					return false
+				}
+			},
+		}
+	}
+
 	self.setFeedbackDefinitions(feedbackDefs)
 }
