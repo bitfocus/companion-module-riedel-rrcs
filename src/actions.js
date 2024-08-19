@@ -42,6 +42,13 @@ export default async function (self) {
 			self.getAllXp()
 		},
 	}
+	actionDefs['getAllLogicSources'] = {
+		name: 'Get All Logic Sources',
+		options: [],
+		callback: async () => {
+			self.getAllLogicSources()
+		},
+	}
 
 	if (self.rrcs.choices.logicSources.length > 0) {
 		actionDefs['setLogicSource'] = {
@@ -59,14 +66,38 @@ export default async function (self) {
 				const src = parseInt(await context.parseVariablesInString(options.logicSrc))
 				if (isNaN(src)) {
 					if (self.config.verbose) {
-						self.log('debug', `invalid variables supplied to logic source feedback ${src}`)
+						self.log('debug', `invalid variables supplied to set logic source ${src}`)
 					}
-					return false
+					return undefined
 				}
 				self.setLogicSource(src, options.logicState)
 			},
 		}
 	}
-
+	actionDefs['setGPOutput'] = {
+		name: 'Set GP Output',
+		label: 'Set GP Output',
+		options: [options.gpOutputAdder, options.gpoState],
+		callback: async ({ options }, context) => {
+			const gpo = self.calcGpioAddress(await context.parseVariablesInString(options.logicSrc))
+			if (isNaN(gpo)) {
+				if (self.config.verbose) {
+					self.log('debug', `invalid variables supplied to setGPOutput ${gpo}`)
+				}
+				return false
+			}
+			self.setGPOutput(gpo, options.gpoState)
+		},
+		subscribe: async ({ options }, context) => {
+			const gpo = self.calcGpioAddress(await context.parseVariablesInString(options.logicSrc))
+			if (isNaN(gpo)) {
+				if (self.config.verbose) {
+					self.log('debug', `invalid variables supplied to setGPOutput subscribe ${gpo}`)
+				}
+				return false
+			}
+			self.setGPOutput(gpo)
+		},
+	}
 	self.setActionDefinitions(actionDefs)
 }

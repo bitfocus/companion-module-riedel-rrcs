@@ -11,7 +11,7 @@ export function getAllLogicSources() {
 			this.log('debug', `getAllLogicSources: \n${JSON.stringify(logicSources)}`)
 		}
 		if (logicSources[`ErrorCode`] !== 0) {
-			this.log('warn', `getAllXp: ${rrcsErrorCodes[xps.ErrorCode]}`)
+			this.log('warn', `getAllXp: ${rrcsErrorCodes[logicSources.ErrorCode]}`)
 			return undefined
 		}
 		if (logicSources[`LogicSourceCount`] > 0) {
@@ -44,7 +44,7 @@ export function setLogicSource(ObjectID, state) {
 			this.log('debug', `setLogicSource: \n${JSON.stringify(logicSource)}`)
 		}
 		if (logicSource[1] !== 0) {
-			this.log('warn', `setLogicSource: ${rrcsErrorCodes[xps.ErrorCode]}`)
+			this.log('warn', `setLogicSource: ${rrcsErrorCodes[logicSource.ErrorCode]}`)
 			return undefined
 		} else {
 			this.rrcs.logicSrc[ObjectID].state = !!state

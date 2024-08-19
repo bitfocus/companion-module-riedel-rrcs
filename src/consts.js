@@ -203,4 +203,10 @@ export const options = {
 		useVariables: true,
 		tooltip: 'GP Input address should be five period seperated integers <net>.<node>.<port>.<slot>.<gpio number>',
 	},
+	gpoState: {
+		id: 'gpoState',
+		type: 'checkbox',
+		label: 'State',
+		default: false,
+	},
 }

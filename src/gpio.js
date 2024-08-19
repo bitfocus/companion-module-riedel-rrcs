@@ -68,7 +68,7 @@ export function setGPOutput(gpo, state) {
 	}
 }
 
-export function getGPOutput(gpo, state) {
+export function getGPOutput(gpo) {
 	const keys = Object.keys(gpo)
 	if (
 		keys.includes('net') &&
@@ -78,25 +78,24 @@ export function getGPOutput(gpo, state) {
 		keys.includes('number')
 	) {
 		this.rrcsQueue.add(async () => {
-			const gpo = await this.rrcsMethodCall(rrcsMethods.gpio.getGPO.rpc, [
+			const response = await this.rrcsMethodCall(rrcsMethods.gpio.getGPO.rpc, [
 				gpo.net,
 				gpo.node,
 				gpo.port,
 				gpo.slot,
 				gpo.number,
-				!!state,
 			])
-			if (gpo === undefined) {
+			if (response === undefined) {
 				return
 			}
 			if (this.config.verbose) {
-				this.log('debug', `getGPOutput: \n${JSON.stringify(gpo)}`)
+				this.log('debug', `getGPOutput: \n${JSON.stringify(response)}`)
 			}
-			if (gpo[1] !== 0) {
-				this.log('warn', `getGPOutput: ${rrcsErrorCodes[gpo.ErrorCode]}`)
+			if (response[1] !== 0) {
+				this.log('warn', `getGPOutput: ${rrcsErrorCodes[response[1]]}`)
 				return undefined
 			} else {
-				this.addGPO(gpo, state)
+				this.addGPO(gpo, response[2])
 			}
 		})
 	}

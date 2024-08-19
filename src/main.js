@@ -28,8 +28,8 @@ class Riedel_RRCS extends InstanceBase {
 			...utils,
 		})
 		this.localIPs = []
-		let interfaces = os.networkInterfaces()
-		let interface_names = Object.keys(interfaces)
+		const interfaces = os.networkInterfaces()
+		const interface_names = Object.keys(interfaces)
 		interface_names.forEach((nic) => {
 			interfaces[nic].forEach((ip) => {
 				if (ip.family == 'IPv4') {
@@ -45,9 +45,13 @@ class Riedel_RRCS extends InstanceBase {
 		if (this.rrcs) {
 			delete this.rrcs
 		}
-		if (this.localXmlRpc) {
-			this.localXmlRpc.close()
-			delete this.localXmlRpc
+		if (this.localXmlRpcPri) {
+			this.localXmlRpcPri.close()
+			delete this.localXmlRpcPri
+		}
+		if (this.localXmlRpcSec) {
+			this.localXmlRpcSec.close()
+			delete this.localXmlRpcSec
 		}
 		if (this.rrcsPri) {
 			delete this.rrcsPri
@@ -107,13 +111,19 @@ class Riedel_RRCS extends InstanceBase {
 	// When module gets deleted
 	async destroy() {
 		this.log('debug', 'destroy')
-		this.rrcsQueue.add(() =>
+		this.rrcsQueue.clear()
+		this.rrcsMethodCall(
+			rrcsMethods.notifications.unregisterForAllEvents.rpc,
+			[this.config.portLocalPri, this.config.hostLocalPri],
+			'pri'
+		)
+		if (this.rrcsSec) {
 			this.rrcsMethodCall(
 				rrcsMethods.notifications.unregisterForAllEvents.rpc,
-				[this.config.portLocalPri, this.config.hostLocalPri],
-				'pri'
+				[this.config.portLocalSec, this.config.hostLocalSec],
+				'sec'
 			)
-		)
+		}
 		this.destroyRRCS()
 	}
 
