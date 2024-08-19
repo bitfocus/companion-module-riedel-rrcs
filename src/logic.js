@@ -1,4 +1,3 @@
-import _ from 'lodash-es'
 import { rrcsMethods } from './methods.js'
 import { rrcsErrorCodes } from './errorcodes.js'
 
@@ -49,7 +48,7 @@ export function setLogicSource(ObjectID, state) {
 			return undefined
 		} else {
 			this.rrcs.logicSrc[ObjectID].state = !!state
+			this.checkFeedbacks('logicSource')
 		}
-		this.checkFeedbacks('logicSource')
 	})
 }

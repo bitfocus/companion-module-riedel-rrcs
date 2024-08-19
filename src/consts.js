@@ -187,4 +187,20 @@ export const options = {
 		label: 'State',
 		default: false,
 	},
+	gpOutputAdder: {
+		id: 'gpo',
+		type: 'textinput',
+		label: 'GPO',
+		default: '1.2.3.4.5',
+		useVariables: true,
+		tooltip: 'GP Output address should be five period seperated integers <net>.<node>.<port>.<slot>.<gpio number>',
+	},
+	gpInputAdder: {
+		id: 'gpi',
+		type: 'textinput',
+		label: 'GPI',
+		default: '1.2.3.4.5',
+		useVariables: true,
+		tooltip: 'GP Input address should be five period seperated integers <net>.<node>.<port>.<slot>.<gpio number>',
+	},
 }

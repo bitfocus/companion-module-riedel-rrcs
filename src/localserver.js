@@ -24,10 +24,16 @@ export async function initLocalServer(port, host, name) {
 		if (this.config.verbose) {
 			this.log('debug', `${name} Recieved: ${methodName} Data: ${JSON.stringify(args)}`)
 		}
+		if (args.length === 7) {
+			this.addGPI({ net: args[1], node: args[2], port: args[3], slot: args[4], number: args[5] }, args[6])
+		}
 	})
 	this[name].setHandler(notifications.gpio.outputChange.rpc, async (methodName, args) => {
 		if (this.config.verbose) {
 			this.log('debug', `${name} Recieved: ${methodName} Data: ${JSON.stringify(args)}`)
+		}
+		if (args.length === 7) {
+			this.addGPO({ net: args[1], node: args[2], port: args[3], slot: args[4], number: args[5] }, args[6])
 		}
 	})
 	this[name].setHandler(notifications.logic.sourceChange.rpc, async (methodName, args) => {

@@ -31,3 +31,34 @@ export function calcAddress(arg) {
 	}
 	return { net: address[0], node: address[1], port: address[2] }
 }
+
+export function calcGpioAddress(arg) {
+	if (this.config.verbose) {
+		this.log('debug', `calcGpioAddress ${arg}`)
+	}
+	let address = arg.split('.').map((x) => parseInt(x))
+	if (
+		address.length !== 5 ||
+		isNaN(address[0]) ||
+		isNaN(address[1]) ||
+		isNaN(address[2]) ||
+		isNaN(address[3]) ||
+		isNaN(address[4])
+	) {
+		return undefined
+	} else if (
+		address[0] < limits.net.min ||
+		address[0] > limits.net.max ||
+		address[1] < limits.node.min ||
+		address[1] > limits.node.max ||
+		address[2] < limits.port.min ||
+		address[2] > limits.port.max ||
+		address[3] < 0 ||
+		address[3] > limits.clientCardSlot.max ||
+		address[4] < 0 ||
+		address[4] > 255
+	) {
+		return undefined
+	}
+	return { net: address[0], node: address[1], port: address[2], slot: address[3], number: address[4] }
+}
