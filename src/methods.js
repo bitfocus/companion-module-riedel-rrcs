@@ -284,4 +284,12 @@ export const rrcsMethods = {
 			description: `Unregisters a single event receiver for all change notifications.`,
 		},
 	},
+	keyManipulations: {
+		pressKeyEx: {
+			rpc: 'PressKeyEx',
+			name: 'Press A Key',
+			description:
+				'On 1200 series panels Primary Trigger is the Lever-Down, Secondary Lever-Up, whilst on a 1000/1100 series Panel it is Left- or rather Right-Key. On all other panel types only the Primary Trigger is supported.',
+		},
+	},
 }

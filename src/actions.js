@@ -121,7 +121,12 @@ export default async function (self) {
 				}
 				return false
 			}
-			const response = await self.rrcsMethodCall(rrcsMethods.portAlias.get.rpc, [addr.net, addr.node, addr.port, options.isInput])
+			const response = await self.rrcsMethodCall(rrcsMethods.portAlias.get.rpc, [
+				addr.net,
+				addr.node,
+				addr.port,
+				options.isInput,
+			])
 			if (response === undefined) {
 				return undefined
 			}
@@ -175,6 +180,80 @@ export default async function (self) {
 				...options,
 				portLabel: response[2],
 			}
+		},
+	}
+
+	actionDefs['setIOGain'] = {
+		name: 'Set IO Gain',
+		options: [options.ioMethod, options.addr, options.ioGain, options.ioGainInfo],
+		callback: async ({ options }, context) => {
+			const addr = self.calcAddress(await context.parseVariablesInString(options.addr))
+			const gain = parseInt(await context.parseVariablesInString(options.ioGain))
+			if (addr === undefined || isNaN(gain)) {
+				if (self.config.verbose) {
+					self.log('debug', `invalid address supplied to setIOGain ${options.addr} ${options.gain}`)
+				}
+				return false
+			}
+			self.setIOGain(addr, options.ioMethod, gain)
+		},
+		learn: async ({ options }, context) => {
+			const addr = self.calcAddress(await context.parseVariablesInString(options.addr))
+			const method = options.ioMethod.replace('Set', 'Get')
+			if (addr === undefined) {
+				if (self.config.verbose) {
+					self.log('debug', `invalid address supplied to setIOGain ${options.portAddr}`)
+				}
+				return false
+			}
+			const response = await self.rrcsMethodCall(method, [addr.net, addr.node, addr.port])
+			if (response === undefined) {
+				return undefined
+			}
+			if (self.config.verbose) {
+				self.log('debug', `setIOGain learn: \n${JSON.stringify(response)}`)
+			}
+			if (response[1] !== 0) {
+				self.log('warn', `setIOGain learn: ${rrcsErrorCodes[response[1]]}`)
+				return undefined
+			}
+			const gain = response[2] <= -128 ? -128 : response[2] / 2
+			return {
+				...options,
+				ioGain: gain,
+			}
+		},
+	}
+	actionDefs['pressKey'] = {
+		name: 'Press a Key',
+		options: [
+			options.portAddr,
+			options.isInput,
+			options.page,
+			options.expPanel,
+			options.keyNumber,
+			options.isVirtual,
+			options.press,
+			options.trigger,
+			options.poolPort,
+			options.triggerInfo,
+		],
+		callback: async ({ options }, context) => {
+			const addr = self.calcPortAddress(await context.parseVariablesInString(options.portAddr))
+			const page = parseInt(await context.parseVariablesInString(options.page))
+			const expPanel = parseInt(await context.parseVariablesInString(options.expPanel))
+			const key = parseInt(await context.parseVariablesInString(options.keyNumber))
+			const pool = parseInt(await context.parseVariablesInString(options.poolPort))
+			if (addr === undefined || isNaN(page) || isNaN(expPanel) || isNaN(key) || isNaN(pool)) {
+				if (self.config.verbose) {
+					self.log(
+						'debug',
+						`invalid args supplied to pressKey ${options.portAddr} ${options.page} ${options.expPanel} ${options.keyNumber} ${options.poolPort}`
+					)
+				}
+				return false
+			}
+			self.pressKey(addr, options.isInput, page, expPanel, key, options.isVirtual, options.press, options.trigger, pool)
 		},
 	}
 	self.setActionDefinitions(actionDefs)

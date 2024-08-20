@@ -6,7 +6,9 @@ import UpdateVariableDefinitions from './variables.js'
 import * as alias from './alias.js'
 import * as config from './config.js'
 import * as crosspoints from './crosspoints.js'
+import * as gain from './gain.js'
 import * as gpio from './gpio.js'
+import * as keyManipulation from './keyManipulation.js'
 import * as localServer from './localserver.js'
 import * as logic from './logic.js'
 import * as notifications from './notifications.js'
@@ -25,7 +27,9 @@ class Riedel_RRCS extends InstanceBase {
 			...alias,
 			...config,
 			...crosspoints,
+			...gain,
 			...gpio,
+			...keyManipulation,
 			...localServer,
 			...logic,
 			...methodCallQueue,

@@ -3,7 +3,7 @@ import { options, styles } from './consts.js'
 export default async function (self) {
 	let feedbackDefs = []
 	feedbackDefs['crosspoint'] = {
-		name: 'Check Crosspoint',
+		name: 'Crosspoint',
 		type: 'boolean',
 		defaultStyle: styles.red,
 		options: [options.srcAddr, options.dstAddr],
@@ -12,7 +12,7 @@ export default async function (self) {
 			const dst = self.calcAddress(await context.parseVariablesInString(options.dstAddr))
 			if (src === undefined || dst === undefined) {
 				if (self.config.verbose) {
-					self.log('debug', `invalid variables supplied to check crosspoint ${options.srcAddr} ${options.dstAddr}`)
+					self.log('debug', `invalid variables supplied to crosspoint feedback ${options.srcAddr} ${options.dstAddr}`)
 				}
 				return false
 			}
@@ -34,7 +34,7 @@ export default async function (self) {
 			const dst = self.calcAddress(await context.parseVariablesInString(options.dstAddr))
 			if (src === undefined || dst === undefined) {
 				if (self.config.verbose) {
-					self.log('debug', `invalid variables supplied to check crosspoint ${options.srcAddr} ${options.dstAddr}`)
+					self.log('debug', `invalid variables supplied to crosspoint feedback ${options.srcAddr} ${options.dstAddr}`)
 				}
 				return false
 			}
@@ -74,7 +74,7 @@ export default async function (self) {
 	}
 
 	feedbackDefs['gpoState'] = {
-		name: 'Check GP Output',
+		name: 'GP Output',
 		type: 'boolean',
 		defaultStyle: styles.green,
 		options: [options.gpOutputAdder],
@@ -82,7 +82,7 @@ export default async function (self) {
 			const gpo = self.calcGpioAddress(await context.parseVariablesInString(options.gpo))
 			if (gpo === undefined) {
 				if (self.config.verbose) {
-					self.log('debug', `invalid variables supplied to Check GP Output ${options.gpo}`)
+					self.log('debug', `invalid variables supplied to GP Output ${options.gpo}`)
 				}
 				return false
 			}
@@ -101,7 +101,7 @@ export default async function (self) {
 			const gpo = self.calcGpioAddress(await context.parseVariablesInString(options.gpo))
 			if (gpo === undefined) {
 				if (self.config.verbose) {
-					self.log('debug', `invalid variables supplied to Check GP Output Subscribe ${options.gpo}`)
+					self.log('debug', `invalid variables supplied to GP Output Subscribe ${options.gpo}`)
 				}
 				return false
 			}
@@ -110,7 +110,7 @@ export default async function (self) {
 	}
 
 	feedbackDefs['gpiState'] = {
-		name: 'Check GP Input',
+		name: 'GP Input',
 		type: 'boolean',
 		defaultStyle: styles.green,
 		options: [options.gpInputAdder],
@@ -118,7 +118,7 @@ export default async function (self) {
 			const gpi = self.calcGpioAddress(await context.parseVariablesInString(options.gpi))
 			if (gpi === undefined) {
 				if (self.config.verbose) {
-					self.log('debug', `invalid variables supplied to Check GP Input ${options.gpi}`)
+					self.log('debug', `invalid variables supplied to GP Input ${options.gpi}`)
 				}
 				return false
 			}
@@ -137,7 +137,7 @@ export default async function (self) {
 			const gpi = self.calcGpioAddress(await context.parseVariablesInString(options.gpi))
 			if (gpi === undefined) {
 				if (self.config.verbose) {
-					self.log('debug', `invalid variables supplied to Check GP Input Subscribe ${options.gpi}`)
+					self.log('debug', `invalid variables supplied to GP Input Subscribe ${options.gpi}`)
 				}
 				return false
 			}

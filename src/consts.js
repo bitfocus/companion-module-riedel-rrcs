@@ -120,6 +120,14 @@ export const choices = {
 		{ id: 3, label: lookUps.priority[3] },
 		{ id: 4, label: lookUps.priority[4] },
 	],
+	ioGain: [
+		{ id: rrcsMethods.gain.setInput.rpc, label: rrcsMethods.gain.setInput.name },
+		{ id: rrcsMethods.gain.setOutput.rpc, label: rrcsMethods.gain.setOutput.name },
+	],
+	trigger: [
+		{ id: 1, label: 'Primary Trigger' },
+		{ id: 2, label: 'Secondary Trigger' },
+	],
 }
 
 export const options = {
@@ -247,5 +255,82 @@ export const options = {
 		default: '',
 		useVariables: true,
 		tooltip: 'Port Label may be a maximum of 8 characters.',
+	},
+	ioMethod: {
+		id: 'ioMethod',
+		type: 'dropdown',
+		label: 'Method',
+		choices: choices.ioGain,
+		default: rrcsMethods.gain.setInput.rpc,
+	},
+	ioGain: {
+		id: 'ioGain',
+		type: 'textinput',
+		label: 'IO Gain (dB)',
+		default: '0',
+		useVariables: true,
+		tooltip: 'Range: -18 to + 18, 0.5dB steps. Set to <= -64 to mute.',
+	},
+	ioGainInfo: {
+		id: 'ioGainInfo',
+		type: 'static-text',
+		label: '',
+		value: 'Ensure the selected port has enabled gain set by Panel or RRCS. See Director > Port Properties > Gain.',
+	},
+	page: {
+		id: 'page',
+		type: 'textinput',
+		label: 'Page',
+		default: '1',
+		useVariables: true,
+		tooltip: 'Key page number.',
+	},
+	expPanel: {
+		id: 'expPanel',
+		type: 'textinput',
+		label: 'Expansion Panel',
+		default: '0',
+		useVariables: true,
+		tooltip: 'Expansion panel number.',
+	},
+	keyNumber: {
+		id: 'keyNumber',
+		type: 'textinput',
+		label: 'Key Number',
+		default: '1',
+		useVariables: true,
+	},
+	isVirtual: {
+		id: 'isVirtual',
+		type: 'checkbox',
+		label: 'Virtual Key',
+		default: false,
+	},
+	press: {
+		id: 'press',
+		type: 'checkbox',
+		label: 'Press',
+		default: true,
+	},
+	trigger: {
+		id: 'trigger',
+		type: 'dropdown',
+		label: 'Trigger',
+		choices: choices.trigger,
+		default: 1,
+	},
+	triggerInfo: {
+		id: 'triggerInfo',
+		type: 'static-text',
+		label: '',
+		value: rrcsMethods.keyManipulations.pressKeyEx.description,
+	},
+	poolPort: {
+		id: 'poolPort',
+		type: 'textinput',
+		label: 'Pool Port',
+		default: '0',
+		useVariables: true,
+		tooltip: 'Expansion panel number.',
 	},
 }
