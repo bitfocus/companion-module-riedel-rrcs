@@ -15,7 +15,9 @@ export function addGPO(gpo, state) {
 		},
 	}
 	this.rrcs.gpOutputs = _.merge(this.rrcs.gpOutputs, GPoutput)
-	this.checkFeedbacks('gpoState')
+	if (!this.feedbacksToUpdate.includes('gpoState')) {
+		this.feedbacksToUpdate.push('gpoState')
+	}
 	if (this.isRecordingActions) {
 		this.recordAction(
 			{
@@ -40,7 +42,9 @@ export function addGPI(gpi, state) {
 		},
 	}
 	this.rrcs.gpInputs = _.merge(this.rrcs.gpInputs, GPinput)
-	this.checkFeedbacks('gpiState')
+	if (!this.feedbacksToUpdate.includes('gpiState')) {
+		this.feedbacksToUpdate.push('gpiState')
+	}
 }
 
 export function setGPOutput(gpo, state) {

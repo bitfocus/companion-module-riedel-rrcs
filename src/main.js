@@ -6,6 +6,7 @@ import UpdateVariableDefinitions from './variables.js'
 import * as alias from './alias.js'
 import * as config from './config.js'
 import * as crosspoints from './crosspoints.js'
+import * as debounce from './debounce.js'
 import * as gain from './gain.js'
 import * as gpio from './gpio.js'
 import * as keyManipulation from './keyManipulation.js'
@@ -27,6 +28,7 @@ class Riedel_RRCS extends InstanceBase {
 			...alias,
 			...config,
 			...crosspoints,
+			...debounce,
 			...gain,
 			...gpio,
 			...keyManipulation,
@@ -38,6 +40,8 @@ class Riedel_RRCS extends InstanceBase {
 			...utils,
 		})
 		this.localIPs = []
+		this.feedBacksToUpdate = []
+		this.variablesToUpdate = []
 		const interfaces = os.networkInterfaces()
 		const interface_names = Object.keys(interfaces)
 		interface_names.forEach((nic) => {
@@ -112,6 +116,7 @@ class Riedel_RRCS extends InstanceBase {
 		)
 		this.getAllXp()
 		this.getAllLogicSources()
+		this.debounceUpdateFeedbacksVariables()
 	}
 
 	async init(config) {
@@ -121,6 +126,7 @@ class Riedel_RRCS extends InstanceBase {
 	// When module gets deleted
 	async destroy() {
 		this.log('debug', 'destroy')
+		this.stopDebounce()
 		this.rrcsQueue.clear()
 		this.rrcsMethodCall(
 			rrcsMethods.notifications.unregisterForAllEvents.rpc,

@@ -30,7 +30,9 @@ export function getAllLogicSources() {
 		}
 		this.updateActions() // export actions
 		this.updateFeedbacks() // export feedbacks
-		this.checkFeedbacks('logicSource')
+		if (!this.feedbacksToUpdate.includes('logicSource')) {
+			this.feedbacksToUpdate.push('logicSource')
+		}
 	})
 }
 

@@ -32,7 +32,9 @@ export function addCrosspoint(src, dst, state) {
 		this.log('debug', `adding crosspoint: ${JSON.stringify(xpt)} ${state ? 'active' : 'inactive'}`)
 	}
 	this.rrcs.crosspoints = _.merge(this.rrcs.crosspoints, xpt)
-	this.checkFeedbacks('crosspoint')
+	if (!this.feedbacksToUpdate.includes('crosspoint')) {
+		this.feedbacksToUpdate.push('crosspoint')
+	}
 	if (this.isRecordingActions) {
 		const recordMethod = state ? rrcsMethods.crosspoint.setPrio.rpc : rrcsMethods.crosspoint.kill.rpc
 		this.recordAction(
