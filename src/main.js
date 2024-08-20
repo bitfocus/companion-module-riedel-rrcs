@@ -151,6 +151,10 @@ class Riedel_RRCS extends InstanceBase {
 		}
 	}
 
+	handleStartStopRecordActions(isRecording) {
+		this.isRecordingActions = isRecording
+	}
+
 	updateActions() {
 		UpdateActions(this)
 	}

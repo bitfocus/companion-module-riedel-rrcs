@@ -49,6 +49,15 @@ export function setLogicSource(ObjectID, state) {
 		} else {
 			this.rrcs.logicSrc[ObjectID].state = !!state
 			this.checkFeedbacks('logicSource')
+			if (this.isRecordingActions) {
+				this.recordAction(
+					{
+						actionId: 'setLogicSource',
+						options: { logicSrc: ObjectID, logicState: !!state },
+					},
+					`setLogicSource ${ObjectID}`
+				)
+			}
 		}
 	})
 }

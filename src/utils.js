@@ -29,7 +29,7 @@ export function calcAddress(arg) {
 	) {
 		return undefined
 	}
-	return { net: address[0], node: address[1], port: address[2] }
+	return { net: address[0], node: address[1], port: address[2] - 1 }
 }
 
 export function calcPortAddress(arg) {
@@ -48,7 +48,7 @@ export function calcPortAddress(arg) {
 	) {
 		return undefined
 	}
-	return { node: address[0], port: address[1] }
+	return { node: address[0], port: address[1] - 1 }
 }
 
 export function calcGpioAddress(arg) {
@@ -79,5 +79,5 @@ export function calcGpioAddress(arg) {
 	) {
 		return undefined
 	}
-	return { net: address[0], node: address[1], port: address[2], slot: address[3], number: address[4] }
+	return { net: address[0], node: address[1], port: address[2] - 1, slot: address[3], number: address[4] - 1 }
 }

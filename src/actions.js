@@ -225,7 +225,7 @@ export default async function (self) {
 		},
 	}
 	actionDefs['pressKey'] = {
-		name: 'Press a Key',
+		name: 'Press Key',
 		options: [
 			options.portAddr,
 			options.isInput,

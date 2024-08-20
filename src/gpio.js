@@ -16,6 +16,15 @@ export function addGPO(gpo, state) {
 	}
 	this.rrcs.gpOutputs = _.merge(this.rrcs.gpOutputs, GPoutput)
 	this.checkFeedbacks('gpoState')
+	if (this.isRecordingActions) {
+		this.recordAction(
+			{
+				actionId: 'setGPOutput',
+				options: { gpo: `${gpo.net}.${gpo.node}.${gpo.port + 1}.${gpo.slot}.${gpo.number + 1}`, gpoState: state },
+			},
+			`setGPOutput ${gpo.net}.${gpo.node}.${gpo.port + 1}.${gpo.slot}.${gpo.number + 1}`
+		)
+	}
 }
 
 export function addGPI(gpi, state) {

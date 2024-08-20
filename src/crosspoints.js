@@ -33,6 +33,21 @@ export function addCrosspoint(src, dst, state) {
 	}
 	this.rrcs.crosspoints = _.merge(this.rrcs.crosspoints, xpt)
 	this.checkFeedbacks('crosspoint')
+	if (this.isRecordingActions) {
+		const recordMethod = state ? rrcsMethods.crosspoint.setPrio.rpc : rrcsMethods.crosspoint.kill.rpc
+		this.recordAction(
+			{
+				actionId: 'setCrosspoint',
+				options: {
+					xpMethod: recordMethod,
+					srcAddr: `${src.net}.${src.node}.${src.port + 1}`,
+					dstAddr: `${dst.net}.${dst.node}.${dst.port + 1}`,
+					priority: 1,
+				},
+			},
+			`setCrosspoint ${src.net}.${src.node}.${src.port + 1} ${dst.net}.${dst.node}.${dst.port + 1}`
+		)
+	}
 }
 
 export function setXp(method, src, dst, prio) {

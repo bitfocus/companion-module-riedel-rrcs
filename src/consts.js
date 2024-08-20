@@ -38,8 +38,8 @@ export const limits = {
 		default: 2,
 	},
 	port: {
-		min: 0,
-		max: 1151,
+		min: 1,
+		max: 1152,
 		default: 1,
 	},
 	clientCardSlot: {
