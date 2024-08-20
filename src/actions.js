@@ -79,8 +79,8 @@ export default async function (self) {
 		label: 'Set GP Output',
 		options: [options.gpOutputAdder, options.gpoState],
 		callback: async ({ options }, context) => {
-			const gpo = self.calcGpioAddress(await context.parseVariablesInString(options.logicSrc))
-			if (isNaN(gpo)) {
+			const gpo = self.calcGpioAddress(await context.parseVariablesInString(options.gpo))
+			if (gpo === undefined) {
 				if (self.config.verbose) {
 					self.log('debug', `invalid variables supplied to setGPOutput ${gpo}`)
 				}
@@ -89,14 +89,14 @@ export default async function (self) {
 			self.setGPOutput(gpo, options.gpoState)
 		},
 		subscribe: async ({ options }, context) => {
-			const gpo = self.calcGpioAddress(await context.parseVariablesInString(options.logicSrc))
-			if (isNaN(gpo)) {
+			const gpo = self.calcGpioAddress(await context.parseVariablesInString(options.gpo))
+			if (gpo === undefined) {
 				if (self.config.verbose) {
 					self.log('debug', `invalid variables supplied to setGPOutput subscribe ${gpo}`)
 				}
 				return false
 			}
-			self.setGPOutput(gpo)
+			self.getGPOutput(gpo)
 		},
 	}
 	self.setActionDefinitions(actionDefs)

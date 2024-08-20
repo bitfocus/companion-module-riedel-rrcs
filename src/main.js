@@ -5,6 +5,7 @@ import UpdateFeedbacks from './feedbacks.js'
 import UpdateVariableDefinitions from './variables.js'
 import * as config from './config.js'
 import * as crosspoints from './crosspoints.js'
+import * as gpio from './gpio.js'
 import * as localServer from './localserver.js'
 import * as logic from './logic.js'
 import * as notifications from './notifications.js'
@@ -21,6 +22,7 @@ class Riedel_RRCS extends InstanceBase {
 		Object.assign(this, {
 			...config,
 			...crosspoints,
+			...gpio,
 			...localServer,
 			...logic,
 			...methodCallQueue,
