@@ -3,6 +3,7 @@ import UpgradeScripts from './upgrades.js'
 import UpdateActions from './actions.js'
 import UpdateFeedbacks from './feedbacks.js'
 import UpdateVariableDefinitions from './variables.js'
+import * as alias from './alias.js'
 import * as config from './config.js'
 import * as crosspoints from './crosspoints.js'
 import * as gpio from './gpio.js'
@@ -11,6 +12,7 @@ import * as logic from './logic.js'
 import * as notifications from './notifications.js'
 import { rrcsMethods } from './methods.js'
 import * as methodCallQueue from './methodCallQueue.js'
+import * as portLabel from './portLabel.js'
 import * as utils from './utils.js'
 import os from 'os'
 import { XmlRpcClient } from '@foxglove/xmlrpc'
@@ -20,6 +22,7 @@ class Riedel_RRCS extends InstanceBase {
 	constructor(internal) {
 		super(internal)
 		Object.assign(this, {
+			...alias,
 			...config,
 			...crosspoints,
 			...gpio,
@@ -27,6 +30,7 @@ class Riedel_RRCS extends InstanceBase {
 			...logic,
 			...methodCallQueue,
 			...notifications,
+			...portLabel,
 			...utils,
 		})
 		this.localIPs = []

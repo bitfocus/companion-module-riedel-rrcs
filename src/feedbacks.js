@@ -5,7 +5,6 @@ export default async function (self) {
 	feedbackDefs['crosspoint'] = {
 		name: 'Check Crosspoint',
 		type: 'boolean',
-		label: 'Check Crosspoint',
 		defaultStyle: styles.red,
 		options: [options.srcAddr, options.dstAddr],
 		callback: async ({ options }, context) => {
@@ -46,7 +45,6 @@ export default async function (self) {
 		feedbackDefs['logicSource'] = {
 			name: 'Logic Source',
 			type: 'boolean',
-			label: 'Logic Source',
 			defaultStyle: styles.green,
 			options: [
 				{
@@ -78,7 +76,6 @@ export default async function (self) {
 	feedbackDefs['gpoState'] = {
 		name: 'Check GP Output',
 		type: 'boolean',
-		label: 'Check GP Output',
 		defaultStyle: styles.green,
 		options: [options.gpOutputAdder],
 		callback: async ({ options }, context) => {
@@ -115,7 +112,6 @@ export default async function (self) {
 	feedbackDefs['gpiState'] = {
 		name: 'Check GP Input',
 		type: 'boolean',
-		label: 'Check GP Input',
 		defaultStyle: styles.green,
 		options: [options.gpInputAdder],
 		callback: async ({ options }, context) => {

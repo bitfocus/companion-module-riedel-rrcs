@@ -53,7 +53,6 @@ export default async function (self) {
 	if (self.rrcs.choices.logicSources.length > 0) {
 		actionDefs['setLogicSource'] = {
 			name: 'Set Logic Source',
-			label: 'Set Logic Source',
 			options: [
 				{
 					...options.logicSrc,
@@ -76,7 +75,6 @@ export default async function (self) {
 	}
 	actionDefs['setGPOutput'] = {
 		name: 'Set GP Output',
-		label: 'Set GP Output',
 		options: [options.gpOutputAdder, options.gpoState],
 		callback: async ({ options }, context) => {
 			const gpo = self.calcGpioAddress(await context.parseVariablesInString(options.gpo))
@@ -92,11 +90,41 @@ export default async function (self) {
 			const gpo = self.calcGpioAddress(await context.parseVariablesInString(options.gpo))
 			if (gpo === undefined) {
 				if (self.config.verbose) {
-					self.log('debug', `invalid variables supplied to setGPOutput subscribe ${gpo}`)
+					self.log('debug', `invalid variables supplied to setGPOutput subscribe ${options.gpo}`)
 				}
 				return false
 			}
 			self.getGPOutput(gpo)
+		},
+	}
+	actionDefs['setAlias'] = {
+		name: 'Set Port Alias',
+		options: [options.addr, options.isInput, options.alias],
+		callback: async ({ options }, context) => {
+			const addr = self.calcAddress(await context.parseVariablesInString(options.addr))
+			const alias = await context.parseVariablesInString(options.alias)
+			if (addr === undefined) {
+				if (self.config.verbose) {
+					self.log('debug', `invalid address supplied to setAlias ${options.addr}`)
+				}
+				return false
+			}
+			self.setAlias(addr, options.isInput, alias)
+		},
+	}
+	actionDefs['setPortLabel'] = {
+		name: 'Set Port Label',
+		options: [options.addr, options.isInput, options.portLabel],
+		callback: async ({ options }, context) => {
+			const addr = self.calcAddress(await context.parseVariablesInString(options.addr))
+			const label = await context.parseVariablesInString(options.portLabel)
+			if (addr === undefined) {
+				if (self.config.verbose) {
+					self.log('debug', `invalid address supplied to setAlias ${options.addr}`)
+				}
+				return false
+			}
+			self.setPortLabel(addr, options.isInput, label)
 		},
 	}
 	self.setActionDefinitions(actionDefs)

@@ -130,6 +130,20 @@ export const options = {
 		choices: choices.xpMethods,
 		default: rrcsMethods.crosspoint.set.rpc,
 	},
+	addr: {
+		id: 'addr',
+		type: 'textinput',
+		label: 'Address',
+		default: '1.2.3',
+		useVariables: true,
+		tooltip: 'Address should be three period seperated integers <net>.<node>.<port>',
+	},
+	isInput: {
+		id: 'isInput',
+		type: 'checkbox',
+		label: 'Input',
+		default: false,
+	},
 	srcAddr: {
 		id: 'srcAddr',
 		type: 'textinput',
@@ -208,5 +222,23 @@ export const options = {
 		type: 'checkbox',
 		label: 'State',
 		default: false,
+	},
+	alias: {
+		id: 'alias',
+		type: 'textinput',
+		label: 'Port Alias',
+		default: '',
+		useVariables: true,
+		tooltip:
+			'Alias name for the given port which is displayed on the panel keys. A string with a maximum of 8 characters.',
+	},
+	portLabel: {
+		id: 'portLabel',
+		type: 'textinput',
+		label: 'Port Label',
+		default: '',
+		useVariables: true,
+		tooltip:
+			'Port Label may be a maximum of 8 characters. Net must be supplied in the address but is not used.',
 	},
 }
