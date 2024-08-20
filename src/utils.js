@@ -32,6 +32,25 @@ export function calcAddress(arg) {
 	return { net: address[0], node: address[1], port: address[2] }
 }
 
+export function calcPortAddress(arg) {
+	if (this.config.verbose) {
+		this.log('debug', `calcPortAddress ${arg}`)
+	}
+	let address = arg.split('.').map((x) => parseInt(x))
+	if (address.length !== 2 || isNaN(address[0]) || isNaN(address[1])) {
+		return undefined
+	}
+	if (
+		address[0] < limits.node.min ||
+		address[0] > limits.node.max ||
+		address[1] < limits.port.min ||
+		address[1] > limits.port.max
+	) {
+		return undefined
+	}
+	return { node: address[0], port: address[1] }
+}
+
 export function calcGpioAddress(arg) {
 	if (this.config.verbose) {
 		this.log('debug', `calcGpioAddress ${arg}`)

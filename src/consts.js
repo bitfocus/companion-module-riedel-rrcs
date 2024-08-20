@@ -138,6 +138,14 @@ export const options = {
 		useVariables: true,
 		tooltip: 'Address should be three period seperated integers <net>.<node>.<port>',
 	},
+	portAddr: {
+		id: 'portAddr',
+		type: 'textinput',
+		label: 'Port Address',
+		default: '1.2',
+		useVariables: true,
+		tooltip: 'Address should be two period seperated integers <node>.<port>',
+	},
 	isInput: {
 		id: 'isInput',
 		type: 'checkbox',
@@ -238,7 +246,6 @@ export const options = {
 		label: 'Port Label',
 		default: '',
 		useVariables: true,
-		tooltip:
-			'Port Label may be a maximum of 8 characters. Net must be supplied in the address but is not used.',
+		tooltip: 'Port Label may be a maximum of 8 characters.',
 	},
 }
