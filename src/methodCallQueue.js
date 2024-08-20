@@ -21,7 +21,7 @@ export async function rrcsMethodCall(method, params, server) {
 				)
 			}
 			//this.updateStatus(InstanceStatus.Ok)
-		} else if (this.rrcsPri) {
+		} else if (this.rrcsPri && server !== 'sec') {
 			data = await this.rrcsPri.methodCall(method, [transKey, ...params])
 			if (this.config.verbose) {
 				this.log(
@@ -33,7 +33,7 @@ export async function rrcsMethodCall(method, params, server) {
 			}
 			//this.updateStatus(InstanceStatus.Ok)
 		} else {
-			this.log('warn', `No RRCS Server. Tried to send ${method} ${params}`)
+			this.log('warn', `No RRCS Server. Tried to send ${method} ${params} to ${server ?? this.rrcs.activeServer}`)
 			this.updateStatus(InstanceStatus.BadConfig, `No server`)
 			return undefined
 		}
