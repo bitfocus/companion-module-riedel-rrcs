@@ -284,12 +284,84 @@ export const rrcsMethods = {
 			description: `Unregisters a single event receiver for all change notifications.`,
 		},
 	},
+
 	keyManipulations: {
+		clearKeyLabel: {
+			rpc: 'ClearKeyLabel',
+			name: 'Key - Clear Label',
+			description: 'Clears a key label that has been set before.',
+		},
+		clearKeyLabelAndMarker: {
+			rpc: 'ClearKeyLabelAndMarker',
+			name: 'Key - Clear Label & Marker',
+			description: 'Clears a key label and marker that has been set before.',
+		},
+		clearKeyMarker: {
+			rpc: 'ClearKeyMarker',
+			name: 'Key - Clear Marker',
+			description: 'Clears a marker that has been set before.',
+		},
+		getRemoteKey: {
+			rpc: 'GetRemoteKey',
+			name: 'Get Remote Key',
+			description: 'Queries key manipulations for the given key.',
+		},
+		getAllRemoteKeys: {
+			rpc: 'GetAllRemoteKeys',
+			name: 'Get All Remote Keys',
+			description: 'Queries all key manipulations that have been sent via RRCS with one the functions in this section.',
+		},
+		lockKey: {
+			rpc: 'LockKey',
+			name: 'Key- Lock',
+			description: 'Locks a key, so the user cannot press it.',
+		},
+		pressKey: {
+			rpc: 'PressKey',
+			name: 'Key - Press',
+			description:
+				'Presses a key.',
+		},
 		pressKeyEx: {
 			rpc: 'PressKeyEx',
-			name: 'Press A Key',
+			name: 'Key - Press',
 			description:
 				'On 1200 series panels Primary Trigger is the Lever-Down, Secondary Lever-Up, whilst on a 1000/1100 series Panel it is Left- or rather Right-Key. On all other panel types only the Primary Trigger is supported.',
+		},
+		setKeyLabel: {
+			rpc: 'SetKeyLabel',
+			name: 'Key - Set Label',
+			description:
+				'Sets a key label. It overwrites any other key label of the configuration. {Label} is a 8 character string.',
+		},
+		setKeyLabelAndMarker: {
+			rpc: 'SetKeyLabelAndMarker',
+			name: 'Key - Set Label & Marker',
+			description:
+				'Sets a key label and a marker . {Label} is a 8 character string. {Marker} is the index of the marker in the configuration. See the net properties dialog in Director.',
+		},
+		setKeyMarker: {
+			rpc: 'SetKeyMarker',
+			name: 'Key - Set Marker',
+			description:
+				'Sets a marker above the key. {Marker} is the index of the marker in the configuration. See the net properties dialog in Director.',
+		},
+	},
+	portClone: {
+		start: {
+			rpc: 'StartPortCloning',
+			name: 'Start Port Clone',
+			description: 'Clones the output signal of a port and routes all audios to a monitoring port.',
+		},
+		stop: {
+			rpc: 'StopPortCloning',
+			name: 'Stop Port Clone',
+			description: 'Stops cloneing. Use Port 0.0 as a wildcard in order to stop a batch of port clones.',
+		},
+		getAll: {
+			rpc: 'GetAllActivePortClones',
+			name: 'Get All Active Port Clones',
+			description: 'Returns an array of all active port clones.',
 		},
 	},
 }
