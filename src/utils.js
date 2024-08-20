@@ -13,7 +13,7 @@ export function calcAddress(arg) {
 	if (this.config.verbose) {
 		this.log('debug', `calcAddress ${arg}`)
 	}
-	let address = arg.split('.').map((x) => parseInt(x))
+	const address = arg.split('.').map((x) => parseInt(x))
 	if (address.length !== 3 || isNaN(address[0]) || isNaN(address[1]) || isNaN(address[2])) {
 		return undefined
 	}
@@ -36,7 +36,7 @@ export function calcPortAddress(arg) {
 	if (this.config.verbose) {
 		this.log('debug', `calcPortAddress ${arg}`)
 	}
-	let address = arg.split('.').map((x) => parseInt(x))
+	const address = arg.split('.').map((x) => parseInt(x))
 	if (address.length !== 2 || isNaN(address[0]) || isNaN(address[1])) {
 		return undefined
 	}
@@ -55,7 +55,7 @@ export function calcGpioAddress(arg) {
 	if (this.config.verbose) {
 		this.log('debug', `calcGpioAddress ${arg}`)
 	}
-	let address = arg.split('.').map((x) => parseInt(x))
+	const address = arg.split('.').map((x) => parseInt(x))
 	if (
 		address.length !== 5 ||
 		isNaN(address[0]) ||
@@ -74,8 +74,8 @@ export function calcGpioAddress(arg) {
 		address[2] > limits.port.max ||
 		address[3] < 0 ||
 		address[3] > limits.clientCardSlot.max ||
-		address[4] < 0 ||
-		address[4] > 255
+		address[4] < 1 ||
+		address[4] > 256
 	) {
 		return undefined
 	}
