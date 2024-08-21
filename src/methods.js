@@ -323,7 +323,7 @@ export const rrcsMethods = {
 		},
 		lockKey: {
 			rpc: 'LockKey',
-			name: 'Key- Lock',
+			name: 'Key - Lock',
 			description: 'Locks a key, so the user cannot press it.',
 		},
 		pressKey: {

@@ -49,4 +49,4 @@ Does not work with panels connected to an Artist-1024.
 
 - Port & GPIO Numbers
 
-RRCS uses 0-based numbering for Port and GPIO numbers. This module converts them to 1-based numbering for consistency with Director. However interval logs are 0-based.
+RRCS uses 0-based numbering for Port and GPIO numbers. This module converts them to 1-based numbering for consistency with Director. However internal logs are 0-based.
