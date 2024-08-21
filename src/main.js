@@ -17,6 +17,7 @@ import { rrcsMethods } from './methods.js'
 import * as methodCallQueue from './methodCallQueue.js'
 import * as portLabel from './portLabel.js'
 import * as utils from './utils.js'
+import * as volume from './volume.js'
 import os from 'os'
 import { XmlRpcClient } from '@foxglove/xmlrpc'
 import PQueue from 'p-queue'
@@ -38,9 +39,10 @@ class Riedel_RRCS extends InstanceBase {
 			...notifications,
 			...portLabel,
 			...utils,
+			...volume,
 		})
 		this.localIPs = []
-		this.feedBacksToUpdate = []
+		this.feedbacksToUpdate = []
 		this.variablesToUpdate = []
 		const interfaces = os.networkInterfaces()
 		const interface_names = Object.keys(interfaces)

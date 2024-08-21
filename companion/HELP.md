@@ -10,8 +10,11 @@ Tested with RRCS Version 8.6.1
 
 - Get Active Crosspoints
 - Get All Logic Sources
-- Press Key
+- Key - Label & Marker
+- Key - Lock
+- Key - Press
 - Set Crosspoint
+- Set Crosspoint Volume
 - Set GP Output
 - Set IO Gain
 - Set Logic Source
@@ -31,12 +34,16 @@ Tested with RRCS Version 8.6.1
 - Set GP Output
 - Set Logic Source
 
-### Known Issues
+### Limitations
 
-- GP Input
+- Set Crosspoint Volume
 
-Does not work with panels connected to Artist-1024. This is a known firmware issue with the artist system.
+Does not work when destination port is connected to an Artist 1024.
+
+- GP Input Feedback
+
+Does not work with panels connected to an Artist-1024.
 
 - Port & GPIO Numbers
 
-RRCS uses 0-based numbering for Port and GPIO numbers. This module converts them to 1-based numbering for consistency with director.
+RRCS uses 0-based numbering for Port and GPIO numbers. This module converts them to 1-based numbering for consistency with Director.

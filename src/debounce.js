@@ -5,11 +5,11 @@ export function debounceUpdateFeedbacksVariables() {
 		clearTimeout(this.debounceTimer)
 	}
 	if (this.feedbacksToUpdate.length > 0) {
-		this.checkFeedbacks(this.feedbacksToUpdate)
+		this.checkFeedbacks(...this.feedbacksToUpdate)
 		this.feedbacksToUpdate = []
 	}
 	if (this.variablesToUpdate.length > 0) {
-		this.updateVariableValues(this.variablesToUpdate)
+		this.updateVariableValues(...this.variablesToUpdate)
 		this.variablesToUpdate = []
 	}
 	this.debounceTimer = setTimeout(() => {

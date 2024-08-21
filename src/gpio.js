@@ -15,7 +15,7 @@ export function addGPO(gpo, state) {
 		},
 	}
 	this.rrcs.gpOutputs = _.merge(this.rrcs.gpOutputs, GPoutput)
-	if (!this.feedbacksToUpdate.includes('gpoState')) {
+	if (this.feedbacksToUpdate.includes('gpoState') === false) {
 		this.feedbacksToUpdate.push('gpoState')
 	}
 	if (this.isRecordingActions) {

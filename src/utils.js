@@ -62,10 +62,7 @@ export function calcGpioAddress(arg) {
 		isNaN(address[1]) ||
 		isNaN(address[2]) ||
 		isNaN(address[3]) ||
-		isNaN(address[4])
-	) {
-		return undefined
-	} else if (
+		isNaN(address[4]) ||
 		address[0] < limits.net.min ||
 		address[0] > limits.net.max ||
 		address[1] < limits.node.min ||

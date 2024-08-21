@@ -1,4 +1,4 @@
-import { combineRgb } from '@companion-module/base'
+import { combineRgb, Regex } from '@companion-module/base'
 import { rrcsMethods } from './methods.js'
 
 export const default_port = 8193
@@ -128,6 +128,20 @@ export const choices = {
 		{ id: 1, label: 'Primary Trigger' },
 		{ id: 2, label: 'Secondary Trigger' },
 	],
+	labelAndMarker: [
+		{ id: rrcsMethods.keyManipulations.setKeyLabel.rpc, label: rrcsMethods.keyManipulations.setKeyLabel.name },
+		{ id: rrcsMethods.keyManipulations.setKeyMarker.rpc, label: rrcsMethods.keyManipulations.setKeyMarker.name },
+		{
+			id: rrcsMethods.keyManipulations.setKeyLabelAndMarker.rpc,
+			label: rrcsMethods.keyManipulations.setKeyLabelAndMarker.name,
+		},
+		{ id: rrcsMethods.keyManipulations.clearKeyLabel.rpc, label: rrcsMethods.keyManipulations.clearKeyLabel.name },
+		{ id: rrcsMethods.keyManipulations.clearKeyMarker.rpc, label: rrcsMethods.keyManipulations.clearKeyMarker.name },
+		{
+			id: rrcsMethods.keyManipulations.clearKeyLabelAndMarker.rpc,
+			label: rrcsMethods.keyManipulations.clearKeyLabelAndMarker.name,
+		},
+	],
 }
 
 export const options = {
@@ -144,6 +158,7 @@ export const options = {
 		label: 'Address',
 		default: '1.2.3',
 		useVariables: true,
+		regex: Regex.SOMETHING,
 		tooltip: 'Address should be three period seperated integers <net>.<node>.<port>',
 	},
 	portAddr: {
@@ -152,6 +167,7 @@ export const options = {
 		label: 'Port Address',
 		default: '1.2',
 		useVariables: true,
+		regex: Regex.SOMETHING,
 		tooltip: 'Address should be two period seperated integers <node>.<port>',
 	},
 	isInput: {
@@ -166,6 +182,7 @@ export const options = {
 		label: 'Source',
 		default: '1.2.3',
 		useVariables: true,
+		regex: Regex.SOMETHING,
 		tooltip: 'Source address should be three period seperated integers <net>.<node>.<port>',
 	},
 	dstAddr: {
@@ -174,6 +191,7 @@ export const options = {
 		label: 'Destination',
 		default: '1.2.3',
 		useVariables: true,
+		regex: Regex.SOMETHING,
 		tooltip: 'Destination address should be three period seperated integers <net>.<node>.<port>',
 	},
 	priority: {
@@ -223,6 +241,7 @@ export const options = {
 		label: 'GPO',
 		default: '1.2.3.4.5',
 		useVariables: true,
+		regex: Regex.SOMETHING,
 		tooltip: 'GP Output address should be five period seperated integers <net>.<node>.<port>.<slot>.<gpio number>',
 	},
 	gpInputAdder: {
@@ -231,6 +250,7 @@ export const options = {
 		label: 'GPI',
 		default: '1.2.3.4.5',
 		useVariables: true,
+		regex: Regex.SOMETHING,
 		tooltip: 'GP Input address should be five period seperated integers <net>.<node>.<port>.<slot>.<gpio number>',
 	},
 	gpoState: {
@@ -263,13 +283,30 @@ export const options = {
 		choices: choices.ioGain,
 		default: rrcsMethods.gain.setInput.rpc,
 	},
+	conf: {
+		id: 'conf',
+		type: 'checkbox',
+		label: 'Conference',
+		default: false,
+	},
+	xpVolume: {
+		id: 'xpVolume',
+		type: 'textinput',
+		label: 'Crosspoint Volume(dB)',
+		default: '0',
+		useVariables: true,
+		regex: Regex.SOMETHING,
+		tooltip: 'Range: -114.5 to +12.5, 0.5dB steps. Set to <= -115 to mute.',
+	},
+
 	ioGain: {
 		id: 'ioGain',
 		type: 'textinput',
 		label: 'IO Gain (dB)',
 		default: '0',
 		useVariables: true,
-		tooltip: 'Range: -18 to + 18, 0.5dB steps. Set to <= -64 to mute.',
+		regex: Regex.SOMETHING,
+		tooltip: 'Range: -18 to +18, 0.5dB steps. Set to <= -64 to mute.',
 	},
 	ioGainInfo: {
 		id: 'ioGainInfo',
@@ -291,6 +328,7 @@ export const options = {
 		label: 'Expansion Panel',
 		default: '0',
 		useVariables: true,
+		regex: Regex.SOMETHING,
 		tooltip: 'Expansion panel number.',
 	},
 	keyNumber: {
@@ -298,6 +336,7 @@ export const options = {
 		type: 'textinput',
 		label: 'Key Number',
 		default: '1',
+		regex: Regex.SOMETHING,
 		useVariables: true,
 	},
 	isVirtual: {
@@ -331,6 +370,43 @@ export const options = {
 		label: 'Pool Port',
 		default: '0',
 		useVariables: true,
+		regex: Regex.SOMETHING,
 		tooltip: 'Expansion panel number.',
+	},
+	labelAndMarkerMethod: {
+		id: 'labelAndMarkerMethod',
+		type: 'dropdown',
+		label: 'Method',
+		choices: choices.labelAndMarker,
+		default: rrcsMethods.keyManipulations.setKeyLabelAndMarker.rpc,
+	},
+	keyMarker: {
+		id: 'keyMarker',
+		type: 'textinput',
+		label: 'Marker',
+		default: '1',
+		regex: Regex.SOMETHING,
+		useVariables: true,
+		tooltip: '{Marker} is the index of the marker in the configuration. See the net propertiesdialog in Director.',
+		isVisible: (options) => {
+			return options.labelAndMarkerMethod === 'SetKeyLabelAndMarker' || options.labelAndMarkerMethod === 'SetKeyMarker'
+		},
+	},
+	keyLabel: {
+		id: 'keyLabel',
+		type: 'textinput',
+		label: ' Label',
+		default: '',
+		useVariables: true,
+		tooltip: 'Key Label may be a maximum of 8 characters.',
+		isVisible: (options) => {
+			return options.labelAndMarkerMethod === 'SetKeyLabelAndMarker' || options.labelAndMarkerMethod === 'SetKeyLabel'
+		},
+	},
+	keyLock: {
+		id: 'keyLock',
+		type: 'checkbox',
+		label: 'Lock',
+		default: false,
 	},
 }

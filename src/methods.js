@@ -319,8 +319,7 @@ export const rrcsMethods = {
 		pressKey: {
 			rpc: 'PressKey',
 			name: 'Key - Press',
-			description:
-				'Presses a key.',
+			description: 'Presses a key.',
 		},
 		pressKeyEx: {
 			rpc: 'PressKeyEx',
