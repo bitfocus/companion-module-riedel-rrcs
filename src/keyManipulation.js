@@ -55,11 +55,15 @@ export async function labelAndMarker(
 				args = [address.node, address.port, isInput, page, expPanel, key, isVirtual]
 				break
 			case rrcsMethods.keyManipulations.setKeyLabel.rpc:
+				if (cleanLabel.length < 1) { 
+					this.log ('warn', `label length must be between 1 & 8 characters ${cleanLabel}`)
+					return undefined
+				}
 				args = [address.node, address.port, isInput, page, expPanel, key, isVirtual, cleanLabel]
 				break
 			case rrcsMethods.keyManipulations.setKeyLabelAndMarker.rpc:
-				if (isNaN(marker) || marker < 1 || marker > 128) {
-					this.log('warn', `labelAndMarkerMethod invalid marker number ${marker}`)
+				if (isNaN(marker) || marker < 1 || marker > 128 || cleanLabel.length < 1) {
+					this.log('warn', `labelAndMarkerMethod invalid marker number ${marker} or label length ${cleanLabel}`)
 					return undefined
 				}
 				args = [address.node, address.port, isInput, page, expPanel, key, isVirtual, cleanLabel, marker]

@@ -4,6 +4,10 @@ import { rrcsErrorCodes } from './errorcodes.js'
 export async function setAlias(address, isInput, alias) {
 	const keys = Object.keys(address)
 	const cleanAlias = alias.substring(0, 8)
+	if (cleanAlias.length < 1) { 
+		this.log ('warn', `alias length must be between 1 & 8 characters ${cleanAlias}`)
+		return undefined
+	}
 	if (keys.includes('net') && keys.includes('node') && keys.includes('port')) {
 		this.rrcsQueue.add(async () => {
 			const response = await this.rrcsMethodCall(rrcsMethods.portAlias.set.rpc, [

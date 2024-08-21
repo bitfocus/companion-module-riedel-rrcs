@@ -91,7 +91,7 @@ export function getConfigFields() {
 			tooltip: `Port for the local XML-RPC server`,
 		},
 		{
-			type: 'number',
+			type: 'dropdown',
 			id: 'hostLocalSec',
 			label: 'Local Interface for Secondary RPC Server',
 			width: 12,

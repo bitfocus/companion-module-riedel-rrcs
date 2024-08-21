@@ -335,7 +335,7 @@ export default async function (self) {
 				}
 				return undefined
 			}
-			self.lockKey(addr, options.isInput, page, expPanel, key, options.isVirtual, options.lock, pool)
+			self.lockKey(addr, options.isInput, page, expPanel, key, options.isVirtual, options.keyLock, pool)
 		},
 	}
 

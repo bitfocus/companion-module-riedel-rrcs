@@ -265,6 +265,7 @@ export const options = {
 		label: 'Port Alias',
 		default: '',
 		useVariables: true,
+		regex: Regex.SOMETHING,
 		tooltip:
 			'Alias name for the given port which is displayed on the panel keys. A string with a maximum of 8 characters.',
 	},
@@ -274,6 +275,7 @@ export const options = {
 		label: 'Port Label',
 		default: '',
 		useVariables: true,
+		regex: Regex.SOMETHING,
 		tooltip: 'Port Label may be a maximum of 8 characters.',
 	},
 	ioMethod: {
@@ -399,6 +401,7 @@ export const options = {
 		default: '',
 		useVariables: true,
 		tooltip: 'Key Label may be a maximum of 8 characters.',
+		regex: Regex.SOMETHING,
 		isVisible: (options) => {
 			return options.labelAndMarkerMethod === 'SetKeyLabelAndMarker' || options.labelAndMarkerMethod === 'SetKeyLabel'
 		},
