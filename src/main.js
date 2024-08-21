@@ -4,6 +4,7 @@ import UpdateActions from './actions.js'
 import UpdateFeedbacks from './feedbacks.js'
 import UpdateVariableDefinitions from './variables.js'
 import * as alias from './alias.js'
+import * as clone from './clone.js'
 import * as config from './config.js'
 import * as crosspoints from './crosspoints.js'
 import * as debounce from './debounce.js'
@@ -27,6 +28,7 @@ class Riedel_RRCS extends InstanceBase {
 		super(internal)
 		Object.assign(this, {
 			...alias,
+			...clone,
 			...config,
 			...crosspoints,
 			...debounce,

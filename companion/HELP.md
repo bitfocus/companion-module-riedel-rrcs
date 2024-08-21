@@ -13,6 +13,7 @@ Tested with RRCS Version 8.6.1
 - Key - Label & Marker
 - Key - Lock
 - Key - Press
+- Port - Clone
 - Set Crosspoint
 - Set Crosspoint Volume
 - Set GP Output
@@ -46,4 +47,4 @@ Does not work with panels connected to an Artist-1024.
 
 - Port & GPIO Numbers
 
-RRCS uses 0-based numbering for Port and GPIO numbers. This module converts them to 1-based numbering for consistency with Director.
+RRCS uses 0-based numbering for Port and GPIO numbers. This module converts them to 1-based numbering for consistency with Director. However interval logs are 0-based.

@@ -381,5 +381,21 @@ export default async function (self) {
 			)
 		},
 	}
+	actionDefs['portClone'] = {
+		name: 'Port - Clone',
+		options: [options.cloneMethod, options.monitorAddr, options.isInput, options.isInputClonePort, options.cloneAddr, options.cloneInfo],
+		callback: async ({ options }, context) => {
+			const monitor = self.calcPortAddress(await context.parseVariablesInString(options.monitorAddr))
+			const clone = self.calcPortAddress(await context.parseVariablesInString(options.cloneAddr))
+			//const pool = parseInt(await context.parseVariablesInString(options.poolPort))
+			if (monitor === undefined || clone === undefined) {
+				if (self.config.verbose) {
+					self.log('debug', `invalid variables supplied to portClone ${options.monitorAddr} ${options.cloneAddr}`)
+				}
+				return undefined
+			}
+			self.portClone(options.cloneMethod, monitor, options.isInput, options.isInputClonePort, clone)
+		},
+	}
 	self.setActionDefinitions(actionDefs)
 }

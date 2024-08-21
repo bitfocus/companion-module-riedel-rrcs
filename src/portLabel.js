@@ -4,8 +4,8 @@ import { rrcsErrorCodes } from './errorcodes.js'
 export async function setPortLabel(address, isInput, label) {
 	const keys = Object.keys(address)
 	const cleanLabel = label.substring(0, 8)
-	if (cleanLabel.length < 1) { 
-		this.log ('warn', `label length must be between 1 & 8 characters ${cleanLabel}`)
+	if (cleanLabel.length < 1) {
+		this.log('warn', `label length must be between 1 & 8 characters ${cleanLabel}`)
 		return undefined
 	}
 	if (keys.includes('node') && keys.includes('port')) {

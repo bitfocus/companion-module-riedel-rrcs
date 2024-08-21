@@ -3,6 +3,7 @@ import { rrcsErrorCodes } from './errorcodes.js'
 
 export async function pressKey(address, isInput, page, expPanel, keyNumber, isVirtual, press, trigger, pool) {
 	const keys = Object.keys(address)
+	const poolPort = isNaN(parseInt(pool)) ? -1 : parseInt(pool) < -1 ? -1 : parseInt(pool) > 32 ? 32 : parseInt(pool)
 	if (keys.includes('node') && keys.includes('port')) {
 		this.rrcsQueue.add(async () => {
 			const response = await this.rrcsMethodCall(rrcsMethods.keyManipulations.pressKeyEx.rpc, [
@@ -15,7 +16,7 @@ export async function pressKey(address, isInput, page, expPanel, keyNumber, isVi
 				!!isVirtual,
 				!!press,
 				trigger,
-				pool,
+				poolPort,
 			])
 			if (response === undefined) {
 				return
@@ -55,8 +56,8 @@ export async function labelAndMarker(
 				args = [address.node, address.port, isInput, page, expPanel, key, isVirtual]
 				break
 			case rrcsMethods.keyManipulations.setKeyLabel.rpc:
-				if (cleanLabel.length < 1) { 
-					this.log ('warn', `label length must be between 1 & 8 characters ${cleanLabel}`)
+				if (cleanLabel.length < 1) {
+					this.log('warn', `label length must be between 1 & 8 characters ${cleanLabel}`)
 					return undefined
 				}
 				args = [address.node, address.port, isInput, page, expPanel, key, isVirtual, cleanLabel]
@@ -99,6 +100,7 @@ export async function labelAndMarker(
 
 export async function lockKey(address, isInput, page, expPanel, keyNumber, isVirtual, lock, pool) {
 	const keys = Object.keys(address)
+	const poolPort = isNaN(parseInt(pool)) ? -1 : parseInt(pool) < -1 ? -1 : parseInt(pool) > 32 ? 32 : parseInt(pool)
 	if (keys.includes('node') && keys.includes('port')) {
 		this.rrcsQueue.add(async () => {
 			const response = await this.rrcsMethodCall(rrcsMethods.keyManipulations.lockKey.rpc, [
@@ -110,7 +112,7 @@ export async function lockKey(address, isInput, page, expPanel, keyNumber, isVir
 				keyNumber,
 				!!isVirtual,
 				!!lock,
-				pool,
+				poolPort,
 			])
 			if (response === undefined) {
 				return

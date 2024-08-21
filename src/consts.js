@@ -142,6 +142,10 @@ export const choices = {
 			label: rrcsMethods.keyManipulations.clearKeyLabelAndMarker.name,
 		},
 	],
+	clone: [
+		{ id: rrcsMethods.portClone.start.rpc, label: rrcsMethods.portClone.start.name },
+		{ id: rrcsMethods.portClone.stop.rpc, label: rrcsMethods.portClone.stop.name },
+	],
 }
 
 export const options = {
@@ -173,7 +177,7 @@ export const options = {
 	isInput: {
 		id: 'isInput',
 		type: 'checkbox',
-		label: 'Input',
+		label: 'Input Port',
 		default: false,
 	},
 	srcAddr: {
@@ -370,10 +374,10 @@ export const options = {
 		id: 'poolPort',
 		type: 'textinput',
 		label: 'Pool Port',
-		default: '0',
+		default: '-1',
 		useVariables: true,
 		regex: Regex.SOMETHING,
-		tooltip: 'Expansion panel number.',
+		tooltip: 'Set to -1 when not used. Valid range 0 to 32.'
 	},
 	labelAndMarkerMethod: {
 		id: 'labelAndMarkerMethod',
@@ -410,6 +414,46 @@ export const options = {
 		id: 'keyLock',
 		type: 'checkbox',
 		label: 'Lock',
+		default: false,
+	},
+	cloneMethod: {
+		id: 'cloneMethod',
+		type: 'dropdown',
+		label: 'Method',
+		choices: choices.clone,
+		default: rrcsMethods.portClone.start.rpc,
+	},
+	monitorAddr: {
+		id: 'monitorAddr',
+		type: 'textinput',
+		label: 'Monitor Address',
+		default: '1.2',
+		useVariables: true,
+		regex: Regex.SOMETHING,
+		tooltip: 'Address should be two period seperated integers <node>.<port>',
+	},
+	cloneAddr: {
+		id: 'cloneAddr',
+		type: 'textinput',
+		label: 'Clone Address',
+		default: '1.2',
+		useVariables: true,
+		regex: Regex.SOMETHING,
+		tooltip: 'Address should be two period seperated integers <node>.<port>',
+	},
+	cloneInfo: {
+		id: 'cloneInfo',
+		type: 'static-text',
+		label: '',
+		value: 'Use Port 0.0 as a wildcard in order to stop a batch of port clones.',
+		isVisible: (options) => {
+			return options.cloneMethod === 'StopPortCloning'
+		},
+	},
+	isInputClonePort: {
+		id: 'isInputClonePort',
+		type: 'checkbox',
+		label: 'Input is Clone Port',
 		default: false,
 	},
 }
