@@ -41,7 +41,7 @@ Addresses are normally specified as two, three or five period seperated numbers.
 
 - Set Crosspoint Volume
 
-Does not work when destination port is connected to an Artist 1024.
+Does not work when destination port is connected to an Artist-1024.
 
 - GP Input Feedback
 
