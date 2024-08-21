@@ -6,6 +6,8 @@ Control a Riedel Artist Intercom Matrix with Riedel Router Control System.
 
 Tested with RRCS Version 8.6.1
 
+Addresses are normally specified as two, three or five period seperated numbers. Such as \<net\>.\<node\>.\<port\>. This schema accepts a single, or multiple variables, or a combination of static text and variables, depending on the use case.
+
 ### Actions
 
 - Get Active Crosspoints

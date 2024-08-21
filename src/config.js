@@ -10,6 +10,9 @@ export function getConfigFields() {
 			label: 'Redundant RRCS Cluster',
 			default: false,
 			width: 6,
+			isVisible: () => {
+				return false
+			},
 		},
 		{
 			type: 'textinput',

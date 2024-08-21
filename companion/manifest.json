@@ -1,7 +1,7 @@
 {
 	"id": "companion-module-riedel-rrcs",
 	"name": "riedel-rrcs",
-	"shortname": "Riedel RRCS",
+	"shortname": "Riedel Router Control Software",
 	"description": "Companion Module for Riedel RRCS",
 	"version": "0.0.0",
 	"license": "MIT",
@@ -22,5 +22,5 @@
 	"legacyIds": [],
 	"manufacturer": "Riedel",
 	"products": ["RRCS"],
-	"keywords": ["Intercom"]
+	"keywords": ["Intercom", "Artist"]
 }
