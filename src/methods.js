@@ -271,6 +271,16 @@ export const rrcsMethods = {
 			name: 'Get Object Property Names',
 			description: `Gets a list of supported object properties.`,
 		},
+		getCommandList: {
+			rpc: 'GetCommandList',
+			name: 'Get Command List',
+			description: `Queries the list of configured command and all their properties of a given position. Position can be a key or virtual function or virtual key.`,
+		},
+		getPortsCommandLists: {
+			rpc: 'GetPortsCommandLists',
+			name: 'Get Ports Command Lists',
+			description: `Queries the list of configured command and all their properties of all positions of a Port. Position can be a key or virtual function or virtual key.`,
+		},
 	},
 	notifications: {
 		registerForAllEvents: {
@@ -361,6 +371,146 @@ export const rrcsMethods = {
 			rpc: 'GetAllActivePortClones',
 			name: 'Get All Active Port Clones',
 			description: 'Returns an array of all active port clones.',
+		},
+	},
+	ifbVolume: {
+		set: {
+			rpc: 'SetIFBVolumeMixMinus',
+			name: 'Set IFB Volume Mix Minus',
+			description: 'Sets the mix minus volume for an IFB. It affects the single volume.',
+		},
+		get: {
+			rpc: 'GetIFBVolumeMixMinus',
+			name: 'Get IFB Volume Mix Minus',
+			description: 'Returns the the mix minus volume for an IFB. If the volume was never set by SetIFBVolumeMixMinus, the return value is unity gain.',
+		},
+		remove: {
+			rpc: 'RemoveIFBVolumeMixMinus',
+			name: 'Remove IFB Volume Mix Minus',
+			description: 'Removes the mix minus volume for an IFB. The volume returns to default (untiy gain).',
+		},
+	},
+	call: {
+		dial: {
+			rpc: 'DialNumber',
+			name: 'Dial Number',
+			description: 'Instructs the system to dial the specified number.',
+		},
+		hangUp: {
+			rpc: 'HangUpCall',
+			name: 'Hang Up Call',
+			description: 'Instructs the system to draw the call.',
+		},
+		lineStatus: {
+			rpc: 'LineStatus',
+			name: 'Line Status',
+			description: 'Queries information about the status of the line.',
+		},
+	},
+	connectionManagement: {
+		connect: {
+			rpc: 'ConnectToArtist',
+			name: 'Connect To Artist',
+			description: 'Disconnects from current connected Artist System, if necessary, and connects to the specified IPAddress.',
+		},
+		disconnect: {
+			rpc: 'DisconnectFromArtist',
+			name: 'Disconnect From Artist',
+			description: 'Disconnects from current connected Artist System.',
+		},
+	},
+	reset: {
+		allNodes: {
+			rpc: 'ResetAllNodes',
+			name: 'Reset All Nodes',
+			description: 'Resets all nodes that are online within the ring.',
+		},
+
+	},
+	deletePort: {
+		deletePortCommands: {
+			rpc: 'DeletePortCommands',
+			name: 'Delete Port Commands',
+			description: 'Deletes all commands of the specified command position.',
+		},
+
+	},
+	systemTime: {
+		setSystemTimeOnAllNodes: {
+			rpc: 'SetSystemTimeOnAllNodes',
+			name: 'Delete Port Commands',
+			description: 'Returns the amount of currently online nodes and the amount of updated nodes.',
+		},
+
+	},
+	poolPort: {
+		getPoolPortInfo: {
+			rpc: 'GetPoolPortInfo',
+			name: 'Get Pool Port Info',
+			description: 'Returns PoolPort information regarding a specific port.',
+		},
+	},
+	license: {
+		getInfo: {
+			rpc: 'GetLicenseInfo',
+			name: 'Get License Info',
+			description: 'Returns the license information.',
+		},
+
+	},
+	panelSpy: {
+		changeRegistry: {
+			rpc: 'ChangePanelSpyRegistry',
+			name: 'Change Panel Spy Registry',
+			description: 'Starts/Stops panel spy notifications. Hint: The method fails, if RegisterForAllEvents has not been called.',
+		},
+
+	},
+	trunking: {
+		getPorts: {
+			rpc: 'GetTrunkPorts',
+			name: 'Get Trunk Ports',
+			description: 'Queries all trunking ports.',
+		},
+		getSetup: {
+			rpc: 'GetTrunklineSetup',
+			name: 'Get Trunkline Setup',
+			description: 'Queries setup information about Trunklines exist between the Riedel rings.',
+		},
+		getActivities: {
+			rpc: 'GetTrunklineActivities',
+			name: 'Get Trunkline Activities',
+			description: 'Queries activity information of trunklines.',
+		},
+		getIfbs: {
+			rpc: 'GetTrunkIfbs',
+			name: 'Get Trunk IFBs',
+			description: 'Queries all trunking ifbs.',
+		},
+		updateLabels: {
+			rpc: 'UpdateTrunkingLabels',
+			name: 'Update Trunking Labels',
+			description: 'Updates the labels of trunked ports.',
+		},
+		getNetAddr: {
+			rpc: 'GetTrunkingNetAddr',
+			name: 'Get Trunking Net Address',
+			description: 'Gets the Trunking Net address of the ring.',
+		},
+		setNetAddr: {
+			rpc: 'SetTrunkingNetAddr',
+			name: 'Set Trunking Net Address',
+			description: 'Sets the Trunking Net address of the ring.',
+		},
+		getLTC: {
+			rpc: 'GetLTC',
+			name: 'Get Local Trunk Controller',
+			description: 'Gets the current configured local trunk controller.',
+		},
+		setLTC: {
+			rpc: 'SetLTC',
+			name: 'Set Local Trunk Controller',
+			description: 'Sets the local trunk controller.',
 		},
 	},
 }
