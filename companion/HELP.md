@@ -20,6 +20,7 @@ Ports can be selected from a list, or entered directly via the address. The drop
 - Logic - Get All Sources
 - Logic - Set Source
 - Port - Clone
+- Port - Get All
 - Port - Set IO Gain
 - Port - Set Alias
 - Port - Set Label
