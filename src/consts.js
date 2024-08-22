@@ -165,9 +165,7 @@ export const options = {
 	addrList: {
 		id: 'addrList',
 		type: 'dropdown',
-		label: 'Address',
-		//choices: this.rrcs.choices.port.all,
-		//default: this.rrcs.choices.port.all[0].id,
+		label: 'Port',
 		isVisible: (options) => {
 			return options.fromList
 		},
@@ -180,6 +178,9 @@ export const options = {
 		useVariables: true,
 		regex: Regex.SOMETHING,
 		tooltip: 'Address should be three period seperated integers <net>.<node>.<port>',
+		isVisible: (options) => {
+			return !options.fromList
+		},
 	},
 	portAddr: {
 		id: 'portAddr',
@@ -189,12 +190,18 @@ export const options = {
 		useVariables: true,
 		regex: Regex.SOMETHING,
 		tooltip: 'Address should be two period seperated integers <node>.<port>',
+		isVisible: (options) => {
+			return !options.fromList
+		},
 	},
 	isInput: {
 		id: 'isInput',
 		type: 'checkbox',
 		label: 'Input Port',
 		default: false,
+		isVisible: (options) => {
+			return !options.fromList
+		},
 	},
 	srcAddr: {
 		id: 'srcAddr',
@@ -491,6 +498,9 @@ export const options = {
 		useVariables: true,
 		regex: Regex.SOMETHING,
 		tooltip: 'Address should be two period seperated integers <node>.<port>',
+		isVisible: (options) => {
+			return !options.fromList
+		},
 	},
 	cloneAddr: {
 		id: 'cloneAddr',
@@ -500,6 +510,25 @@ export const options = {
 		useVariables: true,
 		regex: Regex.SOMETHING,
 		tooltip: 'Address should be two period seperated integers <node>.<port>',
+		isVisible: (options) => {
+			return !options.fromList
+		},
+	},
+	monitorAddrList: {
+		id: 'monitorAddrList',
+		type: 'dropdown',
+		label: 'Monitor Port',
+		isVisible: (options) => {
+			return options.fromList
+		},
+	},
+	cloneAddrList: {
+		id: 'cloneAddrList',
+		type: 'dropdown',
+		label: 'Clone Port',
+		isVisible: (options) => {
+			return options.fromList
+		},
 	},
 	cloneInfo: {
 		id: 'cloneInfo',

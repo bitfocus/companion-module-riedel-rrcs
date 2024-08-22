@@ -8,29 +8,58 @@ export default async function (self) {
 		name: 'Crosspoint - Set',
 		options: [
 			options.xpMethod,
+			options.fromList,
 			options.srcAddr,
 			options.dstAddr,
+			{
+				...options.srcAddrList,
+				choices: self.rrcs.choices.ports.inputs,
+				default: self.rrcs.choices.ports.inputs[0]?.id ?? '',
+			},
+			{
+				...options.dstAddrList,
+				choices: self.rrcs.choices.ports.outputs,
+				default: self.rrcs.choices.ports.outputs[0]?.id ?? '',
+			},
 			options.priority,
 			options.destructXpInfo,
 			options.killXpInfo,
 		],
 		callback: async ({ options }, context) => {
-			const src = self.calcAddress(await context.parseVariablesInString(options.srcAddr))
-			const dst = self.calcAddress(await context.parseVariablesInString(options.dstAddr))
+			const src = options.fromList
+				? self.getPortAddressFromObjectID(options.srcAddrList)
+				: self.calcAddress(await context.parseVariablesInString(options.srcAddr))
+			const dst = options.fromList
+				? self.getPortAddressFromObjectID(options.dstAddrList)
+				: self.calcAddress(await context.parseVariablesInString(options.dstAddr))
 			if (src === undefined || dst === undefined) {
 				if (self.config.verbose) {
-					self.log('debug', `invalid variables supplied to setCrosspoint ${src} ${dst}`)
+					self.log(
+						'debug',
+						`invalid variables supplied to setCrosspoint ${options.fromList ? options.srcAddrList : options.srcAddr} ${
+							options.fromList ? options.dstAddrList : options.dstAddr
+						}`
+					)
 				}
 				return undefined
 			}
 			self.setXp(options.xpMethod, src, dst, options.priority)
 		},
 		subscribe: async ({ options }, context) => {
-			const src = self.calcAddress(await context.parseVariablesInString(options.srcAddr))
-			const dst = self.calcAddress(await context.parseVariablesInString(options.dstAddr))
+			const src = options.fromList
+				? self.getPortAddressFromObjectID(options.srcAddrList)
+				: self.calcAddress(await context.parseVariablesInString(options.srcAddr))
+			const dst = options.fromList
+				? self.getPortAddressFromObjectID(options.dstAddrList)
+				: self.calcAddress(await context.parseVariablesInString(options.dstAddr))
 			if (src === undefined || dst === undefined) {
 				if (self.config.verbose) {
-					self.log('debug', `invalid variables supplied to setCrosspoint ${src} ${dst}`)
+					self.log(
+						'debug',
+						`invalid variables supplied to setCrosspoint ${options.fromList ? options.srcAddrList : options.srcAddr} ${
+							options.fromList ? options.dstAddrList : options.dstAddr
+						}`
+					)
 				}
 				return undefined
 			}
@@ -39,16 +68,38 @@ export default async function (self) {
 	}
 	actionDefs['setXPVolume'] = {
 		name: 'Crosspoint - Set Volume',
-		options: [options.srcAddr, options.dstAddr, options.conf, options.xpVolume],
+		options: [
+			options.fromList,
+			options.srcAddr,
+			options.dstAddr,
+			{
+				...options.srcAddrList,
+				choices: self.rrcs.choices.ports.inputs,
+				default: self.rrcs.choices.ports.inputs[0]?.id ?? '',
+			},
+			{
+				...options.dstAddrList,
+				choices: self.rrcs.choices.ports.outputs,
+				default: self.rrcs.choices.ports.outputs[0]?.id ?? '',
+			},
+			options.conf,
+			options.xpVolume,
+		],
 		callback: async ({ options }, context) => {
-			const src = self.calcAddress(await context.parseVariablesInString(options.srcAddr))
-			const dst = self.calcAddress(await context.parseVariablesInString(options.dstAddr))
 			const volume = Number(await context.parseVariablesInString(options.xpVolume))
+			const src = options.fromList
+				? self.getPortAddressFromObjectID(options.srcAddrList)
+				: self.calcAddress(await context.parseVariablesInString(options.srcAddr))
+			const dst = options.fromList
+				? self.getPortAddressFromObjectID(options.dstAddrList)
+				: self.calcAddress(await context.parseVariablesInString(options.dstAddr))
 			if (src === undefined || dst === undefined || isNaN(volume)) {
 				if (self.config.verbose) {
 					self.log(
 						'debug',
-						`invalid arguments supplied to setCrosspoint volume  ${options.srcAddr} ${options.dstAddr} ${options.xpVolume}`
+						`invalid variables supplied to setCrosspoint Volume ${
+							options.fromList ? options.srcAddrList : options.srcAddr
+						} ${options.fromList ? options.dstAddrList : options.dstAddr} ${options.xpVolume}`
 					)
 				}
 				return undefined
@@ -56,11 +107,20 @@ export default async function (self) {
 			self.setXPVolume(src, dst, !options.conf, options.conf, volume)
 		},
 		learn: async ({ options }, context) => {
-			const src = self.calcAddress(await context.parseVariablesInString(options.srcAddr))
-			const dst = self.calcAddress(await context.parseVariablesInString(options.dstAddr))
-			if (src === undefined || dst === undefined) {
+			const src = options.fromList
+				? self.getPortAddressFromObjectID(options.srcAddrList)
+				: self.calcAddress(await context.parseVariablesInString(options.srcAddr))
+			const dst = options.fromList
+				? self.getPortAddressFromObjectID(options.dstAddrList)
+				: self.calcAddress(await context.parseVariablesInString(options.dstAddr))
+			if (src === undefined || dst === undefined || isNaN(volume)) {
 				if (self.config.verbose) {
-					self.log('debug', `invalid address supplied to setCrosspoint volume  ${options.srcAddr} ${options.dstAddr}`)
+					self.log(
+						'debug',
+						`invalid variables supplied to setCrosspoint Volume ${
+							options.fromList ? options.srcAddrList : options.srcAddr
+						} ${options.fromList ? options.dstAddrList : options.dstAddr} ${options.xpVolume}`
+					)
 				}
 				return undefined
 			}
@@ -136,44 +196,105 @@ export default async function (self) {
 	}
 	actionDefs['setGPOutput'] = {
 		name: 'GP - Set Output',
-		options: [options.gpOutputAdder, options.gpoState],
+		options: [
+			options.fromList,
+			options.gpOutputAdder,
+			{
+				...options.addrList,
+				choices: self.rrcs.choices.ports.all,
+				default: self.rrcs.choices.ports.all[0]?.id ?? '',
+			},
+			options.gpSlotNumber,
+			options.gpoState,
+		],
 		callback: async ({ options }, context) => {
-			const gpo = self.calcGpioAddress(await context.parseVariablesInString(options.gpo))
-			if (gpo === undefined) {
+			const gpo = options.fromList
+				? self.getPortAddressFromObjectID(options.addrList)
+				: self.calcGpioAddress(await context.parseVariablesInString(options.gpo))
+			const slotNumber = options.fromList
+				? self.calcGpioSlotNumber(await context.parseVariablesInString(options.gpSlotNumber))
+				: null
+			if (gpo === undefined || (options.fromList && slotNumber === undefined)) {
 				if (self.config.verbose) {
-					self.log('debug', `invalid variables supplied to setGPOutput ${gpo}`)
+					self.log(
+						'debug',
+						`invalid variables supplied to GP Output ${options.fromList ? options.addrList : options.gpo}${
+							options.fromList ? ' ' + options.slotNumber : ''
+						}`
+					)
 				}
 				return false
 			}
-			self.setGPOutput(gpo, options.gpoState)
+			self.setGPOutput(
+				{
+					net: gpo.net,
+					node: gpo.node,
+					port: gpo.port,
+					slot: options.fromList ? slotNumber.slot : gpo.slot,
+					number: options.fromList ? slotNumber.number : gpo.number,
+				},
+				options.gpoState
+			)
 		},
 		subscribe: async ({ options }, context) => {
-			const gpo = self.calcGpioAddress(await context.parseVariablesInString(options.gpo))
-			if (gpo === undefined) {
+			const gpo = options.fromList
+				? self.getPortAddressFromObjectID(options.addrList)
+				: self.calcGpioAddress(await context.parseVariablesInString(options.gpo))
+			const slotNumber = options.fromList
+				? self.calcGpioSlotNumber(await context.parseVariablesInString(options.gpSlotNumber))
+				: null
+			if (gpo === undefined || (options.fromList && slotNumber === undefined)) {
 				if (self.config.verbose) {
-					self.log('debug', `invalid variables supplied to setGPOutput subscribe ${options.gpo}`)
+					self.log(
+						'debug',
+						`invalid variables supplied to GP Output Subscribe ${options.fromList ? options.addrList : options.gpo}${
+							options.fromList ? ' ' + options.slotNumber : ''
+						}`
+					)
 				}
-				return undefined
+				return false
 			}
-			self.getGPOutput(gpo)
+			self.getGPOutput({
+				net: gpo.net,
+				node: gpo.node,
+				port: gpo.port,
+				slot: options.fromList ? slotNumber.slot : gpo.slot,
+				number: options.fromList ? slotNumber.number : gpo.number,
+			})
 		},
 	}
 	actionDefs['setAlias'] = {
 		name: 'Port - Set Alias',
-		options: [options.addr, options.isInput, options.alias],
+		options: [
+			options.fromList,
+			options.addr,
+			{
+				...options.addrList,
+				choices: self.rrcs.choices.ports.all,
+				default: self.rrcs.choices.ports.all[0]?.id ?? '',
+			},
+			options.isInput,
+			options.alias,
+		],
 		callback: async ({ options }, context) => {
-			const addr = self.calcAddress(await context.parseVariablesInString(options.addr))
+			const addr = options.fromList
+				? self.getPortAddressFromObjectID(options.addrList)
+				: self.calcGpioAddress(await context.parseVariablesInString(options.addr))
 			const alias = await context.parseVariablesInString(options.alias)
+			const isInput = options.fromList ? addr.isInput : options.isInput
 			if (addr === undefined) {
 				if (self.config.verbose) {
 					self.log('debug', `invalid address supplied to setAlias ${options.addr}`)
 				}
 				return false
 			}
-			self.setAlias(addr, options.isInput, alias)
+			self.setAlias(addr, isInput, alias)
 		},
 		learn: async ({ options }, context) => {
-			const addr = self.calcAddress(await context.parseVariablesInString(options.addr))
+			const addr = options.fromList
+				? self.getPortAddressFromObjectID(options.addrList)
+				: self.calcGpioAddress(await context.parseVariablesInString(options.addr))
+			const isInput = options.fromList ? addr.isInput : options.isInput
 			if (addr === undefined) {
 				if (self.config.verbose) {
 					self.log('debug', `invalid address supplied to setAlias ${options.addr}`)
@@ -184,7 +305,7 @@ export default async function (self) {
 				addr.net,
 				addr.node,
 				addr.port,
-				options.isInput,
+				isInput,
 			])
 			if (response === undefined) {
 				return undefined
@@ -204,27 +325,49 @@ export default async function (self) {
 	}
 	actionDefs['setPortLabel'] = {
 		name: 'Port - Set Label',
-		options: [options.portAddr, options.isInput, options.portLabel],
+		options: [
+			options.fromList,
+			options.portAddr,
+			{
+				...options.addrList,
+				choices: self.rrcs.choices.ports.all,
+				default: self.rrcs.choices.ports.all[0]?.id ?? '',
+			},
+			options.isInput,
+			options.portLabel,
+		],
 		callback: async ({ options }, context) => {
-			const addr = self.calcPortAddress(await context.parseVariablesInString(options.portAddr))
+			const addr = options.fromList
+				? self.getPortAddressFromObjectID(options.addrList)
+				: self.calcPortAddress(await context.parseVariablesInString(options.portAddr))
+			const isInput = options.fromList ? addr.isInput : options.isInput
 			const label = await context.parseVariablesInString(options.portLabel)
 			if (addr === undefined) {
 				if (self.config.verbose) {
-					self.log('debug', `invalid address supplied to setPortLabel ${options.portAddr}`)
+					self.log(
+						'debug',
+						`invalid address supplied to setPortLabel ${options.fromList ? options.addrList : options.portAddr}`
+					)
 				}
 				return false
 			}
-			self.setPortLabel(addr, options.isInput, label)
+			self.setPortLabel(addr, isInput, label)
 		},
 		learn: async ({ options }, context) => {
-			const addr = self.calcPortAddress(await context.parseVariablesInString(options.portAddr))
+			const addr = options.fromList
+				? self.getPortAddressFromObjectID(options.addrList)
+				: self.calcPortAddress(await context.parseVariablesInString(options.portAddr))
+			const isInput = options.fromList ? addr.isInput : options.isInput
 			if (addr === undefined) {
 				if (self.config.verbose) {
-					self.log('debug', `invalid address supplied to setPortLabel ${options.portAddr}`)
+					self.log(
+						'debug',
+						`invalid address supplied to setPortLabel ${options.fromList ? options.addrList : options.portAddr}`
+					)
 				}
 				return undefined
 			}
-			const response = await self.rrcsMethodCall(rrcsMethods.portLabel.get.rpc, [addr.node, addr.port, options.isInput])
+			const response = await self.rrcsMethodCall(rrcsMethods.portLabel.get.rpc, [addr.node, addr.port, isInput])
 			if (response === undefined) {
 				return undefined
 			}
@@ -244,24 +387,47 @@ export default async function (self) {
 
 	actionDefs['setIOGain'] = {
 		name: 'Port - Set IO Gain',
-		options: [options.ioMethod, options.addr, options.ioGain, options.ioGainInfo],
+		options: [
+			options.ioMethod,
+			options.fromList,
+			options.addr,
+			{
+				...options.addrList,
+				choices: self.rrcs.choices.ports.all,
+				default: self.rrcs.choices.ports.all[0]?.id ?? '',
+			},
+			options.ioGain,
+			options.ioGainInfo,
+		],
 		callback: async ({ options }, context) => {
-			const addr = self.calcAddress(await context.parseVariablesInString(options.addr))
+			const addr = options.fromList
+				? self.getPortAddressFromObjectID(options.addrList)
+				: self.calcGpioAddress(await context.parseVariablesInString(options.addr))
 			const gain = Number(await context.parseVariablesInString(options.ioGain))
 			if (addr === undefined || isNaN(gain)) {
 				if (self.config.verbose) {
-					self.log('debug', `invalid address supplied to setIOGain ${options.addr} ${options.gain}`)
+					self.log(
+						'debug',
+						`invalid address supplied to setIOGain ${options.fromList ? options.addrList : options.addr} ${
+							options.gain
+						}`
+					)
 				}
 				return false
 			}
 			self.setIOGain(addr, options.ioMethod, gain)
 		},
 		learn: async ({ options }, context) => {
-			const addr = self.calcAddress(await context.parseVariablesInString(options.addr))
+			const addr = options.fromList
+				? self.getPortAddressFromObjectID(options.addrList)
+				: self.calcGpioAddress(await context.parseVariablesInString(options.addr))
 			const method = options.ioMethod.replace('Set', 'Get')
 			if (addr === undefined) {
 				if (self.config.verbose) {
-					self.log('debug', `invalid address supplied to setIOGain ${options.portAddr}`)
+					self.log(
+						'debug',
+						`invalid address supplied to setIOGain ${options.fromList ? options.addrList : options.addr}`
+					)
 				}
 				return undefined
 			}
@@ -286,6 +452,12 @@ export default async function (self) {
 	actionDefs['keyPress'] = {
 		name: 'Key - Press',
 		options: [
+			options.fromList,
+			{
+				...options.addrList,
+				choices: self.rrcs.choices.ports.panels,
+				default: self.rrcs.choices.ports.panels[0]?.id ?? '',
+			},
 			options.portAddr,
 			options.isInput,
 			options.page,
@@ -298,7 +470,10 @@ export default async function (self) {
 			options.triggerInfo,
 		],
 		callback: async ({ options }, context) => {
-			const addr = self.calcPortAddress(await context.parseVariablesInString(options.portAddr))
+			const addr = options.fromList
+				? self.getPortAddressFromObjectID(options.addrList)
+				: self.calcGpioAddress(await context.parseVariablesInString(options.portAddr))
+			const isInput = options.fromList ? addr.isInput : options.isInput
 			const page = parseInt(await context.parseVariablesInString(options.page))
 			const expPanel = parseInt(await context.parseVariablesInString(options.expPanel))
 			const key = parseInt(await context.parseVariablesInString(options.keyNumber))
@@ -307,17 +482,25 @@ export default async function (self) {
 				if (self.config.verbose) {
 					self.log(
 						'debug',
-						`invalid args supplied to pressKey ${options.portAddr} ${options.page} ${options.expPanel} ${options.keyNumber} ${options.poolPort}`
+						`invalid args supplied to pressKey ${options.fromList ? options.addrList : options.portAddr} ${
+							options.page
+						} ${options.expPanel} ${options.keyNumber} ${options.poolPort}`
 					)
 				}
 				return undefined
 			}
-			self.pressKey(addr, options.isInput, page, expPanel, key, options.isVirtual, options.press, options.trigger, pool)
+			self.pressKey(addr, isInput, page, expPanel, key, options.isVirtual, options.press, options.trigger, pool)
 		},
 	}
 	actionDefs['keyLock'] = {
 		name: 'Key - Lock',
 		options: [
+			options.fromList,
+			{
+				...options.addrList,
+				choices: self.rrcs.choices.ports.panels,
+				default: self.rrcs.choices.ports.panels[0]?.id ?? '',
+			},
 			options.portAddr,
 			options.isInput,
 			options.page,
@@ -328,7 +511,10 @@ export default async function (self) {
 			options.poolPort,
 		],
 		callback: async ({ options }, context) => {
-			const addr = self.calcPortAddress(await context.parseVariablesInString(options.portAddr))
+			const addr = options.fromList
+				? self.getPortAddressFromObjectID(options.addrList)
+				: self.calcGpioAddress(await context.parseVariablesInString(options.portAddr))
+			const isInput = options.fromList ? addr.isInput : options.isInput
 			const page = parseInt(await context.parseVariablesInString(options.page))
 			const expPanel = parseInt(await context.parseVariablesInString(options.expPanel))
 			const key = parseInt(await context.parseVariablesInString(options.keyNumber))
@@ -337,12 +523,14 @@ export default async function (self) {
 				if (self.config.verbose) {
 					self.log(
 						'debug',
-						`invalid args supplied to keyLock ${options.portAddr} ${options.page} ${options.expPanel} ${options.keyNumber} ${options.poolPort}`
+						`invalid args supplied to keyLock ${options.fromList ? options.addrList : options.portAddr} ${
+							options.page
+						} ${options.expPanel} ${options.keyNumber} ${options.poolPort}`
 					)
 				}
 				return undefined
 			}
-			self.lockKey(addr, options.isInput, page, expPanel, key, options.isVirtual, options.keyLock, pool)
+			self.lockKey(addr, isInput, page, expPanel, key, options.isVirtual, options.keyLock, pool)
 		},
 	}
 
@@ -350,6 +538,12 @@ export default async function (self) {
 		name: 'Key - Label & Marker',
 		options: [
 			options.labelAndMarkerMethod,
+			options.fromList,
+			{
+				...options.addrList,
+				choices: self.rrcs.choices.ports.panels,
+				default: self.rrcs.choices.ports.panels[0]?.id ?? '',
+			},
 			options.portAddr,
 			options.isInput,
 			options.page,
@@ -360,7 +554,10 @@ export default async function (self) {
 			options.keyMarker,
 		],
 		callback: async ({ options }, context) => {
-			const addr = self.calcPortAddress(await context.parseVariablesInString(options.portAddr))
+			const addr = options.fromList
+				? self.getPortAddressFromObjectID(options.addrList)
+				: self.calcGpioAddress(await context.parseVariablesInString(options.portAddr))
+			const isInput = options.fromList ? addr.isInput : options.isInput
 			const page = parseInt(await context.parseVariablesInString(options.page))
 			const expPanel = parseInt(await context.parseVariablesInString(options.expPanel))
 			const key = parseInt(await context.parseVariablesInString(options.keyNumber))
@@ -370,7 +567,9 @@ export default async function (self) {
 				if (self.config.verbose) {
 					self.log(
 						'debug',
-						`invalid args supplied to pressKey ${options.portAddr} ${options.page} ${options.expPanel} ${options.keyNumber} ${options.keyMarker}`
+						`invalid args supplied to pressKey ${options.fromList ? options.addrList : options.portAddr} ${
+							options.page
+						} ${options.expPanel} ${options.keyNumber} ${options.keyMarker}`
 					)
 				}
 				return undefined
@@ -378,7 +577,7 @@ export default async function (self) {
 			self.labelAndMarker(
 				options.labelAndMarkerMethod,
 				addr,
-				options.isInput,
+				isInput,
 				page,
 				expPanel,
 				key,
@@ -392,19 +591,38 @@ export default async function (self) {
 		name: 'Port - Clone',
 		options: [
 			options.cloneMethod,
+			options.fromList,
+			{
+				...options.monitorAddrList,
+				choices: self.rrcs.choices.ports.panels,
+				default: self.rrcs.choices.ports.panels[0]?.id ?? '',
+			},
 			options.monitorAddr,
 			options.isInput,
 			options.isInputClonePort,
 			options.cloneAddr,
+			{
+				...options.cloneAddrList,
+				choices: self.rrcs.choices.ports.panels,
+				default: self.rrcs.choices.ports.panels[0]?.id ?? '',
+			},
 			options.cloneInfo,
 		],
 		callback: async ({ options }, context) => {
-			const monitor = self.calcPortAddress(await context.parseVariablesInString(options.monitorAddr))
-			const clone = self.calcPortAddress(await context.parseVariablesInString(options.cloneAddr))
-			//const pool = parseInt(await context.parseVariablesInString(options.poolPort))
+			const monitor = options.fromList
+				? self.getPortAddressFromObjectID(options.monitorAddrList)
+				: self.calcPortAddress(await context.parseVariablesInString(options.monitorAddr))
+			const clone = options.fromList
+				? self.getPortAddressFromObjectID(options.cloneAddrList)
+				: self.calcPortAddress(await context.parseVariablesInString(options.cloneAddr))
 			if (monitor === undefined || clone === undefined) {
 				if (self.config.verbose) {
-					self.log('debug', `invalid variables supplied to portClone ${options.monitorAddr} ${options.cloneAddr}`)
+					self.log(
+						'debug',
+						`invalid variables supplied to portClone ${
+							options.fromList ? options.monitorAddrList : options.monitorAddr
+						} ${options.fromList ? options.cloneAddrList : options.cloneAddr}`
+					)
 				}
 				return undefined
 			}
