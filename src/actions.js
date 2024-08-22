@@ -455,8 +455,8 @@ export default async function (self) {
 			options.fromList,
 			{
 				...options.addrList,
-				choices: self.rrcs.choices.ports.panels,
-				default: self.rrcs.choices.ports.panels[0]?.id ?? '',
+				choices: self.rrcs.choices.ports.all,
+				default: self.rrcs.choices.ports.all[0]?.id ?? '',
 			},
 			options.portAddr,
 			options.isInput,

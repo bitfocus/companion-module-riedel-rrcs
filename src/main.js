@@ -162,8 +162,6 @@ class Riedel_RRCS extends InstanceBase {
 		if (this.config.hostPri && this.config.portPri) {
 			this.updateStatus(InstanceStatus.Connecting)
 			this.initRRCS()
-			this.updateActions() // export actions
-			this.updateFeedbacks() // export feedbacks
 			this.updateVariableDefinitions() // export variable definitions
 		} else {
 			this.updateStatus(InstanceStatus.BadConfig)
