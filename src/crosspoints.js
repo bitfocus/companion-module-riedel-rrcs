@@ -46,8 +46,8 @@ export function addCrosspoint(src, dst, state) {
 					dstAddr: `${dst.net}.${dst.node}.${dst.port + 1}`,
 					priority: 1,
 					fromList: false,
-					srcAddrList: '',
-					dstAddrList: '',
+					srcAddrList: this.rrcs.choices.ports.inputs[0]?.id ?? '',
+					dstAddrList: this.rrcs.choices.ports.outputs[0]?.id ?? '',
 				},
 			},
 			`setCrosspoint ${src.net}.${src.node}.${src.port + 1} ${dst.net}.${dst.node}.${dst.port + 1}`

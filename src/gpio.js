@@ -26,7 +26,7 @@ export function addGPO(gpo, state) {
 					gpo: `${gpo.net}.${gpo.node}.${gpo.port + 1}.${gpo.slot}.${gpo.number + 1}`,
 					gpoState: state,
 					fromList: false,
-					addrList: '',
+					addrList: this.rrcs.choices.ports.all[0]?.id ?? '',
 					gpSlotNumber: '4.5',
 				},
 			},

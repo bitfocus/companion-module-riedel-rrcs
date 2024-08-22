@@ -44,6 +44,10 @@ Ports can be selected from a list, or entered directly via the address. The drop
 
 ### Limitations
 
+- Action Recorder
+
+Set Crosspoint, Set GP Output always created with decimal address.
+
 - Crosspoint - Set Volume
 
 Does not work when destination port is connected to an Artist-1024.
@@ -51,6 +55,10 @@ Does not work when destination port is connected to an Artist-1024.
 - GP Input Feedback
 
 Does not work with panels connected to an Artist-1024.
+
+- Logic Source
+
+Action & Feedback only available when RRCS has reported configured logic sources; can not be configured offline.
 
 - Port & GPIO Numbers
 
