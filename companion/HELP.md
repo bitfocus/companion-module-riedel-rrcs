@@ -32,6 +32,10 @@ Ports can be selected from a list, or entered directly via the address. The drop
 - GP Output
 - Logic Source
 
+### Variables
+
+- Recieved String
+
 ### Action Recorder
 
 - Set Crosspoint

@@ -14,6 +14,7 @@ export async function initLocalServer(port, host, name) {
 		if (this.config.verbose) {
 			this.log('debug', `${name} Recieved: ${methodName} Data: ${JSON.stringify(args)}`)
 		}
+		this.recieveString(args)
 	})
 	this[name].setHandler(notifications.string.sendOff.rpc, async (methodName, args) => {
 		if (this.config.verbose) {

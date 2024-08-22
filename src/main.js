@@ -18,6 +18,7 @@ import { rrcsMethods } from './methods.js'
 import * as methodCallQueue from './methodCallQueue.js'
 import * as portLabel from './portLabel.js'
 import * as ports from './ports.js'
+import * as string from './string.js'
 import * as utils from './utils.js'
 import * as volume from './volume.js'
 import os from 'os'
@@ -42,12 +43,12 @@ class Riedel_RRCS extends InstanceBase {
 			...notifications,
 			...portLabel,
 			...ports,
+			...string,
 			...utils,
 			...volume,
 		})
 		this.localIPs = []
 		this.feedbacksToUpdate = []
-		this.variablesToUpdate = []
 		const interfaces = os.networkInterfaces()
 		const interface_names = Object.keys(interfaces)
 		interface_names.forEach((nic) => {
@@ -129,7 +130,7 @@ class Riedel_RRCS extends InstanceBase {
 		this.getAllXp()
 		this.getAllLogicSources()
 		this.getAllPorts()
-		this.debounceUpdateFeedbacksVariables()
+		this.debounceUpdateFeedbacks()
 	}
 
 	async init(config) {
