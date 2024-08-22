@@ -49,17 +49,23 @@ export function setLogicSource(ObjectID, state) {
 			this.log('warn', `setLogicSource: ${rrcsErrorCodes[logicSource.ErrorCode]}`)
 			return undefined
 		} else {
-			this.rrcs.logicSrc[ObjectID].state = !!state
-			this.checkFeedbacks('logicSource')
-			if (this.isRecordingActions) {
-				this.recordAction(
-					{
-						actionId: 'setLogicSource',
-						options: { logicSrc: ObjectID, logicState: !!state },
-					},
-					`setLogicSource ${ObjectID}`
-				)
-			}
+			this.addLogicSource(ObjectID, state)
 		}
 	})
+}
+
+export function addLogicSource(ObjectID, state) {
+	this.rrcs.logicSrc[ObjectID].state = !!state
+	if (this.feedbacksToUpdate.includes('logicSource') === false) {
+		this.feedbacksToUpdate.push('logicSource')
+	}
+	if (this.isRecordingActions) {
+		this.recordAction(
+			{
+				actionId: 'setLogicSource',
+				options: { logicSrc: ObjectID, logicState: !!state },
+			},
+			`setLogicSource ${ObjectID}`
+		)
+	}
 }

@@ -41,8 +41,7 @@ export async function initLocalServer(port, host, name) {
 		if (this.config.verbose) {
 			this.log('debug', `${name} Recieved: ${methodName} Data: ${JSON.stringify(args)}`)
 		}
-		this.rrcs.logicSrc[args[1]].state = !!args[2]
-		this.checkFeedbacks('logicSource')
+		this.addLogicSource(args[1], args[2])
 	})
 	this[name].setHandler(notifications.volume.xpChange.rpc, async (methodName, args) => {
 		if (this.config.verbose) {

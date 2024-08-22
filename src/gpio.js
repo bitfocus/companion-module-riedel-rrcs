@@ -1,4 +1,4 @@
-import _ from 'lodash-es'
+import { merge } from 'lodash-es'
 import { rrcsMethods } from './methods.js'
 import { rrcsErrorCodes } from './errorcodes.js'
 
@@ -14,7 +14,7 @@ export function addGPO(gpo, state) {
 			},
 		},
 	}
-	this.rrcs.gpOutputs = _.merge(this.rrcs.gpOutputs, GPoutput)
+	this.rrcs.gpOutputs = merge(this.rrcs.gpOutputs, GPoutput)
 	if (this.feedbacksToUpdate.includes('gpoState') === false) {
 		this.feedbacksToUpdate.push('gpoState')
 	}
@@ -47,7 +47,7 @@ export function addGPI(gpi, state) {
 			},
 		},
 	}
-	this.rrcs.gpInputs = _.merge(this.rrcs.gpInputs, GPinput)
+	this.rrcs.gpInputs = merge(this.rrcs.gpInputs, GPinput)
 	if (!this.feedbacksToUpdate.includes('gpiState')) {
 		this.feedbacksToUpdate.push('gpiState')
 	}
