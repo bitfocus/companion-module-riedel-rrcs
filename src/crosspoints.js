@@ -1,4 +1,4 @@
-import _ from 'lodash-es'
+import { merge } from 'lodash-es'
 import { rrcsMethods } from './methods.js'
 import { rrcsErrorCodes } from './errorcodes.js'
 
@@ -31,7 +31,7 @@ export function addCrosspoint(src, dst, state) {
 	if (this.config.verbose) {
 		this.log('debug', `adding crosspoint: ${JSON.stringify(xpt)} ${state ? 'active' : 'inactive'}`)
 	}
-	this.rrcs.crosspoints = _.merge(this.rrcs.crosspoints, xpt)
+	this.rrcs.crosspoints = merge(this.rrcs.crosspoints, xpt)
 	if (this.feedbacksToUpdate.includes('crosspoint') === false) {
 		this.feedbacksToUpdate.push('crosspoint')
 	}

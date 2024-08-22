@@ -10,7 +10,7 @@ export async function portClone(method, monitorPort, isInput, isInputClonePort, 
 				!!isInput,
 				clonePort.node,
 				clonePort.port,
-                !!isInputClonePort
+				!!isInputClonePort,
 			])
 			if (response === undefined) {
 				return

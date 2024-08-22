@@ -6,23 +6,23 @@ Control a Riedel Artist Intercom Matrix with Riedel Router Control System.
 
 Tested with RRCS Version 8.6.1
 
-Addresses are normally specified as two, three or five period seperated numbers. Such as \<net\>.\<node\>.\<port\>. This schema accepts a single, or multiple variables, or a combination of static text and variables, depending on the use case.
+Ports can be selected from a list, or entered directly via the address. The drop down list is easier, but only populates when online, the address scehema can be used offline and will accept variables. Addresses are normally specified as two, three or five period seperated numbers. Such as \<net\>.\<node\>.\<port\>. This schema accepts a single, or multiple variables, or a combination of static text and variables, depending on the use case.
 
 ### Actions
 
-- Get Active Crosspoints
-- Get All Logic Sources
+- Crosspoint - Get All Active
+- Crosspoint - Set
+- Crosspoint - Set Volume
+- GP - Set Output
 - Key - Label & Marker
 - Key - Lock
 - Key - Press
+- Logic - Get All Sources
+- Logic - Set Source
 - Port - Clone
-- Set Crosspoint
-- Set Crosspoint Volume
-- Set GP Output
-- Set IO Gain
-- Set Logic Source
-- Set Port Alias
-- Set Port Label
+- Port - Set IO Gain
+- Port - Set Alias
+- Port - Set Label
 
 ### Feedbacks
 
@@ -39,7 +39,7 @@ Addresses are normally specified as two, three or five period seperated numbers.
 
 ### Limitations
 
-- Set Crosspoint Volume
+- Crosspoint - Set Volume
 
 Does not work when destination port is connected to an Artist-1024.
 

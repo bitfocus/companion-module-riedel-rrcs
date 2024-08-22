@@ -382,7 +382,8 @@ export const rrcsMethods = {
 		get: {
 			rpc: 'GetIFBVolumeMixMinus',
 			name: 'Get IFB Volume Mix Minus',
-			description: 'Returns the the mix minus volume for an IFB. If the volume was never set by SetIFBVolumeMixMinus, the return value is unity gain.',
+			description:
+				'Returns the the mix minus volume for an IFB. If the volume was never set by SetIFBVolumeMixMinus, the return value is unity gain.',
 		},
 		remove: {
 			rpc: 'RemoveIFBVolumeMixMinus',
@@ -411,7 +412,8 @@ export const rrcsMethods = {
 		connect: {
 			rpc: 'ConnectToArtist',
 			name: 'Connect To Artist',
-			description: 'Disconnects from current connected Artist System, if necessary, and connects to the specified IPAddress.',
+			description:
+				'Disconnects from current connected Artist System, if necessary, and connects to the specified IPAddress.',
 		},
 		disconnect: {
 			rpc: 'DisconnectFromArtist',
@@ -425,7 +427,6 @@ export const rrcsMethods = {
 			name: 'Reset All Nodes',
 			description: 'Resets all nodes that are online within the ring.',
 		},
-
 	},
 	deletePort: {
 		deletePortCommands: {
@@ -433,7 +434,6 @@ export const rrcsMethods = {
 			name: 'Delete Port Commands',
 			description: 'Deletes all commands of the specified command position.',
 		},
-
 	},
 	systemTime: {
 		setSystemTimeOnAllNodes: {
@@ -441,7 +441,6 @@ export const rrcsMethods = {
 			name: 'Delete Port Commands',
 			description: 'Returns the amount of currently online nodes and the amount of updated nodes.',
 		},
-
 	},
 	poolPort: {
 		getPoolPortInfo: {
@@ -456,15 +455,14 @@ export const rrcsMethods = {
 			name: 'Get License Info',
 			description: 'Returns the license information.',
 		},
-
 	},
 	panelSpy: {
 		changeRegistry: {
 			rpc: 'ChangePanelSpyRegistry',
 			name: 'Change Panel Spy Registry',
-			description: 'Starts/Stops panel spy notifications. Hint: The method fails, if RegisterForAllEvents has not been called.',
+			description:
+				'Starts/Stops panel spy notifications. Hint: The method fails, if RegisterForAllEvents has not been called.',
 		},
-
 	},
 	trunking: {
 		getPorts: {

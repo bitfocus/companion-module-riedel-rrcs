@@ -5,7 +5,7 @@ import { rrcsErrorCodes } from './errorcodes.js'
 export default async function (self) {
 	let actionDefs = []
 	actionDefs['setCrosspoint'] = {
-		name: 'Set Crosspoint',
+		name: 'Crosspoint - Set',
 		options: [
 			options.xpMethod,
 			options.srcAddr,
@@ -38,7 +38,7 @@ export default async function (self) {
 		},
 	}
 	actionDefs['setXPVolume'] = {
-		name: 'Set Crosspoint Volume',
+		name: 'Crosspoint - Set Volume',
 		options: [options.srcAddr, options.dstAddr, options.conf, options.xpVolume],
 		callback: async ({ options }, context) => {
 			const src = self.calcAddress(await context.parseVariablesInString(options.srcAddr))
@@ -90,23 +90,30 @@ export default async function (self) {
 		},
 	}
 	actionDefs['getAllCrosspoints'] = {
-		name: 'Get Active Crosspoints',
+		name: 'Crosspoint - Get All Active',
 		options: [],
 		callback: async () => {
 			self.getAllXp()
 		},
 	}
 	actionDefs['getAllLogicSources'] = {
-		name: 'Get All Logic Sources',
+		name: 'Logic - Get All Sources',
 		options: [],
 		callback: async () => {
 			self.getAllLogicSources()
 		},
 	}
+	actionDefs['getAllPorts'] = {
+		name: 'Port - Get All',
+		options: [],
+		callback: async () => {
+			self.getAllPorts()
+		},
+	}
 
 	if (self.rrcs.choices.logicSources.length > 0) {
 		actionDefs['setLogicSource'] = {
-			name: 'Set Logic Source',
+			name: 'Logic - Set Source',
 			options: [
 				{
 					...options.logicSrc,
@@ -128,7 +135,7 @@ export default async function (self) {
 		}
 	}
 	actionDefs['setGPOutput'] = {
-		name: 'Set GP Output',
+		name: 'GP - Set Output',
 		options: [options.gpOutputAdder, options.gpoState],
 		callback: async ({ options }, context) => {
 			const gpo = self.calcGpioAddress(await context.parseVariablesInString(options.gpo))
@@ -152,7 +159,7 @@ export default async function (self) {
 		},
 	}
 	actionDefs['setAlias'] = {
-		name: 'Set Port Alias',
+		name: 'Port - Set Alias',
 		options: [options.addr, options.isInput, options.alias],
 		callback: async ({ options }, context) => {
 			const addr = self.calcAddress(await context.parseVariablesInString(options.addr))
@@ -196,7 +203,7 @@ export default async function (self) {
 		},
 	}
 	actionDefs['setPortLabel'] = {
-		name: 'Set Port Label',
+		name: 'Port - Set Label',
 		options: [options.portAddr, options.isInput, options.portLabel],
 		callback: async ({ options }, context) => {
 			const addr = self.calcPortAddress(await context.parseVariablesInString(options.portAddr))
@@ -236,7 +243,7 @@ export default async function (self) {
 	}
 
 	actionDefs['setIOGain'] = {
-		name: 'Set IO Gain',
+		name: 'Port - Set IO Gain',
 		options: [options.ioMethod, options.addr, options.ioGain, options.ioGainInfo],
 		callback: async ({ options }, context) => {
 			const addr = self.calcAddress(await context.parseVariablesInString(options.addr))
@@ -383,7 +390,14 @@ export default async function (self) {
 	}
 	actionDefs['portClone'] = {
 		name: 'Port - Clone',
-		options: [options.cloneMethod, options.monitorAddr, options.isInput, options.isInputClonePort, options.cloneAddr, options.cloneInfo],
+		options: [
+			options.cloneMethod,
+			options.monitorAddr,
+			options.isInput,
+			options.isInputClonePort,
+			options.cloneAddr,
+			options.cloneInfo,
+		],
 		callback: async ({ options }, context) => {
 			const monitor = self.calcPortAddress(await context.parseVariablesInString(options.monitorAddr))
 			const clone = self.calcPortAddress(await context.parseVariablesInString(options.cloneAddr))

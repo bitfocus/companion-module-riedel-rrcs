@@ -149,12 +149,28 @@ export const choices = {
 }
 
 export const options = {
+	fromList: {
+		id: 'fromList',
+		type: 'checkbox',
+		label: 'Select Address from List',
+		default: false,
+	},
 	xpMethod: {
 		id: 'xpMethod',
 		type: 'dropdown',
 		label: 'Method',
 		choices: choices.xpMethods,
 		default: rrcsMethods.crosspoint.set.rpc,
+	},
+	addrList: {
+		id: 'addrList',
+		type: 'dropdown',
+		label: 'Address',
+		//choices: this.rrcs.choices.port.all,
+		//default: this.rrcs.choices.port.all[0].id,
+		isVisible: (options) => {
+			return options.fromList
+		},
 	},
 	addr: {
 		id: 'addr',
@@ -188,6 +204,19 @@ export const options = {
 		useVariables: true,
 		regex: Regex.SOMETHING,
 		tooltip: 'Source address should be three period seperated integers <net>.<node>.<port>',
+		isVisible: (options) => {
+			return !options.fromList
+		},
+	},
+	srcAddrList: {
+		id: 'srcAddrList',
+		type: 'dropdown',
+		label: 'Source',
+		//choices: this.rrcs.choices.port.all,
+		//default: this.rrcs.choices.port.all[0].id,
+		isVisible: (options) => {
+			return options.fromList
+		},
 	},
 	dstAddr: {
 		id: 'dstAddr',
@@ -197,6 +226,19 @@ export const options = {
 		useVariables: true,
 		regex: Regex.SOMETHING,
 		tooltip: 'Destination address should be three period seperated integers <net>.<node>.<port>',
+		isVisible: (options) => {
+			return !options.fromList
+		},
+	},
+	dstAddrList: {
+		id: 'dstAddrList',
+		type: 'dropdown',
+		label: 'Destination',
+		//choices: this.rrcs.choices.port.all,
+		//default: this.rrcs.choices.port.all[0].id,
+		isVisible: (options) => {
+			return options.fromList
+		},
 	},
 	priority: {
 		id: 'priority',
@@ -247,6 +289,9 @@ export const options = {
 		useVariables: true,
 		regex: Regex.SOMETHING,
 		tooltip: 'GP Output address should be five period seperated integers <net>.<node>.<port>.<slot>.<gpio number>',
+		isVisible: (options) => {
+			return !options.fromList
+		},
 	},
 	gpInputAdder: {
 		id: 'gpi',
@@ -256,6 +301,21 @@ export const options = {
 		useVariables: true,
 		regex: Regex.SOMETHING,
 		tooltip: 'GP Input address should be five period seperated integers <net>.<node>.<port>.<slot>.<gpio number>',
+		isVisible: (options) => {
+			return !options.fromList
+		},
+	},
+	gpSlotNumber: {
+		id: 'gpSlotNumber',
+		type: 'textinput',
+		label: 'GP Slot & Number',
+		default: '4.5',
+		useVariables: true,
+		regex: Regex.SOMETHING,
+		tooltip: 'GP address should be two period seperated integers <slot>.<gpio number>',
+		isVisible: (options) => {
+			return options.fromList
+		},
 	},
 	gpoState: {
 		id: 'gpoState',
@@ -377,7 +437,7 @@ export const options = {
 		default: '-1',
 		useVariables: true,
 		regex: Regex.SOMETHING,
-		tooltip: 'Set to -1 when not used. Valid range 0 to 32.'
+		tooltip: 'Set to -1 when not used. Valid range 0 to 32.',
 	},
 	labelAndMarkerMethod: {
 		id: 'labelAndMarkerMethod',
@@ -455,5 +515,51 @@ export const options = {
 		type: 'checkbox',
 		label: 'Input is Clone Port',
 		default: false,
+	},
+}
+
+export const objectParams = {
+	portex: {
+		type: {
+			0: `TWO_WIRE_IN`,
+			1: `TWO_WIRE_OUT`,
+			2: `FOUR_WIRE`,
+			3: `FOUR_WIRE_SPLIT`,
+			4: `RCP_1012E`,
+			5: `RCP_1028E`,
+			6: `DCP_1016E`,
+			7: `RCP_1112`,
+			8: `RCP_1128`,
+			9: `DCP_1116`,
+			10: `CCP_1116`,
+			11: `RSP_1232HL`,
+			12: `RSP_1216HL`,
+			13: `RCP_2016_DP4`,
+			14: `DCP_2016_DP4`,
+			15: `RCP_2116_P4`,
+			16: `DCP_2116_P4`,
+			17: `RSP_2318_PRO`,
+			18: `RSP_2318_PLUS`,
+			19: `RSP_2318_BASIC`,
+			20: `DSP_2312_PLUS`,
+			21: `DSP_2312_BASIC`,
+			22: `RCP_3016_P4`,
+			23: `DCP_3016_P4`,
+			24: `DCP_5008`,
+			25: `DCP_5108`,
+			26: `DBM_1004E`,
+			27: `TELEPHONE_CODEC`,
+			28: `RIF_1032`,
+			29: `RIF_2064`,
+			30: `C3_BELTPACK`,
+			31: `WB_2_BP`,
+			32: `AURUS_PANEL`,
+			33: `BOLERO_BP`,
+			34: `TRUNKLINE`,
+			35: `SIP`,
+			36: `VCP_1004`,
+			37: `VCP_1012`,
+			38: `CodecConnection`,
+		},
 	},
 }

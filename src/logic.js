@@ -11,7 +11,7 @@ export function getAllLogicSources() {
 			this.log('debug', `getAllLogicSources: \n${JSON.stringify(logicSources)}`)
 		}
 		if (logicSources[`ErrorCode`] !== 0) {
-			this.log('warn', `getAllXp: ${rrcsErrorCodes[logicSources.ErrorCode]}`)
+			this.log('warn', `getAllLogicSources: ${rrcsErrorCodes[logicSources.ErrorCode]}`)
 			return undefined
 		}
 		if (logicSources[`LogicSourceCount`] > 0) {

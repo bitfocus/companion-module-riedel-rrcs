@@ -17,6 +17,7 @@ import * as notifications from './notifications.js'
 import { rrcsMethods } from './methods.js'
 import * as methodCallQueue from './methodCallQueue.js'
 import * as portLabel from './portLabel.js'
+import * as ports from './ports.js'
 import * as utils from './utils.js'
 import * as volume from './volume.js'
 import os from 'os'
@@ -40,6 +41,7 @@ class Riedel_RRCS extends InstanceBase {
 			...methodCallQueue,
 			...notifications,
 			...portLabel,
+			...ports,
 			...utils,
 			...volume,
 		})
@@ -84,7 +86,7 @@ class Riedel_RRCS extends InstanceBase {
 		this.rrcs = {
 			activeServer: 'pri',
 			crosspoints: {},
-			ports: [],
+			ports: {},
 			conferences: [],
 			ifbs: [],
 			logicSrc: [],
@@ -96,6 +98,12 @@ class Riedel_RRCS extends InstanceBase {
 			clientCards: [],
 			choices: {
 				logicSources: [],
+				ports: {
+					inputs: [],
+					outputs: [],
+					panels: [],
+					all: [],
+				},
 			},
 		}
 
@@ -120,6 +128,7 @@ class Riedel_RRCS extends InstanceBase {
 		)
 		this.getAllXp()
 		this.getAllLogicSources()
+		this.getAllPorts()
 		this.debounceUpdateFeedbacksVariables()
 	}
 

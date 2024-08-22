@@ -6,10 +6,28 @@ export default async function (self) {
 		name: 'Crosspoint',
 		type: 'boolean',
 		defaultStyle: styles.red,
-		options: [options.srcAddr, options.dstAddr],
+		options: [
+			options.fromList,
+			options.srcAddr,
+			options.dstAddr,
+			{
+				...options.srcAddrList,
+				choices: self.rrcs.choices.ports.inputs,
+				default: self.rrcs.choices.ports.inputs[0]?.id ?? '',
+			},
+			{
+				...options.dstAddrList,
+				choices: self.rrcs.choices.ports.outputs,
+				default: self.rrcs.choices.ports.outputs[0]?.id ?? '',
+			},
+		],
 		callback: async ({ options }, context) => {
-			const src = self.calcAddress(await context.parseVariablesInString(options.srcAddr))
-			const dst = self.calcAddress(await context.parseVariablesInString(options.dstAddr))
+			const src = options.fromList
+				? self.getPortAddressFromObjectID(options.srcAddrList)
+				: self.calcAddress(await context.parseVariablesInString(options.srcAddr))
+			const dst = options.fromList
+				? self.getPortAddressFromObjectID(options.dstAddrList)
+				: self.calcAddress(await context.parseVariablesInString(options.dstAddr))
 			if (src === undefined || dst === undefined) {
 				if (self.config.verbose) {
 					self.log('debug', `invalid variables supplied to crosspoint feedback ${options.srcAddr} ${options.dstAddr}`)
@@ -77,19 +95,38 @@ export default async function (self) {
 		name: 'GP Output',
 		type: 'boolean',
 		defaultStyle: styles.green,
-		options: [options.gpOutputAdder],
+		options: [
+			options.fromList,
+			options.gpOutputAdder,
+			{
+				...options.addrList,
+				choices: self.rrcs.choices.ports.all,
+				default: self.rrcs.choices.ports.all[0]?.id ?? '',
+			},
+			options.gpSlotNumber,
+		],
 		callback: async ({ options }, context) => {
-			const gpo = self.calcGpioAddress(await context.parseVariablesInString(options.gpo))
-			if (gpo === undefined) {
+			const gpo = options.fromList
+				? self.getPortAddressFromObjectID(options.addrList)
+				: self.calcGpioAddress(await context.parseVariablesInString(options.gpo))
+			const slotNumber = options.fromList
+				? self.calcGpioSlotNumber(await context.parseVariablesInString(options.gpSlotNumber))
+				: null
+			if (gpo === undefined || (options.fromList && slotNumber === undefined)) {
 				if (self.config.verbose) {
-					self.log('debug', `invalid variables supplied to GP Output ${options.gpo}`)
+					self.log(
+						'debug',
+						`invalid variables supplied to GP Output ${options.fromList ? options.addrList : options.gpo}${
+							options.fromList ? ' ' + options.slotNumber : ''
+						}`
+					)
 				}
 				return false
 			}
 			try {
-				return self.rrcs.gpOutputs[`net_${gpo.net}`][`node_${gpo.node}`][`port_${gpo.port}`][`slot_${gpo.slot}`][
-					`number_${gpo.number}`
-				]
+				return self.rrcs.gpOutputs[`net_${gpo.net}`][`node_${gpo.node}`][`port_${gpo.port}`][
+					`slot_${options.fromList ? slotNumber.slot : gpo.slot}`
+				][`number_${options.fromList ? slotNumber.number : gpo.number}`]
 			} catch {
 				if (self.config.verbose) {
 					self.log(`debug`, `gpo not found`)
@@ -98,14 +135,30 @@ export default async function (self) {
 			}
 		},
 		subscribe: async ({ options }, context) => {
-			const gpo = self.calcGpioAddress(await context.parseVariablesInString(options.gpo))
-			if (gpo === undefined) {
+			const gpo = options.fromList
+				? self.getPortAddressFromObjectID(options.addrList)
+				: self.calcGpioAddress(await context.parseVariablesInString(options.gpo))
+			const slotNumber = options.fromList
+				? self.calcGpioSlotNumber(await context.parseVariablesInString(options.gpSlotNumber))
+				: null
+			if (gpo === undefined || (options.fromList && slotNumber === undefined)) {
 				if (self.config.verbose) {
-					self.log('debug', `invalid variables supplied to GP Output Subscribe ${options.gpo}`)
+					self.log(
+						'debug',
+						`invalid variables supplied to GP Output Subscribe ${options.fromList ? options.addrList : options.gpo}${
+							options.fromList ? ' ' + options.slotNumber : ''
+						}`
+					)
 				}
 				return false
 			}
-			self.getGPOutput(gpo)
+			self.getGPOutput({
+				net: gpo.net,
+				node: gpo.node,
+				port: gpo.port,
+				slot: options.fromList ? slotNumber.slot : gpo.slot,
+				number: options.fromList ? slotNumber.number : gpo.number,
+			})
 		},
 	}
 
@@ -113,19 +166,36 @@ export default async function (self) {
 		name: 'GP Input',
 		type: 'boolean',
 		defaultStyle: styles.green,
-		options: [options.gpInputAdder],
+		options: [
+			options.fromList,
+			options.gpInputAdder,
+			{
+				...options.addrList,
+				choices: self.rrcs.choices.ports.all,
+				default: self.rrcs.choices.ports.all[0]?.id ?? '',
+			},
+			options.gpSlotNumber,
+		],
 		callback: async ({ options }, context) => {
-			const gpi = self.calcGpioAddress(await context.parseVariablesInString(options.gpi))
-			if (gpi === undefined) {
+			const gpi = options.fromList
+				? self.getPortAddressFromObjectID(options.addrList)
+				: self.calcGpioAddress(await context.parseVariablesInString(options.gpi))
+			const slotNumber = options.fromList
+				? self.calcGpioSlotNumber(await context.parseVariablesInString(options.gpSlotNumber))
+				: null
+			if (gpi === undefined || (options.fromList && slotNumber === undefined)) {
 				if (self.config.verbose) {
-					self.log('debug', `invalid variables supplied to GP Input ${options.gpi}`)
+					self.log(
+						'debug',
+						`invalid variables supplied to GP Input ${options.gpi}${options.fromList ? ' ' + options.slotNumber : ''}`
+					)
 				}
 				return false
 			}
 			try {
-				return self.rrcs.gpInputs[`net_${gpi.net}`][`node_${gpi.node}`][`port_${gpi.port}`][`slot_${gpi.slot}`][
-					`number_${gpi.number}`
-				]
+				return self.rrcs.gpInputs[`net_${gpi.net}`][`node_${gpi.node}`][`port_${gpi.port}`][
+					`slot_${options.fromList ? slotNumber.slot : gpi.slot}`
+				][`number_${options.fromList ? slotNumber.number : gpi.number}`]
 			} catch {
 				if (self.config.verbose) {
 					self.log(`debug`, `gpi not found`)
@@ -134,14 +204,30 @@ export default async function (self) {
 			}
 		},
 		subscribe: async ({ options }, context) => {
-			const gpi = self.calcGpioAddress(await context.parseVariablesInString(options.gpi))
-			if (gpi === undefined) {
+			const gpi = options.fromList
+				? self.getPortAddressFromObjectID(options.addrList)
+				: self.calcGpioAddress(await context.parseVariablesInString(options.gpi))
+			const slotNumber = options.fromList
+				? self.calcGpioSlotNumber(await context.parseVariablesInString(options.gpSlotNumber))
+				: null
+			if (gpi === undefined || (options.fromList && slotNumber === undefined)) {
 				if (self.config.verbose) {
-					self.log('debug', `invalid variables supplied to GP Input Subscribe ${options.gpi}`)
+					self.log(
+						'debug',
+						`invalid variables supplied to GP Input Subscribe ${options.fromList ? options.addrList : options.gpi}${
+							options.fromList ? ' ' + options.slotNumber : ''
+						}`
+					)
 				}
 				return false
 			}
-			self.getGPInput(gpi)
+			self.getGPInput({
+				net: gpi.net,
+				node: gpi.node,
+				port: gpi.port,
+				slot: options.fromList ? slotNumber.slot : gpi.slot,
+				number: options.fromList ? slotNumber.number : gpi.number,
+			})
 		},
 	}
 	self.setFeedbackDefinitions(feedbackDefs)

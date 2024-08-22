@@ -78,3 +78,22 @@ export function calcGpioAddress(arg) {
 	}
 	return { net: address[0], node: address[1], port: address[2] - 1, slot: address[3], number: address[4] - 1 }
 }
+
+export function calcGpioSlotNumber(arg) {
+	if (this.config.verbose) {
+		this.log('debug', `calcGpioSlotNumber ${arg}`)
+	}
+	const address = arg.split('.').map((x) => parseInt(x))
+	if (
+		address.length !== 2 ||
+		isNaN(address[0]) ||
+		isNaN(address[1]) ||
+		address[0] < 0 ||
+		address[0] > limits.clientCardSlot.max ||
+		address[1] < 1 ||
+		address[1] > 256
+	) {
+		return undefined
+	}
+	return { slot: address[0], number: address[1] - 1 }
+}
