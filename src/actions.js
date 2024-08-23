@@ -661,7 +661,7 @@ export default async function (self) {
 			const addr = options.fromList
 				? self.getPortAddressFromObjectID(options.addrList)
 				: self.calcPortAddress(await context.parseVariablesInString(options.portAddr))
-			const isInput = options.fromList? addr.isInput : true
+			const isInput = options.fromList ? addr.isInput : true
 			const ifbNum = options.fromList
 				? self.getIFBAddressFromObjectID(options.ifbList)
 				: parseInt(await context.parseVariablesInString(options.ifbNumber))
@@ -677,13 +677,13 @@ export default async function (self) {
 				}
 				return false
 			}
-			self.setIFBVolume(options.ifbMethod, addr, isInput, ifbNum, ifbVolume )
+			self.setIFBVolume(options.ifbMethod, addr, isInput, ifbNum, ifbVolume)
 		},
 		learn: async ({ options }, context) => {
 			const addr = options.fromList
 				? self.getPortAddressFromObjectID(options.addrList)
 				: self.calcPortAddress(await context.parseVariablesInString(options.portAddr))
-			const isInput = options.fromList? addr.isInput : true
+			const isInput = options.fromList ? addr.isInput : true
 			const ifbNum = options.fromList
 				? self.getIFBAddressFromObjectID(options.ifbList)
 				: parseInt(await context.parseVariablesInString(options.ifbNumber))
@@ -711,7 +711,7 @@ export default async function (self) {
 			}
 			for (const ifbVol of response[1]) {
 				if (addr.node === ifbVol.Node && addr.port === ifbVol.Port && ifbNum === ifbVol.IfbNumber) {
-					const volume =  (ifbVol.Volume - 230) / 2
+					const volume = (ifbVol.Volume - 230) / 2
 					return {
 						...options,
 						ifbVolume: volume,

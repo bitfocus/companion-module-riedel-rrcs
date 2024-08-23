@@ -592,7 +592,8 @@ export const options = {
 		id: 'ifbVolumeInfo',
 		type: 'static-text',
 		label: '',
-		value: 'Sets the mix minus volume for an IFB. It affects the single volume. If the mix minus and the output is assigned when SetIFBVolumeMixMinus is called, the volume for the crosspoint MixMinus->Output is set. If SetIFBVolumeMixMinus is called and a mix minus is not assigned, it will return an error. Presetting the volume is therefor not possible. If SetIFBVolumeMixMinus is called and an output is not assigned, the value is stored. Later when the output is assigned the crosspoint volume is set to the IFB volume. If an output is reassigned, it does not affect the IFB volume. When the mix minus is assigned the initial volume is always unity gain. If a mix minus is a group, the volumes for the group members can be set seperately and do not interfere with each other.',
+		value:
+			'Sets the mix minus volume for an IFB. It affects the single volume. If the mix minus and the output is assigned when SetIFBVolumeMixMinus is called, the volume for the crosspoint MixMinus->Output is set. If SetIFBVolumeMixMinus is called and a mix minus is not assigned, it will return an error. Presetting the volume is therefor not possible. If SetIFBVolumeMixMinus is called and an output is not assigned, the value is stored. Later when the output is assigned the crosspoint volume is set to the IFB volume. If an output is reassigned, it does not affect the IFB volume. When the mix minus is assigned the initial volume is always unity gain. If a mix minus is a group, the volumes for the group members can be set seperately and do not interfere with each other.',
 		isVisible: (options) => {
 			return options.ifbMethod === 'SetIFBVolumeMixMinus'
 		},

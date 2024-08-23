@@ -11,22 +11,27 @@ export function setIFBVolume(method, addr, isInput, ifbNumber, volume) {
 		return undefined
 	}
 	if (keys.includes('node') && keys.includes('port')) {
-        const data = method === rrcsMethods.ifbVolume.set.rpc ? [addr.node, addr.port, isInput, ifb, cleanVolume] : [addr.node, addr.port, isInput, ifb]
+		const data =
+			method === rrcsMethods.ifbVolume.set.rpc
+				? [addr.node, addr.port, isInput, ifb, cleanVolume]
+				: [addr.node, addr.port, isInput, ifb]
 		this.rrcsQueue.add(async () => {
 			const response = await this.rrcsMethodCall(method, data)
 			if (this.config.verbose) {
 				this.log('debug', `${method} response: ${response}`)
 			}
-            if (method === rrcsMethods.ifbVolume.remove.rpc) {
-                if (Array.isArray(response)) {
-                    if (response[1] !== 0) {
-                        this.log(
-                            'warn',
-                            `RemoveIFBVolumeMixMinus Error: ${rrcsErrorCodes[response[1]]} address: ${JSON.stringify(addr)} ifb: ${ifb}`
-                        )
-                    }
-                }
-            }
+			if (method === rrcsMethods.ifbVolume.remove.rpc) {
+				if (Array.isArray(response)) {
+					if (response[1] !== 0) {
+						this.log(
+							'warn',
+							`RemoveIFBVolumeMixMinus Error: ${rrcsErrorCodes[response[1]]} address: ${JSON.stringify(
+								addr
+							)} ifb: ${ifb}`
+						)
+					}
+				}
+			}
 		})
 	}
 }
@@ -40,7 +45,7 @@ export function getAllIFBs() {
 		if (this.config.verbose) {
 			this.log('debug', `getAllXP: \n${JSON.stringify(ifbs)}`)
 		}
-        if (Array.isArray(ifbs[1])) {
+		if (Array.isArray(ifbs[1])) {
 			this.rrcs.ifbs = []
 			for (const ifb of ifbs[1]) {
 				this.rrcs.ifbs[`${ifb.ObjectID}`] = ifb
@@ -59,7 +64,7 @@ export function buildIFBChoices(ifbArray) {
 	}
 	this.rrcs.choices.ifbs = []
 
-    for (const ifb of ifbArray) {
+	for (const ifb of ifbArray) {
 		this.rrcs.choices.ifbs.push({ id: ifb.ObjectID, label: ifb.LongName })
 	}
 	this.rrcs.choices.ifbs = orderBy(this.rrcs.choices.ifbs, ['label'], ['asc'])
