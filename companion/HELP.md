@@ -54,9 +54,9 @@ Set Crosspoint, Set GP Output always created with decimal address.
 
 Does not work when destination port is connected to an Artist-1024.
 
-- Get All IFB, Logic, Ports
+- Get All IFB, Logic Sources, Ports
 
-These will repopulate the drop down lists in actions & feedbacks.
+These repopulate the drop down lists in actions & feedbacks.
 
 - GP Input Feedback
 
@@ -69,3 +69,7 @@ Action & Feedback only available when RRCS has reported configured logic sources
 - Port & GPIO Numbers
 
 RRCS uses 0-based numbering for Port and GPIO numbers. This module converts them to 1-based numbering for consistency with Director, however internal logs are 0-based.
+
+- Recieved String
+
+Is set to the most recently recieved Send String message. 
