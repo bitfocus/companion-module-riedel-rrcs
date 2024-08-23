@@ -146,6 +146,10 @@ export const choices = {
 		{ id: rrcsMethods.portClone.start.rpc, label: rrcsMethods.portClone.start.name },
 		{ id: rrcsMethods.portClone.stop.rpc, label: rrcsMethods.portClone.stop.name },
 	],
+	ifb: [
+		{ id: rrcsMethods.ifbVolume.set.rpc, label: rrcsMethods.ifbVolume.set.name },
+		{ id: rrcsMethods.ifbVolume.remove.rpc, label: rrcsMethods.ifbVolume.remove.name },
+	],
 }
 
 export const options = {
@@ -544,6 +548,63 @@ export const options = {
 		type: 'checkbox',
 		label: 'Input is Clone Port',
 		default: false,
+	},
+	ifbMethod: {
+		id: 'ifbMethod',
+		type: 'dropdown',
+		label: 'Method',
+		choices: choices.ifb,
+		default: rrcsMethods.ifbVolume.set.rpc,
+	},
+	ifbNumber: {
+		id: 'ifbNumber',
+		type: 'textinput',
+		label: 'IFB Number',
+		default: '1',
+		useVariables: true,
+		regex: Regex.SOMETHING,
+		tooltip: 'Refer to Director for IFB Number',
+		isVisible: (options) => {
+			return !options.fromList
+		},
+	},
+	ifbList: {
+		id: 'ifbList',
+		type: 'dropdown',
+		label: 'IFB Number',
+		isVisible: (options) => {
+			return options.fromList
+		},
+	},
+	ifbVolume: {
+		id: 'ifbVolume',
+		type: 'textinput',
+		label: 'Mix Minus Volume (dB)',
+		default: '0',
+		useVariables: true,
+		regex: Regex.SOMETHING,
+		tooltip: 'Range: -114.5 to +12.5, 0.5dB steps. Set to <= -115 to mute.',
+		isVisible: (options) => {
+			return options.ifbMethod === 'SetIFBVolumeMixMinus'
+		},
+	},
+	ifbVolumeSetInfo: {
+		id: 'ifbVolumeInfo',
+		type: 'static-text',
+		label: '',
+		value: 'Sets the mix minus volume for an IFB. It affects the single volume. If the mix minus and the output is assigned when SetIFBVolumeMixMinus is called, the volume for the crosspoint MixMinus->Output is set. If SetIFBVolumeMixMinus is called and a mix minus is not assigned, it will return an error. Presetting the volume is therefor not possible. If SetIFBVolumeMixMinus is called and an output is not assigned, the value is stored. Later when the output is assigned the crosspoint volume is set to the IFB volume. If an output is reassigned, it does not affect the IFB volume. When the mix minus is assigned the initial volume is always unity gain. If a mix minus is a group, the volumes for the group members can be set seperately and do not interfere with each other.',
+		isVisible: (options) => {
+			return options.ifbMethod === 'SetIFBVolumeMixMinus'
+		},
+	},
+	ifbVolumeRemoveInfo: {
+		id: 'ifbVolumeRemoveInfo',
+		type: 'static-text',
+		label: '',
+		value: 'Removes the mix minus volume for an IFB. The volume returns to default (untiy gain).',
+		isVisible: (options) => {
+			return options.ifbMethod === 'RemoveIFBVolumeMixMinus'
+		},
 	},
 }
 

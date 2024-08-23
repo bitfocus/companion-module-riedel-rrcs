@@ -10,6 +10,7 @@ import * as crosspoints from './crosspoints.js'
 import * as debounce from './debounce.js'
 import * as gain from './gain.js'
 import * as gpio from './gpio.js'
+import * as ifb from './ifb.js'
 import * as keyManipulation from './keyManipulation.js'
 import * as localServer from './localserver.js'
 import * as logic from './logic.js'
@@ -36,6 +37,7 @@ class Riedel_RRCS extends InstanceBase {
 			...debounce,
 			...gain,
 			...gpio,
+			...ifb,
 			...keyManipulation,
 			...localServer,
 			...logic,
@@ -98,6 +100,7 @@ class Riedel_RRCS extends InstanceBase {
 			audioPatch: [],
 			clientCards: [],
 			choices: {
+				ifbs:[],
 				logicSources: [],
 				ports: {
 					inputs: [],
@@ -130,6 +133,7 @@ class Riedel_RRCS extends InstanceBase {
 		this.getAllXp()
 		this.getAllLogicSources()
 		this.getAllPorts()
+		this.getAllIFBs()
 		this.debounceUpdateFeedbacks()
 	}
 

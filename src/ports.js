@@ -63,7 +63,6 @@ export function buildPortChoices(portArray) {
 	this.rrcs.choices.ports.all = orderBy(this.rrcs.choices.ports.all, ['label'], ['asc'])
 	this.updateActions() // export actions
 	this.updateFeedbacks() // export feedbacks
-	this.updateVariableDefinitions() // export variable definitions
 }
 
 export function getPortAddressFromObjectID(ObjectID) {

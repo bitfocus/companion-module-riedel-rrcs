@@ -402,7 +402,7 @@ export default async function (self) {
 		callback: async ({ options }, context) => {
 			const addr = options.fromList
 				? self.getPortAddressFromObjectID(options.addrList)
-				: self.calcGpioAddress(await context.parseVariablesInString(options.addr))
+				: self.calcAddress(await context.parseVariablesInString(options.addr))
 			const gain = Number(await context.parseVariablesInString(options.ioGain))
 			if (addr === undefined || isNaN(gain)) {
 				if (self.config.verbose) {
@@ -627,6 +627,98 @@ export default async function (self) {
 				return undefined
 			}
 			self.portClone(options.cloneMethod, monitor, options.isInput, options.isInputClonePort, clone)
+		},
+	}
+	actionDefs['getAllIFBS'] = {
+		name: 'IFB - Get All',
+		options: [],
+		callback: async () => {
+			self.getAllIFBs()
+		},
+	}
+	actionDefs['ifbMixMinusVolume'] = {
+		name: 'IFB - Mix Minus Volume',
+		options: [
+			options.ifbMethod,
+			options.fromList,
+			options.portAddr,
+			{
+				...options.addrList,
+				choices: self.rrcs.choices.ports.inputs,
+				default: self.rrcs.choices.ports.inputs[0]?.id ?? '',
+			},
+			options.ifbNumber,
+			{
+				...options.ifbList,
+				choices: self.rrcs.choices.ifbs,
+				default: self.rrcs.choices.ifbs[0]?.id ?? '',
+			},
+			options.ifbVolume,
+			options.ifbVolumeSetInfo,
+			options.ifbVolumeRemoveInfo,
+		],
+		callback: async ({ options }, context) => {
+			const addr = options.fromList
+				? self.getPortAddressFromObjectID(options.addrList)
+				: self.calcPortAddress(await context.parseVariablesInString(options.portAddr))
+			const isInput = options.fromList? addr.isInput : true
+			const ifbNum = options.fromList
+				? self.getIFBAddressFromObjectID(options.ifbList)
+				: parseInt(await context.parseVariablesInString(options.ifbNumber))
+			const ifbVolume = Number(await context.parseVariablesInString(options.ifbVolume))
+			if (addr === undefined || isNaN(ifbNum) || isNaN(ifbVolume)) {
+				if (self.config.verbose) {
+					self.log(
+						'debug',
+						`invalid address supplied to ifbSetVolume ${options.fromList ? options.addrList : options.portAddr} ${
+							options.fromList ? options.ifbList : options.ifbNumber
+						} ${options.ifbVolume}`
+					)
+				}
+				return false
+			}
+			self.setIFBVolume(options.ifbMethod, addr, isInput, ifbNum, ifbVolume )
+		},
+		learn: async ({ options }, context) => {
+			const addr = options.fromList
+				? self.getPortAddressFromObjectID(options.addrList)
+				: self.calcPortAddress(await context.parseVariablesInString(options.portAddr))
+			const isInput = options.fromList? addr.isInput : true
+			const ifbNum = options.fromList
+				? self.getIFBAddressFromObjectID(options.ifbList)
+				: parseInt(await context.parseVariablesInString(options.ifbNumber))
+			if (addr === undefined || isNaN(ifbNum)) {
+				if (self.config.verbose) {
+					self.log(
+						'debug',
+						`invalid address supplied to ifbSetVolume learn ${options.fromList ? options.addrList : options.portAddr} ${
+							options.fromList ? options.ifbList : options.ifbNumber
+						}`
+					)
+				}
+				return undefined
+			}
+			const response = await self.rrcsMethodCall(rrcsMethods.ifbVolume.get.rpc, [addr.node, addr.port, isInput, ifbNum])
+			if (response === undefined) {
+				return undefined
+			}
+			if (self.config.verbose) {
+				self.log('debug', `setIFBVolume learn: \n${JSON.stringify(response)}`)
+			}
+			if (!Array.isArray(response[1])) {
+				self.log('warn', `setIFBVolume learn returned unexpected data ${response}`)
+				return undefined
+			}
+			for (const ifbVol of response[1]) {
+				if (addr.node === ifbVol.Node && addr.port === ifbVol.Port && ifbNum === ifbVol.IfbNumber) {
+					const volume =  (ifbVol.Volume - 230) / 2
+					return {
+						...options,
+						ifbVolume: volume,
+					}
+				}
+			}
+			return undefined
 		},
 	}
 	self.setActionDefinitions(actionDefs)

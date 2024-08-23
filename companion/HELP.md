@@ -14,6 +14,8 @@ Ports can be selected from a list, or entered directly via the address. The drop
 - Crosspoint - Set
 - Crosspoint - Set Volume
 - GP - Set Output
+- IFB - Get All
+- IFB - Mix Minus Volume
 - Key - Label & Marker
 - Key - Lock
 - Key - Press
