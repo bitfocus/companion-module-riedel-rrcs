@@ -43,16 +43,6 @@ export function getConfigFields() {
 			},
 		},
 		{
-			type: 'static-text',
-			id: 'place-holder-1',
-			label: '',
-			value: '',
-			width: 12,
-			isVisible: (options) => {
-				return !options.redundant
-			},
-		},
-		{
 			type: 'textinput',
 			id: 'portSec',
 			label: 'Secondary RRCS Port',
@@ -62,16 +52,6 @@ export function getConfigFields() {
 			tooltip: `Default, TCP:${default_port}`,
 			isVisible: (options) => {
 				return options.redundant
-			},
-		},
-		{
-			type: 'static-text',
-			id: 'place-holder-2',
-			label: '',
-			value: '',
-			width: 6,
-			isVisible: (options) => {
-				return !options.redundant
 			},
 		},
 		{
@@ -119,26 +99,6 @@ export function getConfigFields() {
 			},
 		},
 		{
-			type: 'static-text',
-			id: 'place-holder-3',
-			label: '',
-			value: '',
-			width: 12,
-			isVisible: (options) => {
-				return !options.redundant
-			},
-		},
-		{
-			type: 'static-text',
-			id: 'place-holder-4',
-			label: '',
-			value: '',
-			width: 6,
-			isVisible: (options) => {
-				return !options.redundant
-			},
-		},
-		{
 			type: 'checkbox',
 			id: 'witness',
 			label: 'Witness',
@@ -155,7 +115,7 @@ export function getConfigFields() {
 			label: 'Update on Configuration Change',
 			default: true,
 			width: 6,
-			tooltip: 'Will Get All Crosspoints, IFBs, Logic Sources, & Ports when RRCS reports a configuration change.',
+			tooltip: 'Perform Get All Crosspoints, IFBs, Logic Sources, & Ports on configuration change notification.',
 		},
 		{
 			type: 'checkbox',
