@@ -54,6 +54,10 @@ Set Crosspoint, Set GP Output always created with decimal address.
 
 Does not work when destination port is connected to an Artist-1024.
 
+- Get All IFB, Logic, Ports
+
+These will repopulate the drop down lists in actions & feedbacks.
+
 - GP Input Feedback
 
 Does not work with panels connected to an Artist-1024.
