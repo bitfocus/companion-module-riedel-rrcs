@@ -1,4 +1,4 @@
-const debounceTime = 20 //interval between feedback checks and variable updates
+const debounceTime = 20 //interval between feedback checks
 
 export function debounceUpdateFeedbacks() {
 	if (this.debounceTimer) {
