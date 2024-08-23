@@ -72,4 +72,8 @@ RRCS uses 0-based numbering for Port and GPIO numbers. This module converts them
 
 - Recieved String
 
-Is set to the most recently recieved Send String message. 
+Is set to the most recently recieved Send String message.
+
+- Update on Configuration Change
+
+Will perform all Get All actions whenever RRCS reports a configuration change. This keeps all dropdowns and states in sync, however may prove excessively burdensome in large, busy networks.

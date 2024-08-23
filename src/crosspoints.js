@@ -116,12 +116,19 @@ export function getAllXp() {
 			this.log('warn', `getAllXp: ${rrcsErrorCodes[xps.ErrorCode]}`)
 			return undefined
 		}
+		//null existing crosspoints in memory
+		this.rrcs.crosspoints = []
 		if (xps[`XP Count`] > 0) {
 			for (let i = 1; i <= xps[`XP Count`]; i++) {
 				const xp = xps[`XP#${i}`]
 				if (Array.isArray(xp) && xp.length === 6) {
 					this.addCrosspoint({ net: xp[0], node: xp[1], port: xp[2] }, { net: xp[3], node: xp[4], port: xp[5] }, true)
 				}
+			}
+		} else {
+			//make sure feedbacks are updated if there are no active crosspoints
+			if (this.feedbacksToUpdate.includes('crosspoint') === false) {
+				this.feedbacksToUpdate.push('crosspoint')
 			}
 		}
 	})

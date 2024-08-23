@@ -151,6 +151,14 @@ export function getConfigFields() {
 		},
 		{
 			type: 'checkbox',
+			id: 'update',
+			label: 'Update on Configuration Change',
+			default: true,
+			width: 6,
+			tooltip: 'Will Get All Crosspoints, IFBs, Logic Sources, & Ports when RRCS reports a configuration change.',
+		},
+		{
+			type: 'checkbox',
 			id: 'verbose',
 			label: 'Verbose Logs',
 			default: false,
