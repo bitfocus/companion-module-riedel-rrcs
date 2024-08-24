@@ -37,8 +37,12 @@ export function calcPortAddress(arg) {
 		this.log('debug', `calcPortAddress ${arg}`)
 	}
 	const address = arg.split('.').map((x) => parseInt(x))
-	if (address.length !== 2 || isNaN(address[0]) || isNaN(address[1])) {
+	if (address.length < 2 || address.length > 3 || isNaN(address[0]) || isNaN(address[1])) {
 		return undefined
+	}
+	if (address.length === 3) {
+		// if address has been supplied in <net>.<node>.<port> format drop the net
+		address.shift()
 	}
 	if (
 		address[0] < limits.node.min ||

@@ -8,8 +8,8 @@ export default async function (self) {
 		defaultStyle: styles.red,
 		options: [
 			options.fromList,
-			options.srcAddr,
-			options.dstAddr,
+			{ ...options.srcAddr, default: self.config.localPanel },
+			{ ...options.dstAddr, default: self.config.localPanel },
 			{
 				...options.srcAddrList,
 				choices: self.rrcs.choices.ports.inputs,
@@ -97,7 +97,7 @@ export default async function (self) {
 		defaultStyle: styles.green,
 		options: [
 			options.fromList,
-			options.gpOutputAdder,
+			{ ...options.gpOutputAdder, default: self.config.localPanel + '.0.1' },
 			{
 				...options.addrList,
 				choices: self.rrcs.choices.ports.all,
@@ -168,7 +168,7 @@ export default async function (self) {
 		defaultStyle: styles.green,
 		options: [
 			options.fromList,
-			options.gpInputAdder,
+			{ ...options.gpInputAdder, default: self.config.localPanel + '.0.1' },
 			{
 				...options.addrList,
 				choices: self.rrcs.choices.ports.all,

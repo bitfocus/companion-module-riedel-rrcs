@@ -4,13 +4,15 @@ import { rrcsErrorCodes } from './errorcodes.js'
 
 export default async function (self) {
 	let actionDefs = []
+	const localPortAddr = self.config.localPanel.split('.')[1] + '.' + self.config.localPanel.split('.')[2]
+
 	actionDefs['setCrosspoint'] = {
 		name: 'Crosspoint - Set',
 		options: [
 			options.xpMethod,
 			options.fromList,
-			options.srcAddr,
-			options.dstAddr,
+			{ ...options.srcAddr, default: self.config.localPanel },
+			{ ...options.dstAddr, default: self.config.localPanel },
 			{
 				...options.srcAddrList,
 				choices: self.rrcs.choices.ports.inputs,
@@ -70,8 +72,8 @@ export default async function (self) {
 		name: 'Crosspoint - Set Volume',
 		options: [
 			options.fromList,
-			options.srcAddr,
-			options.dstAddr,
+			{ ...options.srcAddr, default: self.config.localPanel },
+			{ ...options.dstAddr, default: self.config.localPanel },
 			{
 				...options.srcAddrList,
 				choices: self.rrcs.choices.ports.inputs,
@@ -198,7 +200,7 @@ export default async function (self) {
 		name: 'GP - Set Output',
 		options: [
 			options.fromList,
-			options.gpOutputAdder,
+			{ ...options.gpOutputAdder, default: self.config.localPanel + '.0.1' },
 			{
 				...options.addrList,
 				choices: self.rrcs.choices.ports.all,
@@ -390,7 +392,7 @@ export default async function (self) {
 		options: [
 			options.ioMethod,
 			options.fromList,
-			options.addr,
+			{ ...options.addr, default: self.config.localPanel },
 			{
 				...options.addrList,
 				choices: self.rrcs.choices.ports.all,
@@ -458,7 +460,7 @@ export default async function (self) {
 				choices: self.rrcs.choices.ports.all,
 				default: self.rrcs.choices.ports.all[0]?.id ?? '',
 			},
-			options.portAddr,
+			{ ...options.portAddr, default: localPortAddr },
 			options.isInput,
 			options.page,
 			options.expPanel,
@@ -501,7 +503,7 @@ export default async function (self) {
 				choices: self.rrcs.choices.ports.panels,
 				default: self.rrcs.choices.ports.panels[0]?.id ?? '',
 			},
-			options.portAddr,
+			{ ...options.portAddr, default: localPortAddr },
 			options.isInput,
 			options.page,
 			options.expPanel,
@@ -544,7 +546,7 @@ export default async function (self) {
 				choices: self.rrcs.choices.ports.panels,
 				default: self.rrcs.choices.ports.panels[0]?.id ?? '',
 			},
-			options.portAddr,
+			{ ...options.portAddr, default: localPortAddr },
 			options.isInput,
 			options.page,
 			options.expPanel,
@@ -600,7 +602,7 @@ export default async function (self) {
 			options.monitorAddr,
 			options.isInput,
 			options.isInputClonePort,
-			options.cloneAddr,
+			{ ...options.cloneAddr, default: localPortAddr },
 			{
 				...options.cloneAddrList,
 				choices: self.rrcs.choices.ports.panels,
@@ -641,7 +643,7 @@ export default async function (self) {
 		options: [
 			options.ifbMethod,
 			options.fromList,
-			options.portAddr,
+			{ ...options.portAddr, default: localPortAddr },
 			{
 				...options.addrList,
 				choices: self.rrcs.choices.ports.inputs,

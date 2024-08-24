@@ -118,6 +118,15 @@ export function getConfigFields() {
 			tooltip: 'Perform Get All Crosspoints, IFBs, Logic Sources, & Ports on configuration change notification.',
 		},
 		{
+			type: 'textinput',
+			id: 'localPanel',
+			label: 'Local Panel',
+			width: 12,
+			regex: '/^([0-9]{1,3})[.]([0-9]{1,3})[.]([0-9]{1,4})$/',
+			default: '1.3.1',
+			tooltip: 'Address should be three period seperated integers <net>.<node>.<port>. Used for presets and defaults in actions/feedbacks.',
+		},
+		{
 			type: 'checkbox',
 			id: 'verbose',
 			label: 'Verbose Logs',

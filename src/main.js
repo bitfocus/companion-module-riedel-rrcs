@@ -131,6 +131,7 @@ class Riedel_RRCS extends InstanceBase {
 			)
 		)
 		this.getAllRRCSProps()
+		this.debounceUpdateActionFeedbackDefs()
 	}
 
 	async init(config) {
