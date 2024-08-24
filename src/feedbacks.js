@@ -2,6 +2,8 @@ import { options, styles } from './consts.js'
 
 export default async function (self) {
 	let feedbackDefs = []
+	const localPortObjectID =
+		self.getObjectIDfromAddress(self.calcAddress(self.config.localPanel)) ?? self.rrcs.choices.ports.inputs[0]?.id ?? ''
 	feedbackDefs['crosspoint'] = {
 		name: 'Crosspoint',
 		type: 'boolean',
@@ -13,12 +15,12 @@ export default async function (self) {
 			{
 				...options.srcAddrList,
 				choices: self.rrcs.choices.ports.inputs,
-				default: self.rrcs.choices.ports.inputs[0]?.id ?? '',
+				default: localPortObjectID,
 			},
 			{
 				...options.dstAddrList,
 				choices: self.rrcs.choices.ports.outputs,
-				default: self.rrcs.choices.ports.outputs[0]?.id ?? '',
+				default: localPortObjectID,
 			},
 		],
 		callback: async ({ options }, context) => {
@@ -101,7 +103,7 @@ export default async function (self) {
 			{
 				...options.addrList,
 				choices: self.rrcs.choices.ports.all,
-				default: self.rrcs.choices.ports.all[0]?.id ?? '',
+				default: localPortObjectID,
 			},
 			options.gpSlotNumber,
 		],
@@ -172,7 +174,7 @@ export default async function (self) {
 			{
 				...options.addrList,
 				choices: self.rrcs.choices.ports.all,
-				default: self.rrcs.choices.ports.all[0]?.id ?? '',
+				default: localPortObjectID,
 			},
 			options.gpSlotNumber,
 		],

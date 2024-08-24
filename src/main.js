@@ -89,7 +89,7 @@ class Riedel_RRCS extends InstanceBase {
 		this.rrcs = {
 			activeServer: 'pri',
 			crosspoints: {},
-			ports: {},
+			ports: [],
 			conferences: [],
 			ifbs: [],
 			logicSrc: [],

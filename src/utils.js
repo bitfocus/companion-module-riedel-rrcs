@@ -10,77 +10,89 @@ export function returnTransKey() {
 }
 
 export function calcAddress(arg) {
-	if (this.config.verbose) {
-		this.log('debug', `calcAddress ${arg}`)
-	}
-	const address = arg.split('.').map((x) => parseInt(x))
-	if (address.length !== 3 || isNaN(address[0]) || isNaN(address[1]) || isNaN(address[2])) {
+	try {
+		if (this.config.verbose) {
+			this.log('debug', `calcAddress ${arg}`)
+		}
+		const address = arg.split('.').map((x) => parseInt(x))
+		if (address.length !== 3 || isNaN(address[0]) || isNaN(address[1]) || isNaN(address[2])) {
+			return undefined
+		}
+		if (address[0] === 0 && address[1] === 0 && address[2] === 0) {
+			//ok
+		} else if (
+			address[0] < limits.net.min ||
+			address[0] > limits.net.max ||
+			address[1] < limits.node.min ||
+			address[1] > limits.node.max ||
+			address[2] < limits.port.min ||
+			address[2] > limits.port.max
+		) {
+			return undefined
+		}
+		return { net: address[0], node: address[1], port: address[2] - 1 }
+	} catch {
 		return undefined
 	}
-	if (address[0] === 0 && address[1] === 0 && address[2] === 0) {
-		//ok
-	} else if (
-		address[0] < limits.net.min ||
-		address[0] > limits.net.max ||
-		address[1] < limits.node.min ||
-		address[1] > limits.node.max ||
-		address[2] < limits.port.min ||
-		address[2] > limits.port.max
-	) {
-		return undefined
-	}
-	return { net: address[0], node: address[1], port: address[2] - 1 }
 }
 
 export function calcPortAddress(arg) {
-	if (this.config.verbose) {
-		this.log('debug', `calcPortAddress ${arg}`)
-	}
-	const address = arg.split('.').map((x) => parseInt(x))
-	if (address.length < 2 || address.length > 3 || isNaN(address[0]) || isNaN(address[1])) {
+	try {
+		if (this.config.verbose) {
+			this.log('debug', `calcPortAddress ${arg}`)
+		}
+		const address = arg.split('.').map((x) => parseInt(x))
+		if (address.length < 2 || address.length > 3 || isNaN(address[0]) || isNaN(address[1])) {
+			return undefined
+		}
+		if (address.length === 3) {
+			// if address has been supplied in <net>.<node>.<port> format drop the net
+			address.shift()
+		}
+		if (
+			address[0] < limits.node.min ||
+			address[0] > limits.node.max ||
+			address[1] < limits.port.min ||
+			address[1] > limits.port.max
+		) {
+			return undefined
+		}
+		return { node: address[0], port: address[1] - 1 }
+	} catch {
 		return undefined
 	}
-	if (address.length === 3) {
-		// if address has been supplied in <net>.<node>.<port> format drop the net
-		address.shift()
-	}
-	if (
-		address[0] < limits.node.min ||
-		address[0] > limits.node.max ||
-		address[1] < limits.port.min ||
-		address[1] > limits.port.max
-	) {
-		return undefined
-	}
-	return { node: address[0], port: address[1] - 1 }
 }
 
 export function calcGpioAddress(arg) {
-	if (this.config.verbose) {
-		this.log('debug', `calcGpioAddress ${arg}`)
-	}
-	const address = arg.split('.').map((x) => parseInt(x))
-	if (
-		address.length !== 5 ||
-		isNaN(address[0]) ||
-		isNaN(address[1]) ||
-		isNaN(address[2]) ||
-		isNaN(address[3]) ||
-		isNaN(address[4]) ||
-		address[0] < limits.net.min ||
-		address[0] > limits.net.max ||
-		address[1] < limits.node.min ||
-		address[1] > limits.node.max ||
-		address[2] < limits.port.min ||
-		address[2] > limits.port.max ||
-		address[3] < 0 ||
-		address[3] > limits.clientCardSlot.max ||
-		address[4] < 1 ||
-		address[4] > 256
-	) {
+	try {
+		if (this.config.verbose) {
+			this.log('debug', `calcGpioAddress ${arg}`)
+		}
+		const address = arg.split('.').map((x) => parseInt(x))
+		if (
+			address.length !== 5 ||
+			isNaN(address[0]) ||
+			isNaN(address[1]) ||
+			isNaN(address[2]) ||
+			isNaN(address[3]) ||
+			isNaN(address[4]) ||
+			address[0] < limits.net.min ||
+			address[0] > limits.net.max ||
+			address[1] < limits.node.min ||
+			address[1] > limits.node.max ||
+			address[2] < limits.port.min ||
+			address[2] > limits.port.max ||
+			address[3] < 0 ||
+			address[3] > limits.clientCardSlot.max ||
+			address[4] < 1 ||
+			address[4] > 256
+		) {
+			return undefined
+		}
+		return { net: address[0], node: address[1], port: address[2] - 1, slot: address[3], number: address[4] - 1 }
+	} catch {
 		return undefined
 	}
-	return { net: address[0], node: address[1], port: address[2] - 1, slot: address[3], number: address[4] - 1 }
 }
 
 export function calcGpioSlotNumber(arg) {
@@ -100,4 +112,21 @@ export function calcGpioSlotNumber(arg) {
 		return undefined
 	}
 	return { slot: address[0], number: address[1] - 1 }
+}
+
+export function getObjectIDfromAddress(addr) {
+	try {
+		for (const id in this.rrcs.ports) {
+			if (
+				this.rrcs.ports[`${id}`].Net === addr.net &&
+				this.rrcs.ports[`${id}`].Node === addr.node &&
+				this.rrcs.ports[`${id}`].Port === addr.port
+			) {
+				return this.rrcs.ports[`${id}`].ObjectID
+			}
+		}
+	} catch (e) {
+		return undefined
+	}
+	return undefined
 }

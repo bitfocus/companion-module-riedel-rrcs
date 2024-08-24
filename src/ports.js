@@ -25,10 +25,10 @@ export function getAllPorts() {
 			this.log('info', `getAllPorts returned ${ports[1].length} elements`)
 		}
 		if (Array.isArray(ports[1])) {
-			this.rrcs.ports = []
-			for (const port of ports[1]) {
-				this.rrcs.ports[`${port.ObjectID}`] = port
-			}
+			this.rrcs.ports = ports[1]
+			/* for (const port of ports[1]) {
+				this.rrcs.ports[`${port.ObjectID}`] = JSON.parse(JSON.stringify(port))
+			} */
 			this.buildPortChoices(ports[1])
 		} else {
 			this.low('warn', `Invalid response to getAllPorts. \n${JSON.stringify(ports)}`)
