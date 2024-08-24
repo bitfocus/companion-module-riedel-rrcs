@@ -53,12 +53,7 @@ export async function initLocalServer(port, host, name) {
 			this.log('debug', `${name} Recieved: ${methodName} Data: ${JSON.stringify(args)}`)
 		}
 		if (this.config.update) {
-			this.getAllXp()
-			this.getAllLogicSources()
-			this.getAllPorts()
-			this.getAllIFBs()
-			this.subscribeFeedbacks()
-			this.debounceUpdateFeedbacks()
+			this.debounceGetAll()
 		}
 	})
 	this[name].setHandler(notifications.crosspoint.change.rpc, async (methodName, args) => {

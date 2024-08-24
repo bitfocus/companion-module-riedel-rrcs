@@ -28,8 +28,7 @@ export function getAllLogicSources() {
 				}
 			}
 		}
-		this.updateActions() // export actions
-		this.updateFeedbacks() // export feedbacks
+		this.debounceUpdateActionFeedbackDefs()
 		if (this.feedbacksToUpdate.includes('logicSource') === false) {
 			this.feedbacksToUpdate.push('logicSource')
 		}

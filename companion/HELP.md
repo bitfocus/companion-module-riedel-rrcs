@@ -44,7 +44,7 @@ Ports can be selected from a list, or entered directly via the address. The drop
 - Set GP Output
 - Set Logic Source
 
-### Limitations
+### Notes & Limitations
 
 - Action Recorder
 

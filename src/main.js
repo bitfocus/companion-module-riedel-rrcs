@@ -130,11 +130,7 @@ class Riedel_RRCS extends InstanceBase {
 				'pri'
 			)
 		)
-		this.getAllXp()
-		this.getAllLogicSources()
-		this.getAllPorts()
-		this.getAllIFBs()
-		this.debounceUpdateFeedbacks()
+		this.getAllRRCSProps()
 	}
 
 	async init(config) {

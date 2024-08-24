@@ -68,7 +68,7 @@ export function buildIFBChoices(ifbArray) {
 		this.rrcs.choices.ifbs.push({ id: ifb.ObjectID, label: ifb.LongName })
 	}
 	this.rrcs.choices.ifbs = orderBy(this.rrcs.choices.ifbs, ['label'], ['asc'])
-	this.updateActions() // export actions
+	this.debounceUpdateActionFeedbackDefs()
 }
 
 export function getIFBAddressFromObjectID(ObjectID) {

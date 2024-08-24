@@ -61,8 +61,7 @@ export function buildPortChoices(portArray) {
 	this.rrcs.choices.ports.outputs = orderBy(this.rrcs.choices.ports.outputs, ['label'], ['asc'])
 	this.rrcs.choices.ports.panels = orderBy(this.rrcs.choices.ports.panels, ['label'], ['asc'])
 	this.rrcs.choices.ports.all = orderBy(this.rrcs.choices.ports.all, ['label'], ['asc'])
-	this.updateActions() // export actions
-	this.updateFeedbacks() // export feedbacks
+	this.debounceUpdateActionFeedbackDefs()
 }
 
 export function getPortAddressFromObjectID(ObjectID) {
