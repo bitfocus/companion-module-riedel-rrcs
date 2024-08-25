@@ -4,9 +4,10 @@ import { HttpServerNodejs } from '@foxglove/xmlrpc/nodejs'
 
 import { notifications } from './notifications.js'
 
-export async function initLocalServer(port, host, name) {
+export async function initLocalServer(port, host, name, rrcsServer) {
 	this[name] = new XmlRpcServer(new HttpServerNodejs())
 	await this[name].listen(port, host)
+	this.registerForAllEvents(port, host, rrcsServer)
 	if (this.config.verbose) {
 		this.log('debug', `${name} listening on ${this[name].url()}`)
 	}
@@ -154,5 +155,6 @@ export async function initLocalServer(port, host, name) {
 		if (this.config.verbose) {
 			console.log(`${name} Recieved: ${methodName} Data: ${JSON.stringify(args)}`)
 		}
+		this.recievedKeepAlive(port, host, rrcsServer)
 	})
 }

@@ -21,8 +21,8 @@ export function getAllPorts() {
 			return
 		}
 		if (this.config.verbose) {
+			this.log('info', `getAllPorts returned ${ports[1].length} ports`)
 			this.log('debug', `getAllPorts: \n${JSON.stringify(ports)}`)
-			this.log('info', `getAllPorts returned ${ports[1].length} elements`)
 		}
 		if (Array.isArray(ports[1])) {
 			this.rrcs.ports = {}

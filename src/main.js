@@ -14,7 +14,8 @@ import * as ifb from './ifb.js'
 import * as keyManipulation from './keyManipulation.js'
 import * as localServer from './localserver.js'
 import * as logic from './logic.js'
-import * as notifications from './notifications.js'
+//import * as notifications from './notifications.js'
+import * as notificationRegistration from './notificationRegistration.js'
 import { rrcsMethods } from './methods.js'
 import * as methodCallQueue from './methodCallQueue.js'
 import * as portLabel from './portLabel.js'
@@ -42,7 +43,8 @@ class Riedel_RRCS extends InstanceBase {
 			...localServer,
 			...logic,
 			...methodCallQueue,
-			...notifications,
+			//...notifications,
+			...notificationRegistration,
 			...portLabel,
 			...ports,
 			...string,
@@ -64,7 +66,11 @@ class Riedel_RRCS extends InstanceBase {
 
 	destroyRRCS() {
 		this.rrcsQueue.clear()
-
+		this.stopDebounce()
+		this.unregisterForAllEvents(this.config.portLocalPri, this.config.hostLocalPri, 'pri')
+		if (this.rrcsSec) {
+			this.unregisterForAllEvents(this.config.portLocalSec, this.config.hostLocalSec, 'sec')
+		}
 		if (this.rrcs) {
 			delete this.rrcs
 		}
@@ -112,24 +118,17 @@ class Riedel_RRCS extends InstanceBase {
 		}
 
 		this.rrcsPri = new XmlRpcClient(`http://${this.config.hostPri}:${this.config.portPri}`)
-		await this.initLocalServer(this.config.portLocalPri, this.config.hostLocalPri, `localXmlRpcPri`)
+		await this.initLocalServer(this.config.portLocalPri, this.config.hostLocalPri, `localXmlRpcPri`, 'pri')
 		if (this.config.redundant) {
 			if (this.config.hostSec && this.config.portSec && this.config.hostLocalSec) {
 				this.rrcsSec = new XmlRpcClient(`http://${this.config.hostSec}:${this.config.portSec}`)
-				await this.initLocalServer(this.config.portLocalSec, this.config.hostLocalSec, `localXmlRpcSec`)
+				await this.initLocalServer(this.config.portLocalSec, this.config.hostLocalSec, `localXmlRpcSec`, 'sec')
 			} else {
 				this.updateStatus(InstanceStatus.BadConfig)
 				return
 			}
 		}
 
-		this.rrcsQueue.add(() =>
-			this.rrcsMethodCall(
-				rrcsMethods.notifications.registerForAllEvents.rpc,
-				[parseInt(this.config.portLocalPri), this.config.hostLocalPri, false, false],
-				'pri',
-			),
-		)
 		this.getAllRRCSProps()
 		this.debounceUpdateActionFeedbackDefs()
 	}
@@ -141,20 +140,7 @@ class Riedel_RRCS extends InstanceBase {
 	// When module gets deleted
 	async destroy() {
 		this.log('debug', 'destroy')
-		this.stopDebounce()
-		this.rrcsQueue.clear()
-		this.rrcsMethodCall(
-			rrcsMethods.notifications.unregisterForAllEvents.rpc,
-			[this.config.portLocalPri, this.config.hostLocalPri],
-			'pri',
-		)
-		if (this.rrcsSec) {
-			this.rrcsMethodCall(
-				rrcsMethods.notifications.unregisterForAllEvents.rpc,
-				[this.config.portLocalSec, this.config.hostLocalSec],
-				'sec',
-			)
-		}
+
 		this.destroyRRCS()
 	}
 

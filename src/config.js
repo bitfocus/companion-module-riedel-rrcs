@@ -62,7 +62,7 @@ export function getConfigFields() {
 			choices: this.localIPs,
 			allowCustom: true,
 			regex: Regex.HOSTNAME,
-			tooltip: 'The interface on this machine that the Primary RRCS server will send messages to',
+			tooltip: 'The interface on this machine that the Primary RRCS server will send notifications to',
 		},
 		{
 			type: 'textinput',
