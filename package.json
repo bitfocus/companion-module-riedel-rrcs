@@ -5,7 +5,9 @@
 	"type": "module",
 	"scripts": {
 		"format": "prettier -w .",
-		"package": "companion-module-build"
+		"package": "companion-module-build",
+		"lint:raw": "eslint --ext .ts --ext .js --ignore-pattern dist --ignore-pattern pkg",
+		"lint": "yarn lint:raw ."
 	},
 	"license": "MIT",
 	"repository": {
@@ -20,8 +22,7 @@
 	},
 	"devDependencies": {
 		"@companion-module/tools": "^2.0.0",
-		"prettier": "~3.3.3",
-		"eslint": "~9.9.1"
+		"prettier": "~3.3.3"
 	},
 	"prettier": "@companion-module/tools/.prettierrc.json"
 }

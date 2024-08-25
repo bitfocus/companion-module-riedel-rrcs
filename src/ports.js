@@ -1,4 +1,4 @@
-import { orderBy } from 'lodash-es'
+import { merge, orderBy } from 'lodash-es'
 import { rrcsMethods } from './methods.js'
 //import { rrcsErrorCodes } from './errorcodes.js'
 
@@ -25,10 +25,11 @@ export function getAllPorts() {
 			this.log('info', `getAllPorts returned ${ports[1].length} elements`)
 		}
 		if (Array.isArray(ports[1])) {
-			this.rrcs.ports = ports[1]
-			/* for (const port of ports[1]) {
-				this.rrcs.ports[`${port.ObjectID}`] = JSON.parse(JSON.stringify(port))
-			} */
+			this.rrcs.ports = {}
+			for (const port of ports[1]) {
+				const newPort = { [`oid_${port.ObjectID}`]: port }
+				this.rrcs.ports = merge(this.rrcs.ports, newPort)
+			}
 			this.buildPortChoices(ports[1])
 		} else {
 			this.low('warn', `Invalid response to getAllPorts. \n${JSON.stringify(ports)}`)
@@ -65,16 +66,16 @@ export function buildPortChoices(portArray) {
 }
 
 export function getPortAddressFromObjectID(ObjectID) {
-	if (this.rrcs.ports[ObjectID] === undefined) {
+	if (this.rrcs.ports[`oid_${ObjectID}`] === undefined) {
 		return undefined
 	}
-	const keys = Object.keys(this.rrcs.ports[ObjectID])
+	const keys = Object.keys(this.rrcs.ports[`oid_${ObjectID}`])
 	if (keys.includes('Net') && keys.includes('Node') && keys.includes('Port') && keys.includes('Input')) {
 		return {
-			net: this.rrcs.ports[ObjectID].Net,
-			node: this.rrcs.ports[ObjectID].Node,
-			port: this.rrcs.ports[ObjectID].Port,
-			isInput: this.rrcs.ports[ObjectID].Input,
+			net: this.rrcs.ports[`oid_${ObjectID}`].Net,
+			node: this.rrcs.ports[`oid_${ObjectID}`].Node,
+			port: this.rrcs.ports[`oid_${ObjectID}`].Port,
+			isInput: this.rrcs.ports[`oid_${ObjectID}`].Input,
 		}
 	}
 	return undefined
