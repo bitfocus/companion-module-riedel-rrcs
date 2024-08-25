@@ -127,8 +127,8 @@ class Riedel_RRCS extends InstanceBase {
 			this.rrcsMethodCall(
 				rrcsMethods.notifications.registerForAllEvents.rpc,
 				[parseInt(this.config.portLocalPri), this.config.hostLocalPri, false, false],
-				'pri'
-			)
+				'pri',
+			),
 		)
 		this.getAllRRCSProps()
 		this.debounceUpdateActionFeedbackDefs()
@@ -146,13 +146,13 @@ class Riedel_RRCS extends InstanceBase {
 		this.rrcsMethodCall(
 			rrcsMethods.notifications.unregisterForAllEvents.rpc,
 			[this.config.portLocalPri, this.config.hostLocalPri],
-			'pri'
+			'pri',
 		)
 		if (this.rrcsSec) {
 			this.rrcsMethodCall(
 				rrcsMethods.notifications.unregisterForAllEvents.rpc,
 				[this.config.portLocalSec, this.config.hostLocalSec],
-				'sec'
+				'sec',
 			)
 		}
 		this.destroyRRCS()

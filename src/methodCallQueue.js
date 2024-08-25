@@ -6,7 +6,7 @@ export async function rrcsMethodCall(method, params, server) {
 		if (this.config.verbose) {
 			this.log(
 				'debug',
-				`Initating Method Call: ${method}\nParameters: ${params} to ${server || this.rrcs.activeServer}`
+				`Initating Method Call: ${method}\nParameters: ${params} to ${server || this.rrcs.activeServer}`,
 			)
 		}
 		const transKey = this.returnTransKey()
@@ -16,8 +16,8 @@ export async function rrcsMethodCall(method, params, server) {
 				this.log(
 					'debug',
 					`RRCS Secondary Server Response to Method Call: ${method}\nTransaction Key: ${transKey} Data: ${JSON.stringify(
-						params
-					)}`
+						params,
+					)}`,
 				)
 			}
 			//this.updateStatus(InstanceStatus.Ok)
@@ -27,8 +27,8 @@ export async function rrcsMethodCall(method, params, server) {
 				this.log(
 					'debug',
 					`RRCS Primary Server Response to Method Call: ${method}\nTransaction Key: ${transKey} Data: ${JSON.stringify(
-						params
-					)}`
+						params,
+					)}`,
 				)
 			}
 			//this.updateStatus(InstanceStatus.Ok)

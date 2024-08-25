@@ -64,7 +64,7 @@ export function addLogicSource(ObjectID, state) {
 				actionId: 'setLogicSource',
 				options: { logicSrc: ObjectID, logicState: !!state },
 			},
-			`setLogicSource ${ObjectID}`
+			`setLogicSource ${ObjectID}`,
 		)
 	}
 }
