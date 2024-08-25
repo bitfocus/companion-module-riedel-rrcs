@@ -121,7 +121,7 @@ export function getConfigFields() {
 			type: 'textinput',
 			id: 'localPanel',
 			label: 'Local Panel',
-			width: 12,
+			width: 6,
 			regex:
 				'/^(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)[.](?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))[.](?:115[0-2]|11[0-4][0-9]|10[0-9][0-9]|[0-9]{1,3})$/',
 			default: '1.3.1',
