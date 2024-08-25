@@ -122,7 +122,8 @@ export function getConfigFields() {
 			id: 'localPanel',
 			label: 'Local Panel',
 			width: 12,
-			regex: '/^([0-9]{1,3})[.]([0-9]{1,3})[.]([0-9]{1,4})$/',
+			regex:
+				'/^(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)[.](?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))[.](?:115[0-2]|11[0-4][0-9]|10[0-9][0-9]|[0-9]{1,3})$/',
 			default: '1.3.1',
 			tooltip:
 				'Address should be three period seperated integers <net>.<node>.<port>. Used for presets and defaults in actions/feedbacks.',
