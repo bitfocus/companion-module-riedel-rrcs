@@ -232,8 +232,6 @@ export const options = {
 		id: 'srcAddrList',
 		type: 'dropdown',
 		label: 'Source',
-		//choices: this.rrcs.choices.port.all,
-		//default: this.rrcs.choices.port.all[0].id,
 		isVisible: (options) => {
 			return options.fromList
 		},
@@ -254,8 +252,6 @@ export const options = {
 		id: 'dstAddrList',
 		type: 'dropdown',
 		label: 'Destination',
-		//choices: this.rrcs.choices.port.all,
-		//default: this.rrcs.choices.port.all[0].id,
 		isVisible: (options) => {
 			return options.fromList
 		},
