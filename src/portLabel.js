@@ -26,6 +26,11 @@ export async function setPortLabel(address, isInput, label) {
 				this.log('warn', `setPortLabel: ${rrcsErrorCodes[response[1]]}`)
 				return undefined
 			} else {
+				//if it was successfull update port entry
+				this.rrcs.ports[`oid_${this.getObjectIDfromAddress(address, isInput)}`].Label = cleanLabel
+				if (this.feedbacksToUpdate.includes('portDetails') === false) {
+					this.feedbacksToUpdate.push('portDetails')
+				}
 				return cleanLabel
 			}
 		})

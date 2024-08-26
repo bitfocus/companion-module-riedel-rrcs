@@ -115,6 +115,7 @@ export function calcGpioSlotNumber(arg) {
 }
 
 export function getObjectIDfromAddress(addr, isInput) {
+	addr.net = addr.net ?? parseInt(this.config.localPanel.split('.')[0]) // if using a <node>.<port> address, assume the same net as the localPanel
 	const input = isInput ?? true
 	try {
 		for (const oid in this.rrcs.ports) {
