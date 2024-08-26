@@ -619,6 +619,22 @@ export const options = {
 		choices: choices.portDetails,
 		default: [choices.portDetails[0].id],
 	},
+	sendString: {
+		id: 'sendString',
+		type: 'textinput',
+		label: 'String',
+		default: '',
+		useVariables: true,
+		regex: Regex.SOMETHING,
+		tooltip: 'Match a string send with the Send String function.',
+	},
+	sendStringInfo: {
+		id: 'sendStringInfo',
+		type: 'static-text',
+		label: '',
+		value:
+			'True when a matching send string notification is recieved until the send string off notification is recieved.',
+	},
 }
 
 export const objectParams = {

@@ -21,6 +21,7 @@ export async function initLocalServer(port, host, name, rrcsServer) {
 		if (this.config.verbose) {
 			this.log('debug', `${name} Recieved: ${methodName} Data: ${JSON.stringify(args)}`)
 		}
+		this.recieveStringOff(args)
 	})
 	this[name].setHandler(notifications.gpio.inputChange.rpc, async (methodName, args) => {
 		if (this.config.verbose) {

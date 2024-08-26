@@ -250,7 +250,10 @@ export default async function (self) {
 			const port = self.getPortDetailsFromObjectID(
 				options.fromList
 					? options.addrList
-					: self.getObjectIDfromAddress(self.calcAddress(await context.parseVariablesInString(options.addr)), options.isInput),
+					: self.getObjectIDfromAddress(
+							self.calcAddress(await context.parseVariablesInString(options.addr)),
+							options.isInput,
+						),
 			)
 			if (port === undefined) {
 				if (self.config.verbose) {
@@ -295,11 +298,18 @@ export default async function (self) {
 				return undefined
 			}
 		},
-		/* subscribe: async () => {
-			if (this.feedbacksToUpdate.includes('portDetails') === false) {
-				this.feedbacksToUpdate.push('portDetails')
-			}
-		}, */
+	}
+
+	feedbackDefs['string'] = {
+		name: 'Send String',
+		type: 'boolean',
+		defaultStyle: styles.green,
+		options: [options.sendString, options.sendStringInfo],
+		callback: async ({ options }, context) => {
+			const string = await context.parseVariablesInString(options.sendString)
+
+			return self.rrcs.strings.includes(string) === true
+		},
 	}
 	self.setFeedbackDefinitions(feedbackDefs)
 }

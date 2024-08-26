@@ -105,6 +105,7 @@ class Riedel_RRCS extends InstanceBase {
 			users: [],
 			audioPatch: [],
 			clientCards: [],
+			strings: [],
 			choices: {
 				ifbs: [],
 				logicSources: [],
