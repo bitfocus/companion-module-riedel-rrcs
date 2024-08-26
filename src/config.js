@@ -67,7 +67,7 @@ export function getConfigFields() {
 		{
 			type: 'textinput',
 			id: 'portLocalPri',
-			label: 'Local Port Primary',
+			label: 'Local Port for Primary RPC Server',
 			width: 6,
 			regex: Regex.PORT,
 			default: 8195,
@@ -89,11 +89,11 @@ export function getConfigFields() {
 		{
 			type: 'number',
 			id: 'portLocalSec',
-			label: 'Local Port Secondary',
+			label: 'Local Port for Secondary RPC Server',
 			width: 6,
 			regex: Regex.PORT,
 			default: 8196,
-			tooltip: `Port for the local XML-RPC server`,
+			tooltip: `Port for the local XML-RPC server, must be different to the primary RPC server`,
 			isVisible: (options) => {
 				return options.redundant
 			},
