@@ -210,7 +210,8 @@ export const options = {
 		id: 'isInput',
 		type: 'checkbox',
 		label: 'Input Port',
-		default: false,
+		default: true,
+		tooltip: 'For split ports, select the input or output. For standard panels and 4 wire ports can left enabled.',
 		isVisible: (options) => {
 			return !options.fromList
 		},

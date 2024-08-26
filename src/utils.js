@@ -123,7 +123,7 @@ export function getObjectIDfromAddress(addr, isInput) {
 				this.rrcs.ports[oid].Net === addr.net &&
 				this.rrcs.ports[oid].Node === addr.node &&
 				this.rrcs.ports[oid].Port === addr.port &&
-				this.rrcs.ports[oid].Input === input
+				(this.rrcs.ports[oid].Input === input || this.rrcs.ports[oid].Output === !input)
 			) {
 				return this.rrcs.ports[oid].ObjectID
 			}
