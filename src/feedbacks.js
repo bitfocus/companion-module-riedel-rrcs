@@ -238,6 +238,7 @@ export default async function (self) {
 		options: [
 			options.fromList,
 			{ ...options.addr, default: self.config.localPanel },
+			options.isInput,
 			{
 				...options.addrList,
 				choices: self.rrcs.choices.ports.all,
@@ -249,7 +250,7 @@ export default async function (self) {
 			const port = self.getPortDetailsFromObjectID(
 				options.fromList
 					? options.addrList
-					: self.getObjectIDfromAddress(self.calcAddress(await context.parseVariablesInString(options.addr))),
+					: self.getObjectIDfromAddress(self.calcAddress(await context.parseVariablesInString(options.addr)), options.isInput),
 			)
 			if (port === undefined) {
 				if (self.config.verbose) {
@@ -266,6 +267,7 @@ export default async function (self) {
 					text: '',
 				}
 				options.portDetails.forEach((item) => {
+					const oneBasedPort = parseInt(port.port) + 1
 					switch (item) {
 						case 'LongName':
 							out.text += port.longName.trim() + '\\n'
@@ -274,10 +276,10 @@ export default async function (self) {
 							out.text += port.label.trim() + '\\n'
 							break
 						case 'Address':
-							out.text += port.net + '.' + port.node + '.' + port.port + '\\n'
+							out.text += port.net + '.' + port.node + '.' + oneBasedPort + '\\n'
 							break
 						case 'Port':
-							out.text += port.port + '\\n'
+							out.text += oneBasedPort + '\\n'
 							break
 						case 'PortType':
 							out.text += port.type + '\\n'
