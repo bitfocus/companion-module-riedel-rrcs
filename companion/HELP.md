@@ -72,9 +72,9 @@ Action & Feedback only available when RRCS has reported configured logic sources
 
 RRCS uses 0-based numbering for Port and GPIO numbers. This module converts them to 1-based numbering for consistency with Director, however internal logs are 0-based.
 
-- Recieved String
+- Recieved String & Send String
 
-Is set to the most recently recieved Send String message.
+The Recieved string variable is set to the most recently recieved Send String message. The Send String feedback is true when a matching string is asserted by a send string notification, until it is removed with the send string off notification.
 
 - Update on Configuration Change
 
