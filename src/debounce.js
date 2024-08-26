@@ -32,6 +32,9 @@ export function updateActionFeedbackDefs() {
 	this.updateActions() // export actions
 	this.updateFeedbacks() // export feedbacks
 	this.updateVariableDefinitions() // export variable definitions
+	if (this.feedbacksToUpdate.includes('portDetails') === false) {
+		this.feedbacksToUpdate.push('portDetails')
+	}
 }
 
 export function debounceGetAll() {

@@ -232,5 +232,72 @@ export default async function (self) {
 			})
 		},
 	}
+	feedbackDefs['portDetails'] = {
+		name: 'Port Details',
+		type: 'advanced',
+		options: [
+			options.fromList,
+			{ ...options.addr, default: self.config.localPanel },
+			{
+				...options.addrList,
+				choices: self.rrcs.choices.ports.all,
+				default: localPortObjectID,
+			},
+			options.portDetails,
+		],
+		callback: async ({ options }, context) => {
+			const port = self.getPortDetailsFromObjectID(
+				options.fromList
+					? options.addrList
+					: self.getObjectIDfromAddress(self.calcAddress(await context.parseVariablesInString(options.addr))),
+			)
+			if (port === undefined) {
+				if (self.config.verbose) {
+					self.log(
+						'debug',
+						`invalid variables supplied to portDetails ${options.fromList ? options.addrList : options.addr}`,
+					)
+				}
+				return false
+			}
+
+			try {
+				let out = {
+					text: '',
+				}
+				options.portDetails.forEach((item) => {
+					switch (item) {
+						case 'LongName':
+							out.text += port.longName.trim() + '\\n'
+							break
+						case 'Label':
+							out.text += port.label.trim() + '\\n'
+							break
+						case 'Address':
+							out.text += port.net + '.' + port.node + '.' + port.port + '\\n'
+							break
+						case 'Port':
+							out.text += port.port + '\\n'
+							break
+						case 'PortType':
+							out.text += port.type + '\\n'
+							break
+						case 'KeyCount':
+							out.text += port.keyCount + '\\n'
+							break
+					}
+				})
+				return out
+			} catch {
+				self.log('warn', 'portDetails threw an error')
+				return undefined
+			}
+		},
+		/* subscribe: async () => {
+			if (this.feedbacksToUpdate.includes('portDetails') === false) {
+				this.feedbacksToUpdate.push('portDetails')
+			}
+		}, */
+	}
 	self.setFeedbackDefinitions(feedbackDefs)
 }

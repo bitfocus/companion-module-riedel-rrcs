@@ -150,6 +150,14 @@ export const choices = {
 		{ id: rrcsMethods.ifbVolume.set.rpc, label: rrcsMethods.ifbVolume.set.name },
 		{ id: rrcsMethods.ifbVolume.remove.rpc, label: rrcsMethods.ifbVolume.remove.name },
 	],
+	portDetails: [
+		{ id: 'LongName', label: 'Long Name' },
+		{ id: 'Label', label: 'Label' },
+		{ id: 'Address', label: 'Address' },
+		{ id: 'Port', label: 'Port Number' },
+		{ id: 'PortType', label: 'Port Type' },
+		{ id: 'KeyCount', label: 'Key Count' },
+	],
 }
 
 export const options = {
@@ -606,6 +614,13 @@ export const options = {
 		isVisible: (options) => {
 			return options.ifbMethod === 'RemoveIFBVolumeMixMinus'
 		},
+	},
+	portDetails: {
+		id: 'portDetails',
+		type: 'multidropdown',
+		label: 'Choices',
+		choices: choices.portDetails,
+		default: [choices.portDetails[0].id],
 	},
 }
 

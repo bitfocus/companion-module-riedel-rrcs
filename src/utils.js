@@ -116,13 +116,13 @@ export function calcGpioSlotNumber(arg) {
 
 export function getObjectIDfromAddress(addr) {
 	try {
-		for (const id in this.rrcs.ports) {
+		for (const oid in this.rrcs.ports) {
 			if (
-				this.rrcs.ports[`${id}`].Net === addr.net &&
-				this.rrcs.ports[`${id}`].Node === addr.node &&
-				this.rrcs.ports[`${id}`].Port === addr.port
+				this.rrcs.ports[oid].Net === addr.net &&
+				this.rrcs.ports[oid].Node === addr.node &&
+				this.rrcs.ports[oid].Port === addr.port
 			) {
-				return this.rrcs.ports[`${id}`].ObjectID
+				return this.rrcs.ports[oid].ObjectID
 			}
 		}
 	} catch (e) {

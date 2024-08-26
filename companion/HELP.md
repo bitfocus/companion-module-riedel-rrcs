@@ -33,6 +33,7 @@ Ports can be selected from a list, or entered directly via the address. The drop
 - GP Input
 - GP Output
 - Logic Source
+- Port Details
 
 ### Variables
 

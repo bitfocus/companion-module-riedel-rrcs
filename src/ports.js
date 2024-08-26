@@ -31,6 +31,9 @@ export function getAllPorts() {
 				this.rrcs.ports = merge(this.rrcs.ports, newPort)
 			}
 			this.buildPortChoices(ports[1])
+			if (this.feedbacksToUpdate.includes('portDetails') === false) {
+				this.feedbacksToUpdate.push('portDetails')
+			}
 		} else {
 			this.low('warn', `Invalid response to getAllPorts. \n${JSON.stringify(ports)}`)
 		}
@@ -76,6 +79,27 @@ export function getPortAddressFromObjectID(ObjectID) {
 			node: this.rrcs.ports[`oid_${ObjectID}`].Node,
 			port: this.rrcs.ports[`oid_${ObjectID}`].Port,
 			isInput: this.rrcs.ports[`oid_${ObjectID}`].Input,
+		}
+	}
+	return undefined
+}
+
+export function getPortDetailsFromObjectID(ObjectID) {
+	if (this.rrcs.ports[`oid_${ObjectID}`] === undefined) {
+		return undefined
+	}
+	const keys = Object.keys(this.rrcs.ports[`oid_${ObjectID}`])
+	if (keys.includes('Net') && keys.includes('Node') && keys.includes('Port') && keys.includes('Input')) {
+		return {
+			net: this.rrcs.ports[`oid_${ObjectID}`].Net,
+			node: this.rrcs.ports[`oid_${ObjectID}`].Node,
+			port: this.rrcs.ports[`oid_${ObjectID}`].Port,
+			isInput: this.rrcs.ports[`oid_${ObjectID}`].Input,
+			isOutput: this.rrcs.ports[`oid_${ObjectID}`].Output,
+			label: this.rrcs.ports[`oid_${ObjectID}`].Label,
+			longName: this.rrcs.ports[`oid_${ObjectID}`].LongName,
+			type: this.rrcs.ports[`oid_${ObjectID}`].PortType,
+			keyCount: this.rrcs.ports[`oid_${ObjectID}`].KeyCount,
 		}
 	}
 	return undefined
