@@ -5,8 +5,8 @@
 	"description": "Companion Module for Riedel RRCS",
 	"version": "0.0.0",
 	"license": "MIT",
-	"repository": "git+https://github.com/phillipivan/companion-module-riedel-rrcs.git",
-	"bugs": "https://github.com/phillipivan/companion-module-riedel-rrcs/issues",
+	"repository": "git+https://github.com/bitfocus/companion-module-riedel-rrcs.git",
+	"bugs": "https://github.com/bitfocus/companion-module-riedel-rrcs/issues",
 	"maintainers": [
 		{
 			"name": "Phillip Ivan Pietruschka",
