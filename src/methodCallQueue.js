@@ -37,7 +37,7 @@ export async function rrcsMethodCall(method, params, server) {
 		}
 	} catch (error) {
 		this.log('warn', `Error! \n ${JSON.stringify(error)}`)
-		this.updateStatus(InstanceStatus.ConnectionFailure, error?.faultString ?? JSON.stringify(error))
+		this.updateStatus(InstanceStatus.ConnectionFailure, error?.faultString ?? error?.code ?? JSON.stringify(error))
 		return undefined
 	}
 	return data

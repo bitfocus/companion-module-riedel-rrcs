@@ -110,7 +110,7 @@ export async function initLocalServer(port, host, name, rrcsServer) {
 		if (this.config.verbose) {
 			this.log('warn', `${name} Recieved: ${methodName} Data: ${JSON.stringify(args)}`)
 		}
-		this.updateStatus(InstanceStatus.UnknownWarning, JSON.stringify(args))
+		this.updateStatus(InstanceStatus.UnknownWarning, `RRCS ${rrcsServer} Node Controller Reboot`)
 	})
 	this[name].setHandler(notifications.alarms.clientFailed.rpc, async (methodName, args) => {
 		if (this.config.verbose) {
@@ -141,16 +141,14 @@ export async function initLocalServer(port, host, name, rrcsServer) {
 		this.updateStatus(InstanceStatus.Ok)
 	})
 	this[name].setHandler(notifications.alarms.connectArtistFailure.rpc, async (methodName, args) => {
-		if (this.config.verbose) {
-			this.log('warn', `${name} Recieved: ${methodName} Data: ${JSON.stringify(args)}`)
-		}
-		this.updateStatus(InstanceStatus.UnknownWarning, JSON.stringify(args))
+		this.log('warn', `${name} Recieved: ${methodName} from: ${rrcsServer}\nData: ${JSON.stringify(args)}`)
+		this.updateStatus(InstanceStatus.UnknownWarning, `RRCS ${rrcsServer} connection to Artist Failure`)
 	})
 	this[name].setHandler(notifications.alarms.gatewayShutdown.rpc, async (methodName, args) => {
 		if (this.config.verbose) {
 			this.log('error', `${name} Recieved: ${methodName} Data: ${JSON.stringify(args)}`)
 		}
-		this.updateStatus(InstanceStatus.UnknownError, JSON.stringify(args))
+		this.updateStatus(InstanceStatus.UnknownError, `RRCS ${rrcsServer} shutdown`)
 	})
 	this[name].setHandler(notifications.ping.getAlive.rpc, async (methodName, args) => {
 		if (this.config.verbose) {
