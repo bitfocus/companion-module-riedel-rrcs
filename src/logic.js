@@ -1,3 +1,5 @@
+import { orderBy } from 'lodash-es'
+
 import { rrcsMethods } from './methods.js'
 import { rrcsErrorCodes } from './errorcodes.js'
 
@@ -14,6 +16,7 @@ export function getAllLogicSources() {
 			this.log('warn', `getAllLogicSources: ${rrcsErrorCodes[logicSources.ErrorCode]}`)
 			return undefined
 		}
+		this.rrcs.choices.logicSources = []
 		if (logicSources[`LogicSourceCount`] > 0) {
 			for (let i = 1; i <= logicSources[`LogicSourceCount`]; i++) {
 				const logicSource = logicSources[`LogicSource#${i}`]
@@ -27,6 +30,7 @@ export function getAllLogicSources() {
 					this.rrcs.choices.logicSources.push({ id: logicSource[2], label: logicSource[0] })
 				}
 			}
+			this.rrcs.choices.logicSources = orderBy(this.rrcs.choices.logicSources, ['label'], ['asc'])
 		}
 		this.debounceUpdateActionFeedbackDefs()
 		if (this.feedbacksToUpdate.includes('logicSource') === false) {
