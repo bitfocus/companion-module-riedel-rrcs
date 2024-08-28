@@ -50,7 +50,7 @@ export function addCrosspoint(src, dst, state) {
 					dstAddrList: this.rrcs.choices.ports.outputs[0]?.id ?? '',
 				},
 			},
-			`setCrosspoint ${src.net}.${src.node}.${src.port + 1} ${dst.net}.${dst.node}.${dst.port + 1}`,
+			`setCrosspoint ${src.net}.${src.node}.${src.port + 1} ${dst.net}.${dst.node}.${dst.port + 1}`
 		)
 	}
 }
@@ -92,12 +92,12 @@ export function getXp(src, dst) {
 			this.addCrosspoint(
 				{ net: src.net, node: src.node, port: src.port },
 				{ net: dst.net, node: dst.node, port: dst.port },
-				xp[2],
+				xp[2]
 			)
 		} else if (xp[1] !== undefined) {
 			this.log(
 				'warn',
-				`crosspoint subscribe: ${rrcsErrorCodes[xp[1]]} src: ${JSON.stringify(src)} dst: ${JSON.stringify(dst)}`,
+				`crosspoint subscribe: ${rrcsErrorCodes[xp[1]]} src: ${JSON.stringify(src)} dst: ${JSON.stringify(dst)}`
 			)
 		}
 	})

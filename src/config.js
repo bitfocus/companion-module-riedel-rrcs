@@ -126,7 +126,7 @@ export function getConfigFields() {
 				'/^(?:25[0-5]|2[0-4][0-9]|[1]?[1-9][0-9]|[1-9])[.](?:(?:25[0-5]|2[0-4][0-9]|[01]?[1-9][0-9]|[2-9]))[.](?:115[0-2]|11[0-4][0-9]|10[0-9][0-9]|[1-9][0-9]{1,2}|[1-9])$/',
 			default: '1.3.1',
 			tooltip:
-				'Address should be three period seperated integers <net>.<node>.<port>. Used for presets and defaults in actions/feedbacks.',
+				'Address should be three period seperated integers <net>.<node>.<port>. Used for defaults in actions/feedbacks. Should be in the same <net> as RRCS',
 		},
 		{
 			type: 'checkbox',

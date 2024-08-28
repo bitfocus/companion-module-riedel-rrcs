@@ -120,7 +120,7 @@ export default async function (self) {
 						'debug',
 						`invalid variables supplied to GP Output ${options.fromList ? options.addrList : options.gpo}${
 							options.fromList ? ' ' + options.slotNumber : ''
-						}`,
+						}`
 					)
 				}
 				return false
@@ -149,7 +149,7 @@ export default async function (self) {
 						'debug',
 						`invalid variables supplied to GP Output Subscribe ${options.fromList ? options.addrList : options.gpo}${
 							options.fromList ? ' ' + options.slotNumber : ''
-						}`,
+						}`
 					)
 				}
 				return false
@@ -189,7 +189,7 @@ export default async function (self) {
 				if (self.config.verbose) {
 					self.log(
 						'debug',
-						`invalid variables supplied to GP Input ${options.gpi}${options.fromList ? ' ' + options.slotNumber : ''}`,
+						`invalid variables supplied to GP Input ${options.gpi}${options.fromList ? ' ' + options.slotNumber : ''}`
 					)
 				}
 				return false
@@ -218,7 +218,7 @@ export default async function (self) {
 						'debug',
 						`invalid variables supplied to GP Input Subscribe ${options.fromList ? options.addrList : options.gpi}${
 							options.fromList ? ' ' + options.slotNumber : ''
-						}`,
+						}`
 					)
 				}
 				return false
@@ -252,14 +252,14 @@ export default async function (self) {
 					? options.addrList
 					: self.getObjectIDfromAddress(
 							self.calcAddress(await context.parseVariablesInString(options.addr)),
-							options.isInput,
-						),
+							options.isInput
+					  )
 			)
 			if (port === undefined) {
 				if (self.config.verbose) {
 					self.log(
 						'debug',
-						`invalid variables supplied to portDetails ${options.fromList ? options.addrList : options.addr}`,
+						`invalid variables supplied to portDetails ${options.fromList ? options.addrList : options.addr}`
 					)
 				}
 				return false

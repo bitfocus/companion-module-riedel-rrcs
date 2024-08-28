@@ -11,12 +11,11 @@ import * as debounce from './debounce.js'
 import * as gain from './gain.js'
 import * as gpio from './gpio.js'
 import * as ifb from './ifb.js'
+import * as keepAlive from './keepalive.js'
 import * as keyManipulation from './keyManipulation.js'
 import * as localServer from './localserver.js'
 import * as logic from './logic.js'
-//import * as notifications from './notifications.js'
 import * as notificationRegistration from './notificationRegistration.js'
-import { rrcsMethods } from './methods.js'
 import * as methodCallQueue from './methodCallQueue.js'
 import * as portLabel from './portLabel.js'
 import * as ports from './ports.js'
@@ -39,11 +38,11 @@ class Riedel_RRCS extends InstanceBase {
 			...gain,
 			...gpio,
 			...ifb,
+			...keepAlive,
 			...keyManipulation,
 			...localServer,
 			...logic,
 			...methodCallQueue,
-			//...notifications,
 			...notificationRegistration,
 			...portLabel,
 			...ports,
@@ -65,6 +64,7 @@ class Riedel_RRCS extends InstanceBase {
 	}
 
 	destroyRRCS() {
+		this.stopKeepAlive()
 		this.rrcsQueue.clear()
 		this.stopDebounce()
 		this.unregisterForAllEvents(this.config.portLocalPri, this.config.hostLocalPri, 'pri')
@@ -92,8 +92,9 @@ class Riedel_RRCS extends InstanceBase {
 
 	async initRRCS() {
 		this.destroyRRCS()
+		const localPanel = this.calcAddress(this.config.localPanel)
 		this.rrcs = {
-			localPanel: this.calcAddress(this.config.localPanel),
+			localPanel: { net: localPanel?.net ?? 1, node: localPanel?.node ?? 3, port: localPanel?.port ?? 1 },
 			activeServer: 'pri',
 			crosspoints: {},
 			ports: {},
@@ -120,12 +121,18 @@ class Riedel_RRCS extends InstanceBase {
 						outputs: [],
 						panels: [],
 						all: [],
-					}
+					},
 				},
 			},
 		}
-		this.rrcsPri = new XmlRpcClient(`http://${this.config.hostPri}:${this.config.portPri}`)
-		await this.initLocalServer(this.config.portLocalPri, this.config.hostLocalPri, `localXmlRpcPri`, 'pri')
+		if (this.config.hostPri) {
+			this.rrcsPri = new XmlRpcClient(`http://${this.config.hostPri}:${this.config.portPri}`)
+			await this.initLocalServer(this.config.portLocalPri, this.config.hostLocalPri, `localXmlRpcPri`, 'pri')
+		} else {
+			this.updateStatus(InstanceStatus.BadConfig)
+			return
+		}
+
 		if (this.config.redundant) {
 			if (this.config.hostSec && this.config.portSec && this.config.hostLocalSec) {
 				this.rrcsSec = new XmlRpcClient(`http://${this.config.hostSec}:${this.config.portSec}`)
@@ -138,6 +145,7 @@ class Riedel_RRCS extends InstanceBase {
 
 		this.getAllRRCSProps()
 		this.debounceUpdateActionFeedbackDefs()
+		this.startKeepAlive()
 	}
 
 	async init(config) {

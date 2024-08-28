@@ -8,6 +8,8 @@ Tested with RRCS Version 8.6.1
 
 Ports can be selected from a list, or entered directly via the address. The drop down list is easier, but only populates when online, the address scehema can be used offline and will accept variables. Addresses are normally specified as two, three or five period seperated numbers. Such as \<net\>.\<node\>.\<port\>. This schema accepts a single, or multiple variables, or a combination of static text and variables, depending on the use case.
 
+Functions that only accept \<node\>.\<port\> addresses only work in the same \<net\> as RRCS. The specified local panel in the config should be in the same \<net\> as RRCS.
+
 ### Actions
 
 - Crosspoint - Get All Active
@@ -63,6 +65,10 @@ These repopulate the drop down lists in actions & feedbacks.
 - GP Input Feedback
 
 Does not work with panels connected to an Artist-1024.
+
+- Local Panel
+
+This configuration item is provided for programming convenience. The module also uses it to filter the drop down address list for functions that can only operate in the local net.
 
 - Logic Source
 

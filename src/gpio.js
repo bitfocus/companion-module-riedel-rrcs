@@ -30,7 +30,7 @@ export function addGPO(gpo, state) {
 					gpSlotNumber: '4.5',
 				},
 			},
-			`setGPOutput ${gpo.net}.${gpo.node}.${gpo.port + 1}.${gpo.slot}.${gpo.number + 1}`,
+			`setGPOutput ${gpo.net}.${gpo.node}.${gpo.port + 1}.${gpo.slot}.${gpo.number + 1}`
 		)
 	}
 }

@@ -47,7 +47,7 @@ export async function labelAndMarker(
 	keyNumber,
 	isVirtual,
 	label,
-	marker,
+	marker
 ) {
 	const keys = Object.keys(address)
 	if (isNaN(page) || page < 0 || isNaN(expPanel) || expPanel < 0 || isNaN(keyNumber) || keyNumber < 0) {
