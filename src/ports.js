@@ -52,19 +52,36 @@ export function buildPortChoices(portArray) {
 	for (const port of portArray) {
 		if (port.Input === true) {
 			this.rrcs.choices.ports.inputs.push({ id: port.ObjectID, label: port.LongName })
+			if (port.Net === this.rrcs.localPanel.net) {
+				this.rrcs.choices.ports.local.inputs.push({ id: port.ObjectID, label: port.LongName })
+			}
 		}
 		if (port.Output === true) {
 			this.rrcs.choices.ports.outputs.push({ id: port.ObjectID, label: port.LongName })
+			if (port.Net === this.rrcs.localPanel.net) {
+				this.rrcs.choices.ports.local.outputs.push({ id: port.ObjectID, label: port.LongName })
+			}
 		}
 		if (port.PortExType > 3 && port.KeyCount > 0) {
 			this.rrcs.choices.ports.panels.push({ id: port.ObjectID, label: port.LongName })
+			if (port.Net === this.rrcs.localPanel.net) {
+				this.rrcs.choices.ports.local.panels.push({ id: port.ObjectID, label: port.LongName })
+			}
 		}
 		this.rrcs.choices.ports.all.push({ id: port.ObjectID, label: port.LongName })
+		if (port.Net === this.rrcs.localPanel.net) {
+			this.rrcs.choices.ports.local.all.push({ id: port.ObjectID, label: port.LongName })
+		}
 	}
 	this.rrcs.choices.ports.inputs = orderBy(this.rrcs.choices.ports.inputs, ['label'], ['asc'])
 	this.rrcs.choices.ports.outputs = orderBy(this.rrcs.choices.ports.outputs, ['label'], ['asc'])
 	this.rrcs.choices.ports.panels = orderBy(this.rrcs.choices.ports.panels, ['label'], ['asc'])
 	this.rrcs.choices.ports.all = orderBy(this.rrcs.choices.ports.all, ['label'], ['asc'])
+
+	this.rrcs.choices.ports.local.inputs = orderBy(this.rrcs.choices.ports.local.inputs, ['label'], ['asc'])
+	this.rrcs.choices.ports.local.outputs = orderBy(this.rrcs.choices.ports.local.outputs, ['label'], ['asc'])
+	this.rrcs.choices.ports.local.panels = orderBy(this.rrcs.choices.ports.local.panels, ['label'], ['asc'])
+	this.rrcs.choices.ports.local.all = orderBy(this.rrcs.choices.ports.local.all, ['label'], ['asc'])
 	this.debounceUpdateActionFeedbackDefs()
 }
 

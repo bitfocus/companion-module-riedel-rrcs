@@ -93,6 +93,7 @@ class Riedel_RRCS extends InstanceBase {
 	async initRRCS() {
 		this.destroyRRCS()
 		this.rrcs = {
+			localPanel: this.calcAddress(this.config.localPanel),
 			activeServer: 'pri',
 			crosspoints: {},
 			ports: {},
@@ -114,10 +115,15 @@ class Riedel_RRCS extends InstanceBase {
 					outputs: [],
 					panels: [],
 					all: [],
+					local: {
+						inputs: [],
+						outputs: [],
+						panels: [],
+						all: [],
+					}
 				},
 			},
 		}
-
 		this.rrcsPri = new XmlRpcClient(`http://${this.config.hostPri}:${this.config.portPri}`)
 		await this.initLocalServer(this.config.portLocalPri, this.config.hostLocalPri, `localXmlRpcPri`, 'pri')
 		if (this.config.redundant) {
