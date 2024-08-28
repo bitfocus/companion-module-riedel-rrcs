@@ -165,7 +165,7 @@ export const options = {
 		id: 'fromList',
 		type: 'checkbox',
 		label: 'Select Address from List',
-		default: false,
+		default: true,
 	},
 	xpMethod: {
 		id: 'xpMethod',
@@ -502,7 +502,7 @@ export const options = {
 	monitorAddr: {
 		id: 'monitorAddr',
 		type: 'textinput',
-		label: 'Monitor Address',
+		label: 'Port to Monitor Address',
 		default: '1.2',
 		useVariables: true,
 		regex: Regex.SOMETHING,
@@ -526,7 +526,7 @@ export const options = {
 	monitorAddrList: {
 		id: 'monitorAddrList',
 		type: 'dropdown',
-		label: 'Monitor Port',
+		label: 'Port to Monitor',
 		isVisible: (options) => {
 			return options.fromList
 		},
