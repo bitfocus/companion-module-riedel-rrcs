@@ -41,7 +41,7 @@ export default async function (self) {
 						'debug',
 						`invalid variables supplied to setCrosspoint ${options.fromList ? options.srcAddrList : options.srcAddr} ${
 							options.fromList ? options.dstAddrList : options.dstAddr
-						}`
+						}`,
 					)
 				}
 				return undefined
@@ -61,7 +61,7 @@ export default async function (self) {
 						'debug',
 						`invalid variables supplied to setCrosspoint ${options.fromList ? options.srcAddrList : options.srcAddr} ${
 							options.fromList ? options.dstAddrList : options.dstAddr
-						}`
+						}`,
 					)
 				}
 				return undefined
@@ -102,7 +102,7 @@ export default async function (self) {
 						'debug',
 						`invalid variables supplied to setCrosspoint Volume ${
 							options.fromList ? options.srcAddrList : options.srcAddr
-						} ${options.fromList ? options.dstAddrList : options.dstAddr} ${options.xpVolume}`
+						} ${options.fromList ? options.dstAddrList : options.dstAddr} ${options.xpVolume}`,
 					)
 				}
 				return undefined
@@ -122,7 +122,7 @@ export default async function (self) {
 						'debug',
 						`invalid variables supplied to setCrosspoint Volume ${
 							options.fromList ? options.srcAddrList : options.srcAddr
-						} ${options.fromList ? options.dstAddrList : options.dstAddr} ${options.xpVolume}`
+						} ${options.fromList ? options.dstAddrList : options.dstAddr} ${options.xpVolume}`,
 					)
 				}
 				return undefined
@@ -223,7 +223,7 @@ export default async function (self) {
 						'debug',
 						`invalid variables supplied to GP Output ${options.fromList ? options.addrList : options.gpo}${
 							options.fromList ? ' ' + options.slotNumber : ''
-						}`
+						}`,
 					)
 				}
 				return false
@@ -236,7 +236,7 @@ export default async function (self) {
 					slot: options.fromList ? slotNumber.slot : gpo.slot,
 					number: options.fromList ? slotNumber.number : gpo.number,
 				},
-				options.gpoState
+				options.gpoState,
 			)
 		},
 		subscribe: async ({ options }, context) => {
@@ -252,7 +252,7 @@ export default async function (self) {
 						'debug',
 						`invalid variables supplied to GP Output Subscribe ${options.fromList ? options.addrList : options.gpo}${
 							options.fromList ? ' ' + options.slotNumber : ''
-						}`
+						}`,
 					)
 				}
 				return false
@@ -349,7 +349,7 @@ export default async function (self) {
 				if (self.config.verbose) {
 					self.log(
 						'debug',
-						`invalid address supplied to setPortLabel ${options.fromList ? options.addrList : options.portAddr}`
+						`invalid address supplied to setPortLabel ${options.fromList ? options.addrList : options.portAddr}`,
 					)
 				}
 				return false
@@ -365,7 +365,7 @@ export default async function (self) {
 				if (self.config.verbose) {
 					self.log(
 						'debug',
-						`invalid address supplied to setPortLabel ${options.fromList ? options.addrList : options.portAddr}`
+						`invalid address supplied to setPortLabel ${options.fromList ? options.addrList : options.portAddr}`,
 					)
 				}
 				return undefined
@@ -413,7 +413,7 @@ export default async function (self) {
 						'debug',
 						`invalid address supplied to setIOGain ${options.fromList ? options.addrList : options.addr} ${
 							options.gain
-						}`
+						}`,
 					)
 				}
 				return false
@@ -429,7 +429,7 @@ export default async function (self) {
 				if (self.config.verbose) {
 					self.log(
 						'debug',
-						`invalid address supplied to setIOGain ${options.fromList ? options.addrList : options.addr}`
+						`invalid address supplied to setIOGain ${options.fromList ? options.addrList : options.addr}`,
 					)
 				}
 				return undefined
@@ -487,7 +487,7 @@ export default async function (self) {
 						'debug',
 						`invalid args supplied to pressKey ${options.fromList ? options.addrList : options.portAddr} ${
 							options.page
-						} ${options.expPanel} ${options.keyNumber} ${options.poolPort}`
+						} ${options.expPanel} ${options.keyNumber} ${options.poolPort}`,
 					)
 				}
 				return undefined
@@ -528,7 +528,7 @@ export default async function (self) {
 						'debug',
 						`invalid args supplied to keyLock ${options.fromList ? options.addrList : options.portAddr} ${
 							options.page
-						} ${options.expPanel} ${options.keyNumber} ${options.poolPort}`
+						} ${options.expPanel} ${options.keyNumber} ${options.poolPort}`,
 					)
 				}
 				return undefined
@@ -572,7 +572,7 @@ export default async function (self) {
 						'debug',
 						`invalid args supplied to pressKey ${options.fromList ? options.addrList : options.portAddr} ${
 							options.page
-						} ${options.expPanel} ${options.keyNumber} ${options.keyMarker}`
+						} ${options.expPanel} ${options.keyNumber} ${options.keyMarker}`,
 					)
 				}
 				return undefined
@@ -586,7 +586,7 @@ export default async function (self) {
 				key,
 				options.isVirtual,
 				label,
-				marker
+				marker,
 			)
 		},
 	}
@@ -624,7 +624,7 @@ export default async function (self) {
 						'debug',
 						`invalid variables supplied to portClone ${
 							options.fromList ? options.monitorAddrList : options.monitorAddr
-						} ${options.fromList ? options.cloneAddrList : options.cloneAddr}`
+						} ${options.fromList ? options.cloneAddrList : options.cloneAddr}`,
 					)
 				}
 				return undefined
@@ -675,7 +675,7 @@ export default async function (self) {
 						'debug',
 						`invalid address supplied to ifbSetVolume ${options.fromList ? options.addrList : options.portAddr} ${
 							options.fromList ? options.ifbList : options.ifbNumber
-						} ${options.ifbVolume}`
+						} ${options.ifbVolume}`,
 					)
 				}
 				return false
@@ -696,7 +696,7 @@ export default async function (self) {
 						'debug',
 						`invalid address supplied to ifbSetVolume learn ${options.fromList ? options.addrList : options.portAddr} ${
 							options.fromList ? options.ifbList : options.ifbNumber
-						}`
+						}`,
 					)
 				}
 				return undefined

@@ -26,8 +26,8 @@ export function setIFBVolume(method, addr, isInput, ifbNumber, volume) {
 						this.log(
 							'warn',
 							`RemoveIFBVolumeMixMinus Error: ${rrcsErrorCodes[response[1]]} address: ${JSON.stringify(
-								addr
-							)} ifb: ${ifb}`
+								addr,
+							)} ifb: ${ifb}`,
 						)
 					}
 				}

@@ -128,7 +128,7 @@ export function getObjectIDfromAddress(addr, isInput) {
 				return this.rrcs.ports[oid].ObjectID
 			}
 		}
-	} catch (e) {
+	} catch {
 		return undefined
 	}
 	return undefined

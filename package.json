@@ -1,12 +1,12 @@
 {
 	"name": "riedel-rrcs",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"main": "src/main.js",
 	"type": "module",
 	"scripts": {
 		"format": "prettier -w .",
 		"package": "companion-module-build",
-		"lint:raw": "eslint --ext .ts --ext .js --ignore-pattern dist --ignore-pattern pkg",
+		"lint:raw": "eslint",
 		"lint": "yarn lint:raw ."
 	},
 	"license": "MIT",
@@ -17,12 +17,14 @@
 	"dependencies": {
 		"@companion-module/base": "~1.10.0",
 		"@foxglove/xmlrpc": "^1.3.0",
-		"p-queue": "~8.0.1",
-		"lodash-es": "~4.17.21"
+		"lodash-es": "~4.17.21",
+		"p-queue": "~8.0.1"
 	},
 	"devDependencies": {
-		"@companion-module/tools": "^2.0.0",
+		"@companion-module/tools": "^2.0.3",
+		"eslint": "^9.10.0",
 		"prettier": "~3.3.3"
 	},
-	"prettier": "@companion-module/tools/.prettierrc.json"
+	"prettier": "@companion-module/tools/.prettierrc.json",
+	"packageManager": "yarn@4.4.1"
 }

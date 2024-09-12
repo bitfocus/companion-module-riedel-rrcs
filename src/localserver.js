@@ -72,7 +72,7 @@ export async function initLocalServer(port, host, name, rrcsServer) {
 			this.addCrosspoint(
 				{ net: parseInt(data[0]), node: parseInt(data[1]), port: parseInt(data[2]) },
 				{ net: parseInt(data[3]), node: parseInt(data[4]), port: parseInt(data[5]) },
-				!!data[6]
+				!!data[6],
 			)
 		}
 	})

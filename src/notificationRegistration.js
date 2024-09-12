@@ -7,9 +7,9 @@ export function registerForAllEvents(localPort, localHost, rrcsServer) {
 			this.rrcsMethodCall(
 				rrcsMethods.notifications.registerForAllEvents.rpc,
 				[parseInt(localPort), localHost, false, false],
-				rrcsServer
+				rrcsServer,
 			),
-		this.recievedKeepAlive(localPort, localHost, rrcsServer)
+		this.recievedKeepAlive(localPort, localHost, rrcsServer),
 	)
 }
 
