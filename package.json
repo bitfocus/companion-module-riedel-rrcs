@@ -1,6 +1,6 @@
 {
 	"name": "riedel-rrcs",
-	"version": "1.0.4",
+	"version": "1.0.3",
 	"main": "src/main.js",
 	"type": "module",
 	"scripts": {
