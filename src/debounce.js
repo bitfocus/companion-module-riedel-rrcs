@@ -35,6 +35,8 @@ export function updateActionFeedbackDefs() {
 	if (this.feedbacksToUpdate.includes('portDetails') === false) {
 		this.feedbacksToUpdate.push('portDetails')
 	}
+	this.subscribeActions()
+	this.subscribeFeedbacks()
 }
 
 export function debounceGetAll() {
@@ -55,7 +57,6 @@ export async function getAllRRCSProps() {
 	this.getAllLogicSources()
 	this.getAllPorts()
 	this.getAllIFBs()
-	this.subscribeFeedbacks()
 	this.debounceUpdateFeedbacks()
 }
 

@@ -46,7 +46,7 @@ export default async function (self) {
 				if (self.config.verbose) {
 					self.log(`debug`, `crosspoint not found ${JSON.stringify(src)} ${JSON.stringify(dst)}`)
 				}
-				return false
+				self.getXp({ net: src.net, node: src.node, port: src.port }, { net: dst.net, node: dst.node, port: dst.port })
 			}
 		},
 		subscribe: async ({ options }, context) => {
@@ -62,7 +62,7 @@ export default async function (self) {
 				}
 				return
 			}
-			self.getXp(src, dst)
+			self.getXp({ net: src.net, node: src.node, port: src.port }, { net: dst.net, node: dst.node, port: dst.port })
 		},
 	}
 	if (self.rrcs.choices.logicSources.length > 0) {
@@ -137,7 +137,13 @@ export default async function (self) {
 				if (self.config.verbose) {
 					self.log(`debug`, `gpo not found`)
 				}
-				return false
+				self.getGPOutput({
+					net: gpo.net,
+					node: gpo.node,
+					port: gpo.port,
+					slot: options.fromList ? slotNumber.slot : gpo.slot,
+					number: options.fromList ? slotNumber.number : gpo.number,
+				})
 			}
 		},
 		subscribe: async ({ options }, context) => {
@@ -206,7 +212,13 @@ export default async function (self) {
 				if (self.config.verbose) {
 					self.log(`debug`, `gpi not found`)
 				}
-				return false
+				self.getGPInput({
+					net: gpi.net,
+					node: gpi.node,
+					port: gpi.port,
+					slot: options.fromList ? slotNumber.slot : gpi.slot,
+					number: options.fromList ? slotNumber.number : gpi.number,
+				})
 			}
 		},
 		subscribe: async ({ options }, context) => {

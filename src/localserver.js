@@ -123,6 +123,7 @@ export async function initLocalServer(port, host, name, rrcsServer) {
 			this.log('info', `${name} Recieved: ${methodName} Data: ${JSON.stringify(args)}`)
 		}
 		this.updateStatus(InstanceStatus.Ok)
+		this.getAllRRCSProps()
 	})
 	this[name].setHandler(notifications.alarms.portInactive.rpc, async (methodName, args) => {
 		if (this.config.verbose) {
@@ -139,6 +140,7 @@ export async function initLocalServer(port, host, name, rrcsServer) {
 			this.log('info', `${name} Recieved: ${methodName} Data: ${JSON.stringify(args)}`)
 		}
 		this.updateStatus(InstanceStatus.Ok)
+		this.getAllRRCSProps()
 	})
 	this[name].setHandler(notifications.alarms.connectArtistFailure.rpc, async (methodName, args) => {
 		this.log('warn', `${name} Recieved: ${methodName} from: ${rrcsServer}\nData: ${JSON.stringify(args)}`)

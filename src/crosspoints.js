@@ -97,7 +97,7 @@ export function getXp(src, dst) {
 		} else if (xp[1] !== undefined) {
 			this.log(
 				'warn',
-				`crosspoint subscribe: ${rrcsErrorCodes[xp[1]]} src: ${JSON.stringify(src)} dst: ${JSON.stringify(dst)}`,
+				`get crosspoint: ${rrcsErrorCodes[xp[1]]} src: ${JSON.stringify(src)} dst: ${JSON.stringify(dst)}`,
 			)
 		}
 	})
