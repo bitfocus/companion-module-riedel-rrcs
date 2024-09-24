@@ -50,13 +50,17 @@ export default async function (self) {
 			}
 		},
 		subscribe: async ({ options }, context) => {
-			const src = self.calcAddress(await context.parseVariablesInString(options.srcAddr))
-			const dst = self.calcAddress(await context.parseVariablesInString(options.dstAddr))
+			const src = options.fromList
+				? self.getPortAddressFromObjectID(options.srcAddrList)
+				: self.calcAddress(await context.parseVariablesInString(options.srcAddr))
+			const dst = options.fromList
+				? self.getPortAddressFromObjectID(options.dstAddrList)
+				: self.calcAddress(await context.parseVariablesInString(options.dstAddr))
 			if (src === undefined || dst === undefined) {
 				if (self.config.verbose) {
 					self.log('debug', `invalid variables supplied to crosspoint feedback ${options.srcAddr} ${options.dstAddr}`)
 				}
-				return false
+				return
 			}
 			self.getXp(src, dst)
 		},
@@ -307,7 +311,6 @@ export default async function (self) {
 		options: [options.sendString, options.sendStringInfo],
 		callback: async ({ options }, context) => {
 			const string = await context.parseVariablesInString(options.sendString)
-
 			return self.rrcs.strings.includes(string) === true
 		},
 	}
