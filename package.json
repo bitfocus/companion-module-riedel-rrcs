@@ -1,6 +1,6 @@
 {
 	"name": "riedel-rrcs",
-	"version": "1.0.5",
+	"version": "1.0.6",
 	"main": "src/main.js",
 	"type": "module",
 	"scripts": {
@@ -26,7 +26,7 @@
 	"devDependencies": {
 		"@companion-module/tools": "^2.1.0",
 		"eslint": "^9.16.0",
-		"prettier": "~3.4.1"
+		"prettier": "~3.4.2"
 	},
 	"prettier": "@companion-module/tools/.prettierrc.json",
 	"packageManager": "yarn@4.5.3"

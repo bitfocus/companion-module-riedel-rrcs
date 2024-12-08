@@ -2025,7 +2025,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:~3.4.1":
+"prettier@npm:~3.4.2":
   version: 3.4.2
   resolution: "prettier@npm:3.4.2"
   bin:
@@ -2132,7 +2132,7 @@ __metadata:
     eslint: "npm:^9.16.0"
     lodash-es: "npm:~4.17.21"
     p-queue: "npm:~8.0.1"
-    prettier: "npm:~3.4.1"
+    prettier: "npm:~3.4.2"
   languageName: unknown
   linkType: soft
 
