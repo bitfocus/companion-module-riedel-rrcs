@@ -153,6 +153,9 @@ export async function initLocalServer(port, host, name, rrcsServer) {
 			}
 			this.updateStatus(InstanceStatus.UnknownError, `RRCS ${rrcsServer} shutdown`)
 		})
+		this[name].setHandler(notifications.alarms.sicFailed.rpc, async (methodName, args) => {
+			this.log('warn', `${name} Recieved: ${methodName} Data: ${JSON.stringify(args)}`)
+		})
 		this[name].setHandler(notifications.ping.getAlive.rpc, async (methodName, args) => {
 			if (this.config.verbose) {
 				console.log(`${name} Recieved: ${methodName} Data: ${JSON.stringify(args)}`)

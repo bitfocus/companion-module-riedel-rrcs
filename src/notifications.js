@@ -117,6 +117,11 @@ export const notifications = {
 			name: 'Gateway Shutdown',
 			description: `Gateway shutdown due to application closure or PC shutdown.`,
 		},
+		sicFailed: {
+			rpc: 'SICFailed',
+			name: 'SIC Failed',
+			description: `SIC failed on Artist-1024.`,
+		},
 	},
 	ping: {
 		getAlive: {
