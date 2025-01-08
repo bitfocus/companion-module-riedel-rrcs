@@ -15,17 +15,17 @@
 		"url": "git+https://github.com/bitfocus/companion-module-riedel-rrcs.git"
 	},
 	"dependencies": {
-		"@companion-module/base": "~1.11.2",
+		"@companion-module/base": "~1.11.3",
 		"@foxglove/xmlrpc": "^1.3.0",
 		"lodash-es": "~4.17.21",
 		"p-queue": "~8.0.1"
 	},
 	"engines": {
-		"node": "^22.11"
+		"node": "^22.12"
 	},
 	"devDependencies": {
-		"@companion-module/tools": "^2.1.0",
-		"eslint": "^9.16.0",
+		"@companion-module/tools": "^2.1.1",
+		"eslint": "^9.17.0",
 		"prettier": "~3.4.2"
 	},
 	"prettier": "@companion-module/tools/.prettierrc.json",
