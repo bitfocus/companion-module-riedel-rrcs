@@ -9,7 +9,7 @@ export async function setPortLabel(address, isInput, label) {
 		return undefined
 	}
 	if (keys.includes('node') && keys.includes('port')) {
-		this.rrcsQueue.add(async () => {
+		return await this.rrcsQueue.add(async () => {
 			const response = await this.rrcsMethodCall(rrcsMethods.portLabel.set.rpc, [
 				address.node,
 				address.port,
@@ -40,7 +40,7 @@ export async function setPortLabel(address, isInput, label) {
 export async function getLabel(address, isInput) {
 	const keys = Object.keys(address)
 	if (keys.includes('node') && keys.includes('port')) {
-		this.rrcsQueue.add(async () => {
+		return await this.rrcsQueue.add(async () => {
 			const response = await this.rrcsMethodCall(rrcsMethods.portLabel.get.rpc, [address.node, address.port, isInput])
 			if (response === undefined) {
 				return

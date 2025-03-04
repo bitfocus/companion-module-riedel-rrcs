@@ -187,7 +187,7 @@ export const options = {
 		type: 'textinput',
 		label: 'Address',
 		default: '1.2.3',
-		useVariables: true,
+		useVariables: { local: true },
 		regex: Regex.SOMETHING,
 		tooltip: 'Address should be three period seperated integers <net>.<node>.<port>',
 		isVisible: (options) => {
@@ -199,7 +199,7 @@ export const options = {
 		type: 'textinput',
 		label: 'Port Address',
 		default: '1.2',
-		useVariables: true,
+		useVariables: { local: true },
 		regex: Regex.SOMETHING,
 		tooltip: 'Address should be two period seperated integers <node>.<port>',
 		isVisible: (options) => {
@@ -221,7 +221,7 @@ export const options = {
 		type: 'textinput',
 		label: 'Source',
 		default: '1.2.3',
-		useVariables: true,
+		useVariables: { local: true },
 		regex: Regex.SOMETHING,
 		tooltip: 'Source address should be three period seperated integers <net>.<node>.<port>',
 		isVisible: (options) => {
@@ -241,7 +241,7 @@ export const options = {
 		type: 'textinput',
 		label: 'Destination',
 		default: '1.2.3',
-		useVariables: true,
+		useVariables: { local: true },
 		regex: Regex.SOMETHING,
 		tooltip: 'Destination address should be three period seperated integers <net>.<node>.<port>',
 		isVisible: (options) => {
@@ -302,7 +302,7 @@ export const options = {
 		type: 'textinput',
 		label: 'GPO',
 		default: '1.2.3.4.5',
-		useVariables: true,
+		useVariables: { local: true },
 		regex: Regex.SOMETHING,
 		tooltip: 'GP Output address should be five period seperated integers <net>.<node>.<port>.<slot>.<gpio number>',
 		isVisible: (options) => {
@@ -314,7 +314,7 @@ export const options = {
 		type: 'textinput',
 		label: 'GPI',
 		default: '1.2.3.4.5',
-		useVariables: true,
+		useVariables: { local: true },
 		regex: Regex.SOMETHING,
 		tooltip: 'GP Input address should be five period seperated integers <net>.<node>.<port>.<slot>.<gpio number>',
 		isVisible: (options) => {
@@ -326,7 +326,7 @@ export const options = {
 		type: 'textinput',
 		label: 'GP Slot & Number',
 		default: '4.5',
-		useVariables: true,
+		useVariables: { local: true },
 		regex: Regex.SOMETHING,
 		tooltip: 'GP address should be two period seperated integers <slot>.<gpio number>',
 		isVisible: (options) => {
@@ -344,7 +344,7 @@ export const options = {
 		type: 'textinput',
 		label: 'Port Alias',
 		default: '',
-		useVariables: true,
+		useVariables: { local: true },
 		regex: Regex.SOMETHING,
 		tooltip:
 			'Alias name for the given port which is displayed on the panel keys. A string with a maximum of 8 characters.',
@@ -354,7 +354,7 @@ export const options = {
 		type: 'textinput',
 		label: 'Port Label',
 		default: '',
-		useVariables: true,
+		useVariables: { local: true },
 		regex: Regex.SOMETHING,
 		tooltip: 'Port Label may be a maximum of 8 characters.',
 	},
@@ -376,7 +376,7 @@ export const options = {
 		type: 'textinput',
 		label: 'Crosspoint Volume(dB)',
 		default: '0',
-		useVariables: true,
+		useVariables: { local: true },
 		regex: Regex.SOMETHING,
 		tooltip: 'Range: -114.5 to +12.5, 0.5dB steps. Set to <= -115 to mute.',
 	},
@@ -386,7 +386,7 @@ export const options = {
 		type: 'textinput',
 		label: 'IO Gain (dB)',
 		default: '0',
-		useVariables: true,
+		useVariables: { local: true },
 		regex: Regex.SOMETHING,
 		tooltip: 'Range: -18 to +18, 0.5dB steps. Set to <= -64 to mute.',
 	},
@@ -401,7 +401,7 @@ export const options = {
 		type: 'textinput',
 		label: 'Page',
 		default: '1',
-		useVariables: true,
+		useVariables: { local: true },
 		tooltip: 'Key page number.',
 	},
 	expPanel: {
@@ -409,7 +409,7 @@ export const options = {
 		type: 'textinput',
 		label: 'Expansion Panel',
 		default: '0',
-		useVariables: true,
+		useVariables: { local: true },
 		regex: Regex.SOMETHING,
 		tooltip: 'Expansion panel number.',
 	},
@@ -419,7 +419,7 @@ export const options = {
 		label: 'Key Number',
 		default: '1',
 		regex: Regex.SOMETHING,
-		useVariables: true,
+		useVariables: { local: true },
 	},
 	isVirtual: {
 		id: 'isVirtual',
@@ -451,7 +451,7 @@ export const options = {
 		type: 'textinput',
 		label: 'Pool Port',
 		default: '-1',
-		useVariables: true,
+		useVariables: { local: true },
 		regex: Regex.SOMETHING,
 		tooltip: 'Set to -1 when not used. Valid range 0 to 32.',
 	},
@@ -468,7 +468,7 @@ export const options = {
 		label: 'Marker',
 		default: '1',
 		regex: Regex.SOMETHING,
-		useVariables: true,
+		useVariables: { local: true },
 		tooltip: '{Marker} is the index of the marker in the configuration. See the net propertiesdialog in Director.',
 		isVisible: (options) => {
 			return options.labelAndMarkerMethod === 'SetKeyLabelAndMarker' || options.labelAndMarkerMethod === 'SetKeyMarker'
@@ -479,7 +479,7 @@ export const options = {
 		type: 'textinput',
 		label: ' Label',
 		default: '',
-		useVariables: true,
+		useVariables: { local: true },
 		tooltip: 'Key Label may be a maximum of 8 characters.',
 		regex: Regex.SOMETHING,
 		isVisible: (options) => {
@@ -504,7 +504,7 @@ export const options = {
 		type: 'textinput',
 		label: 'Port to Monitor Address',
 		default: '1.2',
-		useVariables: true,
+		useVariables: { local: true },
 		regex: Regex.SOMETHING,
 		tooltip: 'Address should be two period seperated integers <node>.<port>',
 		isVisible: (options) => {
@@ -516,7 +516,7 @@ export const options = {
 		type: 'textinput',
 		label: 'Clone Address',
 		default: '1.2',
-		useVariables: true,
+		useVariables: { local: true },
 		regex: Regex.SOMETHING,
 		tooltip: 'Address should be two period seperated integers <node>.<port>',
 		isVisible: (options) => {
@@ -566,7 +566,7 @@ export const options = {
 		type: 'textinput',
 		label: 'IFB Number',
 		default: '1',
-		useVariables: true,
+		useVariables: { local: true },
 		regex: Regex.SOMETHING,
 		tooltip: 'Refer to Director for IFB Number',
 		isVisible: (options) => {
@@ -586,7 +586,7 @@ export const options = {
 		type: 'textinput',
 		label: 'Mix Minus Volume (dB)',
 		default: '0',
-		useVariables: true,
+		useVariables: { local: true },
 		regex: Regex.SOMETHING,
 		tooltip: 'Range: -114.5 to +12.5, 0.5dB steps. Set to <= -115 to mute.',
 		isVisible: (options) => {
@@ -624,7 +624,7 @@ export const options = {
 		type: 'textinput',
 		label: 'String',
 		default: '',
-		useVariables: true,
+		useVariables: { local: true },
 		regex: Regex.SOMETHING,
 		tooltip: 'Match a string send with the Send String function.',
 	},

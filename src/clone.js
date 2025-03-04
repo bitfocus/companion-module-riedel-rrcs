@@ -3,7 +3,7 @@ import { rrcsMethods } from './methods.js'
 
 export async function portClone(method, monitorPort, isInput, isInputClonePort, clonePort) {
 	if (method !== rrcsMethods.portClone.start && method !== rrcsMethods.portClone.stop)
-		this.rrcsQueue.add(async () => {
+		return await this.rrcsQueue.add(async () => {
 			const response = await this.rrcsMethodCall(method, [
 				monitorPort.node,
 				monitorPort.port,
@@ -18,5 +18,6 @@ export async function portClone(method, monitorPort, isInput, isInputClonePort, 
 			if (this.config.verbose) {
 				this.log('debug', `portClone: \n${JSON.stringify(response)}`)
 			}
+			return response
 		})
 }

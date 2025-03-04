@@ -46,7 +46,7 @@ export default async function (self) {
 				}
 				return undefined
 			}
-			self.setXp(options.xpMethod, src, dst, options.priority)
+			await self.setXp(options.xpMethod, src, dst, options.priority)
 		},
 		subscribe: async ({ options }, context) => {
 			const src = options.fromList
@@ -66,7 +66,7 @@ export default async function (self) {
 				}
 				return undefined
 			}
-			self.getXp(src, dst)
+			await self.getXp(src, dst)
 		},
 	}
 	actionDefs['setXPVolume'] = {
@@ -107,7 +107,7 @@ export default async function (self) {
 				}
 				return undefined
 			}
-			self.setXPVolume(src, dst, !options.conf, options.conf, volume)
+			await self.setXPVolume(src, dst, !options.conf, options.conf, volume)
 		},
 		learn: async ({ options }, context) => {
 			const src = options.fromList
@@ -156,21 +156,21 @@ export default async function (self) {
 		name: 'Crosspoint - Get All Active',
 		options: [],
 		callback: async () => {
-			self.getAllXp()
+			await self.getAllXp()
 		},
 	}
 	actionDefs['getAllLogicSources'] = {
 		name: 'Logic - Get All Sources',
 		options: [],
 		callback: async () => {
-			self.getAllLogicSources()
+			await self.getAllLogicSources()
 		},
 	}
 	actionDefs['getAllPorts'] = {
 		name: 'Port - Get All',
 		options: [],
 		callback: async () => {
-			self.getAllPorts()
+			await self.getAllPorts()
 		},
 	}
 
@@ -193,7 +193,7 @@ export default async function (self) {
 					}
 					return undefined
 				}
-				self.setLogicSource(src, options.logicState)
+				await self.setLogicSource(src, options.logicState)
 			},
 		}
 	}
@@ -228,7 +228,7 @@ export default async function (self) {
 				}
 				return false
 			}
-			self.setGPOutput(
+			await self.setGPOutput(
 				{
 					net: gpo.net,
 					node: gpo.node,
@@ -257,7 +257,7 @@ export default async function (self) {
 				}
 				return false
 			}
-			self.getGPOutput({
+			await self.getGPOutput({
 				net: gpo.net,
 				node: gpo.node,
 				port: gpo.port,
@@ -291,7 +291,7 @@ export default async function (self) {
 				}
 				return false
 			}
-			self.setAlias(addr, isInput, alias)
+			await self.setAlias(addr, isInput, alias)
 		},
 		learn: async ({ options }, context) => {
 			const addr = options.fromList
@@ -354,7 +354,7 @@ export default async function (self) {
 				}
 				return false
 			}
-			self.setPortLabel(addr, isInput, label)
+			await self.setPortLabel(addr, isInput, label)
 		},
 		learn: async ({ options }, context) => {
 			const addr = options.fromList
@@ -418,7 +418,7 @@ export default async function (self) {
 				}
 				return false
 			}
-			self.setIOGain(addr, options.ioMethod, gain)
+			await self.setIOGain(addr, options.ioMethod, gain)
 		},
 		learn: async ({ options }, context) => {
 			const addr = options.fromList
@@ -492,7 +492,7 @@ export default async function (self) {
 				}
 				return undefined
 			}
-			self.pressKey(addr, isInput, page, expPanel, key, options.isVirtual, options.press, options.trigger, pool)
+			await self.pressKey(addr, isInput, page, expPanel, key, options.isVirtual, options.press, options.trigger, pool)
 		},
 	}
 	actionDefs['keyLock'] = {
@@ -533,7 +533,7 @@ export default async function (self) {
 				}
 				return undefined
 			}
-			self.lockKey(addr, isInput, page, expPanel, key, options.isVirtual, options.keyLock, pool)
+			await self.lockKey(addr, isInput, page, expPanel, key, options.isVirtual, options.keyLock, pool)
 		},
 	}
 
@@ -577,7 +577,7 @@ export default async function (self) {
 				}
 				return undefined
 			}
-			self.labelAndMarker(
+			await self.labelAndMarker(
 				options.labelAndMarkerMethod,
 				addr,
 				isInput,
@@ -629,14 +629,14 @@ export default async function (self) {
 				}
 				return undefined
 			}
-			self.portClone(options.cloneMethod, monitor, options.isInput, options.isInputClonePort, clone)
+			await self.portClone(options.cloneMethod, monitor, options.isInput, options.isInputClonePort, clone)
 		},
 	}
 	actionDefs['getAllIFBS'] = {
 		name: 'IFB - Get All',
 		options: [],
 		callback: async () => {
-			self.getAllIFBs()
+			await self.getAllIFBs()
 		},
 	}
 	actionDefs['ifbMixMinusVolume'] = {
@@ -680,7 +680,7 @@ export default async function (self) {
 				}
 				return false
 			}
-			self.setIFBVolume(options.ifbMethod, addr, isInput, ifbNum, ifbVolume)
+			await self.setIFBVolume(options.ifbMethod, addr, isInput, ifbNum, ifbVolume)
 		},
 		learn: async ({ options }, context) => {
 			const addr = options.fromList

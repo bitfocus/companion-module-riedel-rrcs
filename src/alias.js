@@ -9,7 +9,7 @@ export async function setAlias(address, isInput, alias) {
 		return undefined
 	}
 	if (keys.includes('net') && keys.includes('node') && keys.includes('port')) {
-		this.rrcsQueue.add(async () => {
+		return await this.rrcsQueue.add(async () => {
 			const response = await this.rrcsMethodCall(rrcsMethods.portAlias.set.rpc, [
 				address.net,
 				address.node,
@@ -36,7 +36,7 @@ export async function setAlias(address, isInput, alias) {
 export async function getAlias(address, isInput) {
 	const keys = Object.keys(address)
 	if (keys.includes('net') && keys.includes('node') && keys.includes('port')) {
-		this.rrcsQueue.add(async () => {
+		return await this.rrcsQueue.add(async () => {
 			const response = await this.rrcsMethodCall(rrcsMethods.portAlias.get.rpc, [
 				address.net,
 				address.node,

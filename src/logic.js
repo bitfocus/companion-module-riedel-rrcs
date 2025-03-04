@@ -3,8 +3,8 @@ import { orderBy } from 'lodash-es'
 import { rrcsMethods } from './methods.js'
 import { rrcsErrorCodes } from './errorcodes.js'
 
-export function getAllLogicSources() {
-	this.rrcsQueue.add(async () => {
+export async function getAllLogicSources() {
+	return await this.rrcsQueue.add(async () => {
 		const logicSources = await this.rrcsMethodCall(rrcsMethods.logic.getAllSourcesV2.rpc, [])
 		if (logicSources === undefined) {
 			return
@@ -36,11 +36,12 @@ export function getAllLogicSources() {
 		if (this.feedbacksToUpdate.includes('logicSource') === false) {
 			this.feedbacksToUpdate.push('logicSource')
 		}
+		return logicSources
 	})
 }
 
-export function setLogicSource(ObjectID, state) {
-	this.rrcsQueue.add(async () => {
+export async function setLogicSource(ObjectID, state) {
+	return await this.rrcsQueue.add(async () => {
 		const logicSource = await this.rrcsMethodCall(rrcsMethods.logic.setSource.rpc, [ObjectID, !!state])
 		if (logicSource === undefined) {
 			return
@@ -54,6 +55,7 @@ export function setLogicSource(ObjectID, state) {
 		} else {
 			this.addLogicSource(ObjectID, state)
 		}
+		return logicSource
 	})
 }
 

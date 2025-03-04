@@ -2,8 +2,8 @@ import { merge, orderBy } from 'lodash-es'
 import { rrcsMethods } from './methods.js'
 //import { rrcsErrorCodes } from './errorcodes.js'
 
-export function getAllCaps() {
-	this.rrcsQueue.add(async () => {
+export async function getAllCaps() {
+	return await this.rrcsQueue.add(async () => {
 		const ports = await this.rrcsMethodCall(rrcsMethods.status.getAllCaps.rpc, [])
 		if (ports === undefined) {
 			return
@@ -11,11 +11,12 @@ export function getAllCaps() {
 		if (this.config.verbose) {
 			this.log('debug', `getAllCaps: \n${JSON.stringify(ports)}`)
 		}
+		return ports
 	})
 }
 
-export function getAllPorts() {
-	this.rrcsQueue.add(async () => {
+export async function getAllPorts() {
+	return await this.rrcsQueue.add(async () => {
 		const ports = await this.rrcsMethodCall(rrcsMethods.status.getAllPorts.rpc, [])
 		if (ports === undefined) {
 			return
@@ -37,6 +38,7 @@ export function getAllPorts() {
 		} else {
 			this.low('warn', `Invalid response to getAllPorts. \n${JSON.stringify(ports)}`)
 		}
+		return ports
 	})
 }
 
