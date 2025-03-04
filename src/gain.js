@@ -7,7 +7,7 @@ export async function setIOGain(address, method, gain) {
 		return undefined
 	}
 	if (keys.includes('net') && keys.includes('node') && keys.includes('port')) {
-		this.rrcsQueue.add(async () => {
+		return await this.rrcsQueue.add(async () => {
 			const response = await this.rrcsMethodCall(method, [address.net, address.node, address.port, cleanGain])
 			if (response === undefined) {
 				return

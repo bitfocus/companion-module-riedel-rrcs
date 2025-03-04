@@ -288,6 +288,11 @@ export const rrcsMethods = {
 			name: 'Register For All Events',
 			description: `Allows to receive any RRCS event. RRCS will send events to calling the computer with the given TCP-port.`,
 		},
+		registerForEventsEx: {
+			rpc: 'RegisterForEventsEx',
+			name: 'Register For Events Ex',
+			description: `Registration for change notifications.`,
+		},
 		unregisterForAllEvents: {
 			rpc: 'UnregisterForAllEvents',
 			name: 'Unregister For All Events',

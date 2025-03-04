@@ -55,12 +55,12 @@ export function addCrosspoint(src, dst, state) {
 	}
 }
 
-export function setXp(method, src, dst, prio) {
+export async function setXp(method, src, dst, prio) {
 	const args =
 		method === rrcsMethods.crosspoint.setPrio.rpc || method === rrcsMethods.crosspoint.setDestruct.rpc
 			? [src.net, src.node, src.port, dst.net, dst.node, dst.port, prio]
 			: [src.net, src.node, src.port, dst.net, dst.node, dst.port]
-	this.rrcsQueue.add(async () => {
+	return await this.rrcsQueue.add(async () => {
 		const xp = await this.rrcsMethodCall(method, args)
 		if (xp.length === 2 && xp[1] === 0) {
 			if (method === rrcsMethods.crosspoint.kill.rpc) {
@@ -72,11 +72,12 @@ export function setXp(method, src, dst, prio) {
 		} else if (xp[1] !== undefined) {
 			this.log('warn', `setXp callback: ${rrcsErrorCodes[xp[1]]} src: ${src} dst: ${dst}`)
 		}
+		return xp
 	})
 }
 
-export function getXp(src, dst) {
-	this.rrcsQueue.add(async () => {
+export async function getXp(src, dst) {
+	return await this.rrcsQueue.add(async () => {
 		const xp = await this.rrcsMethodCall(rrcsMethods.crosspoint.get.rpc, [
 			src.net,
 			src.node,
@@ -100,11 +101,12 @@ export function getXp(src, dst) {
 				`get crosspoint: ${rrcsErrorCodes[xp[1]]} src: ${JSON.stringify(src)} dst: ${JSON.stringify(dst)}`,
 			)
 		}
+		return xp
 	})
 }
 
-export function getAllXp() {
-	this.rrcsQueue.add(async () => {
+export async function getAllXp() {
+	return await this.rrcsQueue.add(async () => {
 		const xps = await this.rrcsMethodCall(rrcsMethods.crosspoint.getAllActive.rpc, [])
 		if (xps === undefined) {
 			return
@@ -131,5 +133,6 @@ export function getAllXp() {
 				this.feedbacksToUpdate.push('crosspoint')
 			}
 		}
+		return xps
 	})
 }

@@ -9,7 +9,7 @@ export async function pressKey(address, isInput, page, expPanel, keyNumber, isVi
 	}
 	const poolPort = isNaN(parseInt(pool)) ? -1 : parseInt(pool) < -1 ? -1 : parseInt(pool) > 32 ? 32 : parseInt(pool)
 	if (keys.includes('node') && keys.includes('port')) {
-		this.rrcsQueue.add(async () => {
+		return await this.rrcsQueue.add(async () => {
 			const response = await this.rrcsMethodCall(rrcsMethods.keyManipulations.pressKeyEx.rpc, [
 				address.node,
 				address.port,
@@ -90,7 +90,7 @@ export async function labelAndMarker(
 				}
 				return undefined
 		}
-		this.rrcsQueue.add(async () => {
+		return await this.rrcsQueue.add(async () => {
 			const response = await this.rrcsMethodCall(labelAndMarkerMethod, args)
 			if (response === undefined) {
 				return
@@ -102,6 +102,7 @@ export async function labelAndMarker(
 				this.log('warn', `${labelAndMarkerMethod}: ${rrcsErrorCodes[response[1]]}`)
 				return undefined
 			}
+			return response
 		})
 	}
 }
@@ -114,7 +115,7 @@ export async function lockKey(address, isInput, page, expPanel, keyNumber, isVir
 	const keys = Object.keys(address)
 	const poolPort = isNaN(parseInt(pool)) ? -1 : parseInt(pool) < -1 ? -1 : parseInt(pool) > 32 ? 32 : parseInt(pool)
 	if (keys.includes('node') && keys.includes('port')) {
-		this.rrcsQueue.add(async () => {
+		return await this.rrcsQueue.add(async () => {
 			const response = await this.rrcsMethodCall(rrcsMethods.keyManipulations.lockKey.rpc, [
 				address.node,
 				address.port,

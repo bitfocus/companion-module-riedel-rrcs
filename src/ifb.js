@@ -3,7 +3,7 @@ import { orderBy } from 'lodash-es'
 import { rrcsMethods } from './methods.js'
 import { rrcsErrorCodes } from './errorcodes.js'
 
-export function setIFBVolume(method, addr, isInput, ifbNumber, volume) {
+export async function setIFBVolume(method, addr, isInput, ifbNumber, volume) {
 	const cleanVolume = volume * 2 + 230 > 255 ? 255 : volume * 2 + 230 <= 0 ? 0 : parseInt(volume * 2 + 230)
 	const ifb = parseInt(ifbNumber)
 	const keys = Object.keys(addr)
@@ -15,7 +15,7 @@ export function setIFBVolume(method, addr, isInput, ifbNumber, volume) {
 			method === rrcsMethods.ifbVolume.set.rpc
 				? [addr.node, addr.port, isInput, ifb, cleanVolume]
 				: [addr.node, addr.port, isInput, ifb]
-		this.rrcsQueue.add(async () => {
+		return await this.rrcsQueue.add(async () => {
 			const response = await this.rrcsMethodCall(method, data)
 			if (this.config.verbose) {
 				this.log('debug', `${method} response: ${response}`)
@@ -32,12 +32,13 @@ export function setIFBVolume(method, addr, isInput, ifbNumber, volume) {
 					}
 				}
 			}
+			return response
 		})
 	}
 }
 
-export function getAllIFBs() {
-	this.rrcsQueue.add(async () => {
+export async function getAllIFBs() {
+	return await this.rrcsQueue.add(async () => {
 		const ifbs = await this.rrcsMethodCall(rrcsMethods.status.getAllIFBs.rpc, [])
 		if (ifbs === undefined) {
 			return
@@ -54,6 +55,7 @@ export function getAllIFBs() {
 		} else {
 			this.low('warn', `Invalid response to getAllIFBs. \n${JSON.stringify(ifbs)}`)
 		}
+		return ifbs
 	})
 }
 

@@ -7,7 +7,7 @@ export async function setXPVolume(src, dst, single, conference, volume) {
 		return undefined
 	}
 
-	this.rrcsQueue.add(async () => {
+	return await this.rrcsQueue.add(async () => {
 		const response = await this.rrcsMethodCall(rrcsMethods.volume.setXp, [
 			src.net,
 			src.node,
@@ -20,7 +20,7 @@ export async function setXPVolume(src, dst, single, conference, volume) {
 			cleanVolume,
 		])
 		if (response === undefined) {
-			return
+			return undefined
 		}
 		if (this.config.verbose) {
 			this.log('debug', `setIOGain: \n${JSON.stringify(response)}`)

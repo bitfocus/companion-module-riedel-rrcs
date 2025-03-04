@@ -26,7 +26,7 @@ export function stopKeepAlive() {
 }
 
 export async function sendKeepAlive(rrcsServer) {
-	this.rrcsQueue.add(async () => {
+	return await this.rrcsQueue.add(async () => {
 		const response = await this.rrcsMethodCall(rrcsMethods.status.getAlive.rpc, [], rrcsServer)
 		if (response === undefined) {
 			return
@@ -38,5 +38,6 @@ export async function sendKeepAlive(rrcsServer) {
 			this.log('warn', `sendKeepAlive: ${rrcsErrorCodes[response[1]]}`)
 			return undefined
 		}
+		return response
 	})
 }
