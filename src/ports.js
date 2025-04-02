@@ -51,6 +51,10 @@ export function buildPortChoices(portArray) {
 	this.rrcs.choices.ports.outputs = []
 	this.rrcs.choices.ports.panels = []
 	this.rrcs.choices.ports.all = []
+	this.rrcs.choices.ports.local.inputs = []
+	this.rrcs.choices.ports.local.outputs = []
+	this.rrcs.choices.ports.local.panels = []
+	this.rrcs.choices.ports.local.all = []
 	for (const port of portArray) {
 		if (port.Input === true) {
 			this.rrcs.choices.ports.inputs.push({ id: port.ObjectID, label: port.LongName })

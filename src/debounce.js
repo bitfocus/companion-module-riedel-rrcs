@@ -57,7 +57,9 @@ export async function getAllRRCSProps() {
 	this.getAllLogicSources()
 	this.getAllPorts()
 	this.getAllIFBs()
+	this.getAllConferences()
 	this.debounceUpdateFeedbacks()
+	this.debounceUpdateActionFeedbackDefs()
 }
 
 export function stopDebounce() {

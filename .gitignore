@@ -5,3 +5,4 @@ package-lock.json
 DEBUG-*
 *.zip
 .yarn/
+riedel-rrcs-*.tgz

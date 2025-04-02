@@ -635,6 +635,58 @@ export const options = {
 		value:
 			'True when a matching send string notification is recieved until the send string off notification is recieved.',
 	},
+	conferenceId: {
+		id: 'conferenceId',
+		type: 'dropdown',
+		label: 'Conference',
+		allowCustom: false,
+	},
+	conferenceParams: {
+		id: 'conferenceParams',
+		type: 'multidropdown',
+		label: 'Parameters',
+		choices: [
+			{ id: 'longName', label: 'Long Name' },
+			{ id: 'label', label: 'Label' },
+			{ id: 'alias', label: 'Alias' },
+		],
+		default: ['label'],
+		tooltip: 'Select parameters to edit',
+		minSelection: 1,
+	},
+	conferenceLongName: {
+		id: 'longName',
+		type: 'textinput',
+		label: 'Long Name',
+		useVariables: { local: true },
+		regex: Regex.SOMETHING,
+		tooltip: '32 Characters Max',
+		isVisible: (options) => {
+			return options.conferenceParams.includes('longName')
+		},
+	},
+	conferenceLabel: {
+		id: 'label',
+		type: 'textinput',
+		label: 'Label',
+		useVariables: { local: true },
+		regex: Regex.SOMETHING,
+		tooltip: '8 Characters Max',
+		isVisible: (options) => {
+			return options.conferenceParams.includes('label')
+		},
+	},
+	conferenceAlias: {
+		id: 'alias',
+		type: 'textinput',
+		label: 'Alias',
+		useVariables: { local: true },
+		regex: Regex.SOMETHING,
+		tooltip: '8 Characters Max',
+		isVisible: (options) => {
+			return options.conferenceParams.includes('alias')
+		},
+	},
 }
 
 export const objectParams = {
