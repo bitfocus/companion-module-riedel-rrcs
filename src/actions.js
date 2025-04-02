@@ -164,6 +164,7 @@ export default async function (self) {
 		options: [],
 		callback: async () => {
 			await self.getAllLogicSources()
+			self.debounceUpdateActionFeedbackDefs()
 		},
 	}
 	actionDefs['getAllPorts'] = {
@@ -171,6 +172,7 @@ export default async function (self) {
 		options: [],
 		callback: async () => {
 			await self.getAllPorts()
+			self.debounceUpdateActionFeedbackDefs()
 		},
 	}
 
@@ -637,6 +639,7 @@ export default async function (self) {
 		options: [],
 		callback: async () => {
 			await self.getAllIFBs()
+			self.debounceUpdateActionFeedbackDefs()
 		},
 	}
 	actionDefs['ifbMixMinusVolume'] = {
@@ -722,6 +725,51 @@ export default async function (self) {
 				}
 			}
 			return undefined
+		},
+	}
+	actionDefs['getAllConferences'] = {
+		name: 'Conference - Get All',
+		options: [],
+		callback: async () => {
+			await self.getAllConferences()
+			self.debounceUpdateActionFeedbackDefs()
+		},
+	}
+	actionDefs['editConference'] = {
+		name: 'Conference - Edit',
+		options: [
+			{
+				...options.conferenceId,
+				choices: self.rrcs.choices.conferences,
+				default: self.rrcs.choices.conferences[0]?.id ?? 'No conferences available',
+			},
+			options.conferenceParams,
+			options.conferenceLongName,
+			options.conferenceLabel,
+			options.conferenceAlias,
+		],
+		callback: async ({ options }, context) => {
+			if (options.conferenceId === 'No conferences available') return
+			const params = {}
+			if (options.conferenceParams.includes('longName'))
+				params.longName = await context.parseVariablesInString(options.longName)
+			if (options.conferenceParams.includes('label')) params.label = await context.parseVariablesInString(options.label)
+			if (options.conferenceParams.includes('alias')) params.alias = await context.parseVariablesInString(options.alias)
+			if (Object.keys(params).length === 0) return
+			await self.editConference(options.conferenceId, params)
+		},
+		learn: async ({ options }) => {
+			if (options.conferenceId === 'No conferences available') return undefined
+			const newPropsQuery = await self.getConference(options.conferenceId)
+			const newProps = {}
+			if (newPropsQuery.Alias !== undefined) newProps.alias = newPropsQuery.Alias
+			if (newPropsQuery.Label !== undefined) newProps.label = newPropsQuery.Label
+			if (newPropsQuery.LongName !== undefined) newProps.longName = newPropsQuery.LongName
+			if (Object.keys(newProps).length === 0) return undefined
+			return {
+				...options,
+				...newProps,
+			}
 		},
 	}
 	self.setActionDefinitions(actionDefs)
