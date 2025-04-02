@@ -55,7 +55,7 @@ export async function editConference(conferenceId, params) {
 	return await this.rrcsQueue.add(async () => {
 		const conf = await this.rrcsMethodCall(rrcsMethods.configuration.configurationChangeEx.rpc, [[args]])
 		if (this.config.verbose) {
-			this.log('info', `edit conference response: ${JSON.stringify(conf)}`)
+			this.log('debug', `edit conference response: ${JSON.stringify(conf)}`)
 		}
 
 		return conf
