@@ -9,7 +9,6 @@ export async function getAllConferences() {
 		if (conferences === undefined) {
 			return
 		}
-		this.log('info', `getAllConferences: \n${JSON.stringify(conferences)}`)
 		if (this.config.verbose) {
 			this.log('debug', `getAllConferences: \n${JSON.stringify(conferences)}`)
 		}
@@ -55,7 +54,10 @@ export async function editConference(conferenceId, params) {
 
 	return await this.rrcsQueue.add(async () => {
 		const conf = await this.rrcsMethodCall(rrcsMethods.configuration.configurationChangeEx.rpc, [[args]])
-		this.log('info', `edit conference response: ${JSON.stringify(conf)}`)
+		if (this.config.verbose) {
+			this.log('info', `edit conference response: ${JSON.stringify(conf)}`)
+		}
+
 		return conf
 	})
 }
@@ -63,7 +65,10 @@ export async function editConference(conferenceId, params) {
 export async function getConference(conferenceId) {
 	return await this.rrcsQueue.add(async () => {
 		const conferenceProps = await this.rrcsMethodCall(rrcsMethods.objects.getProperty.rpc, [conferenceId, ''])
-		this.log('info', `Conference ${conferenceId} Properties: ${JSON.stringify(conferenceProps)}`)
+		if (this.config.verbose) {
+			this.log('debug', `Conference ${conferenceId} Properties: ${JSON.stringify(conferenceProps)}`)
+		}
+
 		return conferenceProps
 	})
 }
