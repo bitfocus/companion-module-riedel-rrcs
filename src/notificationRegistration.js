@@ -17,7 +17,11 @@ export async function unregisterForAllEvents(localPort, localHost, rrcsServer) {
 		clearTimeout(this[`notificationTimer${rrcsServer}`])
 		delete this[`notificationTimer${rrcsServer}`]
 	}
-	await this.rrcsMethodCall(rrcsMethods.notifications.unregisterForAllEvents.rpc, [localPort, localHost], rrcsServer)
+	await this.rrcsMethodCall(
+		rrcsMethods.notifications.unregisterForAllEvents.rpc,
+		[parseInt(localPort), localHost],
+		rrcsServer,
+	)
 }
 
 export function recievedKeepAlive(localPort, localHost, rrcsServer) {
