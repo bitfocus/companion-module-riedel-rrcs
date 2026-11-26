@@ -81,48 +81,56 @@ export async function initLocalServer(port, host, name, rrcsServer) {
 			if (this.config.verbose) {
 				this.log('warn', `${name} Recieved: ${methodName} Data: ${JSON.stringify(args)}`)
 			}
+			this.rrcsAlarmActive = true
 			this.updateStatus(InstanceStatus.UnknownWarning, JSON.stringify(args))
 		})
 		this[name].setHandler(notifications.alarms.upstreamFailedCleared.rpc, async (methodName, args) => {
 			if (this.config.verbose) {
 				this.log('info', `${name} Recieved: ${methodName} Data: ${JSON.stringify(args)}`)
 			}
+			this.rrcsAlarmActive = false
 			this.updateStatus(InstanceStatus.Ok)
 		})
 		this[name].setHandler(notifications.alarms.downstreamFailed.rpc, async (methodName, args) => {
 			if (this.config.verbose) {
 				this.log('warn', `${name} Recieved: ${methodName} Data: ${JSON.stringify(args)}`)
 			}
+			this.rrcsAlarmActive = true
 			this.updateStatus(InstanceStatus.UnknownWarning, JSON.stringify(args))
 		})
 		this[name].setHandler(notifications.alarms.downstreamFailedCleared.rpc, async (methodName, args) => {
 			if (this.config.verbose) {
 				this.log('info', `${name} Recieved: ${methodName} Data: ${JSON.stringify(args)}`)
 			}
+			this.rrcsAlarmActive = false
 			this.updateStatus(InstanceStatus.Ok)
 		})
 		this[name].setHandler(notifications.alarms.nodeControllerFailed.rpc, async (methodName, args) => {
 			if (this.config.verbose) {
 				this.log('warn', `${name} Recieved: ${methodName} Data: ${JSON.stringify(args)}`)
 			}
+			this.rrcsAlarmActive = true
 			this.updateStatus(InstanceStatus.UnknownWarning, JSON.stringify(args))
 		})
 		this[name].setHandler(notifications.alarms.nodeControllerReboot.rpc, async (methodName, args) => {
 			if (this.config.verbose) {
 				this.log('warn', `${name} Recieved: ${methodName} Data: ${JSON.stringify(args)}`)
 			}
+			this.rrcsAlarmActive = true
 			this.updateStatus(InstanceStatus.UnknownWarning, `RRCS ${rrcsServer} Node Controller Reboot`)
 		})
 		this[name].setHandler(notifications.alarms.clientFailed.rpc, async (methodName, args) => {
 			if (this.config.verbose) {
 				this.log('warn', `${name} Recieved: ${methodName} Data: ${JSON.stringify(args)}`)
 			}
+			this.rrcsAlarmActive = true
 			this.updateStatus(InstanceStatus.UnknownWarning, JSON.stringify(args))
 		})
 		this[name].setHandler(notifications.alarms.clientFailedCleared.rpc, async (methodName, args) => {
 			if (this.config.verbose) {
 				this.log('info', `${name} Recieved: ${methodName} Data: ${JSON.stringify(args)}`)
 			}
+			this.rrcsAlarmActive = false
 			this.updateStatus(InstanceStatus.Ok)
 			this.getAllRRCSProps()
 		})
@@ -140,17 +148,20 @@ export async function initLocalServer(port, host, name, rrcsServer) {
 			if (this.config.verbose) {
 				this.log('info', `${name} Recieved: ${methodName} Data: ${JSON.stringify(args)}`)
 			}
+			this.rrcsAlarmActive = false
 			this.updateStatus(InstanceStatus.Ok)
 			this.getAllRRCSProps()
 		})
 		this[name].setHandler(notifications.alarms.connectArtistFailure.rpc, async (methodName, args) => {
 			this.log('warn', `${name} Recieved: ${methodName} from: ${rrcsServer}\nData: ${JSON.stringify(args)}`)
+			this.rrcsAlarmActive = true
 			this.updateStatus(InstanceStatus.UnknownWarning, `RRCS ${rrcsServer} connection to Artist Failure`)
 		})
 		this[name].setHandler(notifications.alarms.gatewayShutdown.rpc, async (methodName, args) => {
 			if (this.config.verbose) {
 				this.log('error', `${name} Recieved: ${methodName} Data: ${JSON.stringify(args)}`)
 			}
+			this.rrcsAlarmActive = true
 			this.updateStatus(InstanceStatus.UnknownError, `RRCS ${rrcsServer} shutdown`)
 		})
 		this[name].setHandler(notifications.alarms.sicFailed.rpc, async (methodName, args) => {

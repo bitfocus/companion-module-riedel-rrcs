@@ -1,3 +1,5 @@
+import { InstanceStatus } from '@companion-module/base'
+
 import { rrcsMethods } from './methods.js'
 import { rrcsErrorCodes } from './errorcodes.js'
 
@@ -37,6 +39,12 @@ export async function sendKeepAlive(rrcsServer) {
 		if (response[1] !== 0) {
 			this.log('warn', `sendKeepAlive: ${rrcsErrorCodes[response[1]]}`)
 			return undefined
+		}
+		// GetAlive answered with ErrorCode 0, so the gateway is reachable. Nothing else
+		// reports a healthy connection: without this the status never leaves Connecting.
+		// Alarms are left alone, they are cleared by their own notifications.
+		if (!this.rrcsAlarmActive) {
+			this.updateStatus(InstanceStatus.Ok)
 		}
 		return response
 	})

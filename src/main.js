@@ -98,6 +98,7 @@ class Riedel_RRCS extends InstanceBase {
 
 	async initRRCS() {
 		this.destroyRRCS()
+		this.rrcsAlarmActive = false
 		const localPanel = this.calcAddress(this.config.localPanel)
 		this.rrcs = {
 			localPanel: { net: localPanel?.net ?? 1, node: localPanel?.node ?? 3, port: localPanel?.port ?? 1 },
