@@ -21,6 +21,7 @@ import * as methodCallQueue from './methodCallQueue.js'
 import * as portLabel from './portLabel.js'
 import * as ports from './ports.js'
 import * as string from './string.js'
+import * as system from './system.js'
 import * as utils from './utils.js'
 import * as volume from './volume.js'
 import os from 'os'
@@ -49,6 +50,7 @@ class Riedel_RRCS extends InstanceBase {
 			...portLabel,
 			...ports,
 			...string,
+			...system,
 			...utils,
 			...volume,
 		})
@@ -69,7 +71,9 @@ class Riedel_RRCS extends InstanceBase {
 		this.stopKeepAlive()
 		this.rrcsQueue.clear()
 		this.stopDebounce()
-		this.unregisterForAllEvents(this.config.portLocalPri, this.config.hostLocalPri, 'pri')
+		if (this.rrcsPri) {
+			this.unregisterForAllEvents(this.config.portLocalPri, this.config.hostLocalPri, 'pri')
+		}
 		if (this.rrcsSec) {
 			this.unregisterForAllEvents(this.config.portLocalSec, this.config.hostLocalSec, 'sec')
 		}
@@ -109,11 +113,15 @@ class Riedel_RRCS extends InstanceBase {
 			users: [],
 			audioPatch: [],
 			clientCards: [],
+			nodes: [],
 			strings: [],
+			version: '',
+			configurationID: '',
 			choices: {
 				conferences: [],
 				ifbs: [],
 				logicSources: [],
+				nodes: [],
 				ports: {
 					inputs: [],
 					outputs: [],
@@ -147,6 +155,8 @@ class Riedel_RRCS extends InstanceBase {
 		}
 		this.debounceUpdateActionFeedbackDefs()
 		this.startKeepAlive()
+		this.getVersion()
+		this.getConfigurationID()
 	}
 
 	async init(config) {

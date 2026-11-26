@@ -772,5 +772,41 @@ export default async function (self) {
 			}
 		},
 	}
+	actionDefs['getVersion'] = {
+		name: 'System - Get RRCS Version',
+		options: [],
+		callback: async () => {
+			await self.getVersion()
+		},
+	}
+	actionDefs['getConfigurationID'] = {
+		name: 'System - Get Configuration ID',
+		options: [],
+		callback: async () => {
+			await self.getConfigurationID()
+		},
+	}
+	actionDefs['getAllNodes'] = {
+		name: 'System - Get All Nodes',
+		options: [],
+		callback: async () => {
+			await self.getAllNodes()
+			self.debounceUpdateActionFeedbackDefs()
+		},
+	}
+	actionDefs['getAllClientCards'] = {
+		name: 'System - Get All Client Cards',
+		options: [options.nodeAddress],
+		callback: async ({ options }, context) => {
+			const node = parseInt(await context.parseVariablesInString(options.nodeAddress))
+			if (isNaN(node)) {
+				if (self.config.verbose) {
+					self.log('debug', `invalid node supplied to getAllClientCards ${options.nodeAddress}`)
+				}
+				return undefined
+			}
+			await self.getAllClientCards(node)
+		},
+	}
 	self.setActionDefinitions(actionDefs)
 }

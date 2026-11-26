@@ -58,6 +58,7 @@ export async function getAllRRCSProps() {
 	this.getAllPorts()
 	this.getAllIFBs()
 	this.getAllConferences()
+	this.getConfigurationID()
 	this.debounceUpdateFeedbacks()
 	this.debounceUpdateActionFeedbackDefs()
 }

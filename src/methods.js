@@ -53,6 +53,21 @@ export const rrcsMethods = {
 			name: 'Get Crosspoint Volume',
 			description: `Queries the single or/and conference volume. This API does not work for XPs whose destination port is connected to an Artist-1024`,
 		},
+		registryReset: {
+			rpc: 'XpVolumeChangeRegistryReset',
+			name: 'Reset Crosspoint Volume Change Registry',
+			description: `Registers volume change notifications for the given crosspoints, replacing the current registry. RRCS sends initial volume values for all registered crosspoints. Requires RegisterForEventsEx with 'XpVolumeChange' set to true, and fails if the registry would exceed 8192 crosspoints.`,
+		},
+		registryAdd: {
+			rpc: 'XpVolumeChangeRegistryAdd',
+			name: 'Add to Crosspoint Volume Change Registry',
+			description: `Adds crosspoints to the volume change notification registry. RRCS sends initial volume values for all newly registered crosspoints. Requires RegisterForEventsEx with 'XpVolumeChange' set to true, and fails if the registry would exceed 8192 crosspoints.`,
+		},
+		registryRemove: {
+			rpc: 'XpVolumeChangeRegistryRemove',
+			name: 'Remove from Crosspoint Volume Change Registry',
+			description: `Removes a set of crosspoints from the volume change notification registry. Requires RegisterForEventsEx with 'XpVolumeChange' set to true.`,
+		},
 	},
 	portAlias: {
 		set: {
@@ -121,6 +136,16 @@ export const rrcsMethods = {
 			name: 'Get GP Output',
 			description: `Queries the given GP output state. The method can return true, even if the GP output has been deactivated by “SetGpOutput “`,
 		},
+		getAllGPIs: {
+			rpc: 'GetAllGpIns',
+			name: 'Get All GP Inputs',
+			description: `Queries all configured GP inputs.`,
+		},
+		getAllGPOs: {
+			rpc: 'GetAllGpOuts',
+			name: 'Get All GP Outputs',
+			description: `Queries all configured GP outputs.`,
+		},
 	},
 	logic: {
 		setSource: {
@@ -181,9 +206,49 @@ export const rrcsMethods = {
 			description: `Returns a list of all configured Devices.`,
 		},
 		getAllKeyConfigurations: {
-			rpc: 'GetAllKeyConfigurations',
+			rpc: 'GetAllKeyConfiguration',
 			name: 'Get All Key Configurations',
 			description: `Returns a list of all key configurations of a Port, including all their property values. Also includes virtual-keys. Note: 'IsInput' and 'PoolPort' are optional parameters.`,
+		},
+		getKeyConfiguration: {
+			rpc: 'GetKeyConfiguration',
+			name: 'Get Key Configuration',
+			description: `Returns the current configuration of a specific key, including all its property values.`,
+		},
+		getAllNodes: {
+			rpc: 'GetAllNodes',
+			name: 'Get All Nodes',
+			description: `Returns a list of all configured Nodes and all their properties. Includes Artist-32/64/128 Nodes and Artist-1024 NICs.`,
+		},
+		getNode: {
+			rpc: 'GetNode',
+			name: 'Get Node',
+			description: `Returns all properties of the specified Node.`,
+		},
+		getNodeTypes: {
+			rpc: 'GetNodeTypes',
+			name: 'Get Node Types',
+			description: `Returns a list of all supported Node types.`,
+		},
+		getAllClientCards: {
+			rpc: 'GetAllClientCards',
+			name: 'Get All Client Cards',
+			description: `Returns a list of all configured client cards incl. all their properties. Includes Artist-32/64/128 client cards and Artist-1024 SICs. The Node parameter is optional and defaults to -1, which returns the client cards of all configured nodes within the ring.`,
+		},
+		getClientCard: {
+			rpc: 'GetClientCard',
+			name: 'Get Client Card',
+			description: `Returns all properties of the client card in the specified Node and Bay.`,
+		},
+		getClientCardTypes: {
+			rpc: 'GetClientCardTypes',
+			name: 'Get Client Card Types',
+			description: `Returns a list of all supported client card types.`,
+		},
+		getConfigurationID: {
+			rpc: 'GetConfigurationID',
+			name: 'Get Configuration ID',
+			description: `Returns the Configuration ID of the current configuration.`,
 		},
 		getErrorCodeList: {
 			rpc: 'GetErrorCodeList',
@@ -283,6 +348,35 @@ export const rrcsMethods = {
 		},
 	},
 	configuration: {
+		configurationChange: {
+			rpc: 'ConfigurationChange',
+			name: 'Configuration Change (Atomic Request)',
+			description:
+				'Performs a configuration change. The whole request is handled as a single atomic operation (all or nothing). Use ConfigurationChangeEx to have each instruction of a request handled atomically.',
+		},
+		bufferConfigurationChange: {
+			rpc: 'BufferConfigurationChange',
+			name: 'Buffer Configuration Change',
+			description:
+				'Buffers a configuration change without applying it. Buffered changes are applied with ApplyConfigurationChange.',
+		},
+		bufferConfigurationChangeEx: {
+			rpc: 'BufferConfigurationChangeEx',
+			name: 'Buffer Configuration Change Ex',
+			description:
+				'Buffers a configuration change without applying it, handling each instruction of the request atomically. Buffered changes are applied with ApplyConfigurationChangeEx.',
+		},
+		applyConfigurationChange: {
+			rpc: 'ApplyConfigurationChange',
+			name: 'Apply Configuration Change',
+			description: 'Applies the configuration changes previously buffered with BufferConfigurationChange.',
+		},
+		applyConfigurationChangeEx: {
+			rpc: 'ApplyConfigurationChangeEx',
+			name: 'Apply Configuration Change Ex',
+			description:
+				'Applies the configuration changes previously buffered with BufferConfigurationChangeEx. Each instruction of the request is handled as an atomic operation.',
+		},
 		configurationChangeEx: {
 			rpc: 'ConfigurationChangeEx',
 			name: 'Configuration Change',
@@ -296,7 +390,8 @@ export const rrcsMethods = {
 			},
 			objectType: {
 				any: { id: 'any', label: 'Any' },
-				port: { id: 'port', label: 'Port' },
+				port: { id: 'port', label: 'Port (deprecated)' },
+				portEx: { id: 'portex', label: 'Port Ex' },
 				callToConference: { id: 'call-to-conference', label: 'Call to Conference' },
 				ifb: { id: 'ifb', label: 'IFB' },
 				conference: { id: 'conference', label: 'Conference' },
@@ -317,18 +412,22 @@ export const rrcsMethods = {
 				dimPanelSpeakerCmd: { id: 'dim-panel-speaker-cmd', label: 'Dim Panel Speaker Command' },
 				beepPanelCmd: { id: 'beep-panel-cmd', label: 'Beep Panel Command' },
 				telephoneDialKeypadCmd: { id: 'telephone-dial-keypad-cmd', label: 'Telephone Dial Keypad Command' },
+				telephoneDialHangupCmd: { id: 'telephone-dial-hangup-cmd', label: 'Telephone Dial Hangup Command' },
 				logicCmd: { id: 'logic-cmd', label: 'Logic Command' },
 				killPartylineMicCmd: { id: 'kill-partyline-mic-cmd', label: 'Kill Party Line Mic Command' },
 				autoListenOffCmd: { id: 'auto-listen-off-cmd', label: 'Auto Listen Off Command' },
 				setInputOutputGainCmd: { id: 'set-input-output-gain-cmd', label: 'set Input Output Gain Command' },
 				sidetoneCmd: { id: 'sidetone-cmd', label: 'Sidetone Command' },
 				sendStringCmd: { id: 'send-string-cmd', label: 'Send String Command' },
+				cloneOutputPortCmd: { id: 'clone-output-port-cmd', label: 'Clone Output Port Command' },
 				hotMicCmd: { id: 'hot-mic-cmd', label: 'Hot Mic Command' },
 				commandContainer: { id: 'command-container', label: 'Command Container' },
 				clientCard: { id: 'client-card', label: 'Client Card' },
 				virtualKey: { id: 'virtual-key', label: 'Virtual Key' },
 				device: { id: 'device', label: 'Device' },
 				panelKey: { id: 'panel-key', label: 'Panel Key' },
+				gpio: { id: 'gpio', label: 'GPIO' },
+				monitorPortCmd: { id: 'monitor-port-cmd', label: 'Monitor Port Command' },
 			},
 		},
 	},
@@ -347,6 +446,21 @@ export const rrcsMethods = {
 			rpc: 'UnregisterForAllEvents',
 			name: 'Unregister For All Events',
 			description: `Unregisters a single event receiver for all change notifications.`,
+		},
+		unregisterForEventsEx: {
+			rpc: 'UnregisterForEventsEx',
+			name: 'Unregister For Events Ex',
+			description: `Unregistration for change notifications.`,
+		},
+		registerForEvents: {
+			rpc: 'RegisterForEvents',
+			name: 'Register For Events',
+			description: `Registers a control system client for events.`,
+		},
+		unregisterForEvents: {
+			rpc: 'UnregisterForEvents',
+			name: 'Unregister For Events',
+			description: `Unregisters a control system client for events.`,
 		},
 	},
 
@@ -564,6 +678,28 @@ export const rrcsMethods = {
 			rpc: 'SetLTC',
 			name: 'Set Local Trunk Controller',
 			description: 'Sets the local trunk controller.',
+		},
+	},
+	stage: {
+		getNetAddr: {
+			rpc: 'GetStageNetAddr',
+			name: 'Get Stage Net Address',
+			description: 'Gets the currently configured Stage net address.',
+		},
+		setNetAddr: {
+			rpc: 'SetStageNetAddr',
+			name: 'Set Stage Net Address',
+			description: 'Sets the Stage net address.',
+		},
+		getRegistryUrl: {
+			rpc: 'GetStageRegistryUrl',
+			name: 'Get Stage Registry URL',
+			description: 'Gets the currently configured Stage Registry URL.',
+		},
+		setRegistryUrl: {
+			rpc: 'SetStageRegistryUrl',
+			name: 'Set Stage Registry URL',
+			description: 'Sets the Stage Registry URL.',
 		},
 	},
 }

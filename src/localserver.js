@@ -156,6 +156,31 @@ export async function initLocalServer(port, host, name, rrcsServer) {
 		this[name].setHandler(notifications.alarms.sicFailed.rpc, async (methodName, args) => {
 			this.log('warn', `${name} Recieved: ${methodName} Data: ${JSON.stringify(args)}`)
 		})
+		this[name].setHandler(notifications.panelSpy.stateChange.rpc, async (methodName, args) => {
+			if (this.config.verbose) {
+				this.log('debug', `${name} Recieved: ${methodName} Data: ${JSON.stringify(args)}`)
+			}
+		})
+		this[name].setHandler(notifications.panelSpy.rotateEvent.rpc, async (methodName, args) => {
+			if (this.config.verbose) {
+				this.log('debug', `${name} Recieved: ${methodName} Data: ${JSON.stringify(args)}`)
+			}
+		})
+		this[name].setHandler(notifications.panelSpy.keyEvent.rpc, async (methodName, args) => {
+			if (this.config.verbose) {
+				this.log('debug', `${name} Recieved: ${methodName} Data: ${JSON.stringify(args)}`)
+			}
+		})
+		this[name].setHandler(notifications.panelSpy.funcKeyEvent.rpc, async (methodName, args) => {
+			if (this.config.verbose) {
+				this.log('debug', `${name} Recieved: ${methodName} Data: ${JSON.stringify(args)}`)
+			}
+		})
+		this[name].setHandler(notifications.panelSpy.numKeyEvent.rpc, async (methodName, args) => {
+			if (this.config.verbose) {
+				this.log('debug', `${name} Recieved: ${methodName} Data: ${JSON.stringify(args)}`)
+			}
+		})
 		this[name].setHandler(notifications.ping.getAlive.rpc, async (methodName, args) => {
 			if (this.config.verbose) {
 				console.log(`${name} Recieved: ${methodName} Data: ${JSON.stringify(args)}`)

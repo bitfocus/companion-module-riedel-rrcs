@@ -4,7 +4,7 @@ Control a Riedel Artist Intercom Matrix with Riedel Router Control System.
 
 [Riedel Artist Intercom](https://www.riedel.net/en/products-solutions/intercom/artist-matrix-intercom/software)
 
-Tested with RRCS Version 8.6.1
+Tested with RRCS Version 8.6.1. Methods and notifications follow the RRCS 9.0.1 interface specification.
 
 Ports can be selected from a list, or entered directly via the address. The drop down list is easier, but only populates when online, the address scehema can be used offline and will accept variables. Addresses are normally specified as two, three or five period seperated numbers. Such as \<net\>.\<node\>.\<port\>. This schema accepts a single, or multiple variables, or a combination of static text and variables, depending on the use case.
 
@@ -30,6 +30,10 @@ Functions that only accept \<node\>.\<port\> addresses only work in the same \<n
 - Port - Set IO Gain
 - Port - Set Alias
 - Port - Set Label
+- System - Get All Client Cards
+- System - Get All Nodes
+- System - Get Configuration ID
+- System - Get RRCS Version
 
 ### Feedbacks
 
@@ -43,6 +47,10 @@ Functions that only accept \<node\>.\<port\> addresses only work in the same \<n
 ### Variables
 
 - Recieved String
+- RRCS Version
+- Configuration ID
+- Number of Nodes
+- Number of Client Cards
 
 ### Action Recorder
 
@@ -87,3 +95,15 @@ The Recieved string variable is set to the most recently recieved Send String me
 - Update on Configuration Change
 
 Performs all Get All actions when RRCS reports a configuration change. This keeps dropdowns and feedbacks accurate, however may prove excessively burdensome in large, busy networks.
+
+- System - Get All Nodes & Get All Client Cards
+
+Require RRCS 8.9 or later. Get All Client Cards accepts a node address, or -1 for every node in the ring.
+
+- System - Get Configuration ID
+
+Requires RRCS 9.0 or later. The Configuration ID variable is refreshed on connection and whenever RRCS reports a configuration change.
+
+- Panel Spy
+
+Panel spy notifications (state change, rotary, key, function key and numerical key events) are accepted and logged when verbose logging is enabled, so RRCS does not drop the notification channel. Panel spy must still be armed on the RRCS side with Change Panel Spy Registry.
