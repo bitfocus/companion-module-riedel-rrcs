@@ -1,5 +1,3 @@
-import { InstanceStatus } from '@companion-module/base'
-
 import { rrcsMethods } from './methods.js'
 import { rrcsErrorCodes } from './errorcodes.js'
 
@@ -14,6 +12,11 @@ export function startKeepAlive() {
 	}
 	if (this.rrcsSec) {
 		this.sendKeepAlive('sec')
+	}
+	// GetAlive only proves the gateway answers. Whether RRCS can reach Artist is a
+	// separate question, and it is the one that decides whether this module can work.
+	if (this.rrcsPri || this.rrcsSec) {
+		this.checkConnectedToArtist(this.rrcs.activeServer)
 	}
 	this.keepAliveTimer = setTimeout(() => {
 		this.startKeepAlive()
@@ -39,12 +42,6 @@ export async function sendKeepAlive(rrcsServer) {
 		if (response[1] !== 0) {
 			this.log('warn', `sendKeepAlive: ${rrcsErrorCodes[response[1]]}`)
 			return undefined
-		}
-		// GetAlive answered with ErrorCode 0, so the gateway is reachable. Nothing else
-		// reports a healthy connection: without this the status never leaves Connecting.
-		// Alarms are left alone, they are cleared by their own notifications.
-		if (!this.rrcsAlarmActive) {
-			this.updateStatus(InstanceStatus.Ok)
 		}
 		return response
 	})

@@ -47,6 +47,7 @@ Functions that only accept \<node\>.\<port\> addresses only work in the same \<n
 ### Variables
 
 - Recieved String
+- RRCS Connected to Artist
 - RRCS Version
 - Configuration ID
 - Number of Nodes
@@ -103,6 +104,10 @@ Require RRCS 8.9 or later. Get All Client Cards accepts a node address, or -1 fo
 - System - Get Configuration ID
 
 Requires RRCS 9.0 or later. The Configuration ID variable is refreshed on connection and whenever RRCS reports a configuration change.
+
+- Connection Status
+
+A successful GetAlive only proves the RRCS gateway is answering, not that RRCS can reach Artist. The module polls IsConnectedToArtist every 10 seconds and reports a warning naming the server when the ring is unreachable, so a connection is only shown as Ok when Artist is actually reachable. The ConnectArtistFailure and ConnectArtistRestored notifications update the same state immediately; the poll means the status still recovers if a notification is missed, or if Artist was already unreachable when the connection was opened.
 
 - Panel Spy
 

@@ -148,13 +148,17 @@ export async function initLocalServer(port, host, name, rrcsServer) {
 			if (this.config.verbose) {
 				this.log('info', `${name} Recieved: ${methodName} Data: ${JSON.stringify(args)}`)
 			}
-			this.rrcsAlarmActive = false
-			this.updateStatus(InstanceStatus.Ok)
+			this.rrcsArtistConnected = true
+			this.setVariableValues({ artistConnected: true })
+			if (!this.rrcsAlarmActive) {
+				this.updateStatus(InstanceStatus.Ok)
+			}
 			this.getAllRRCSProps()
 		})
 		this[name].setHandler(notifications.alarms.connectArtistFailure.rpc, async (methodName, args) => {
 			this.log('warn', `${name} Recieved: ${methodName} from: ${rrcsServer}\nData: ${JSON.stringify(args)}`)
-			this.rrcsAlarmActive = true
+			this.rrcsArtistConnected = false
+			this.setVariableValues({ artistConnected: false })
 			this.updateStatus(InstanceStatus.UnknownWarning, `RRCS ${rrcsServer} connection to Artist Failure`)
 		})
 		this[name].setHandler(notifications.alarms.gatewayShutdown.rpc, async (methodName, args) => {

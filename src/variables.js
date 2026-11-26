@@ -3,6 +3,7 @@ export default async function (self) {
 	variableDefs.push({ variableId: 'string', name: 'Recieved String' })
 	variableDefs.push({ variableId: 'version', name: 'RRCS Version' })
 	variableDefs.push({ variableId: 'configurationID', name: 'Configuration ID' })
+	variableDefs.push({ variableId: 'artistConnected', name: 'RRCS Connected to Artist' })
 	variableDefs.push({ variableId: 'nodeCount', name: 'Number of Nodes' })
 	variableDefs.push({ variableId: 'clientCardCount', name: 'Number of Client Cards' })
 	self.setVariableDefinitions(variableDefs)

@@ -1,3 +1,4 @@
+import { InstanceStatus } from '@companion-module/base'
 import { orderBy } from 'lodash-es'
 
 import { rrcsMethods } from './methods.js'
@@ -85,5 +86,30 @@ export async function getAllClientCards(node = -1) {
 		this.rrcs.clientCards = clientCards[1]
 		this.setVariableValues({ clientCardCount: clientCards[1].length })
 		return clientCards[1]
+	})
+}
+
+export async function checkConnectedToArtist(rrcsServer) {
+	return await this.rrcsQueue.add(async () => {
+		const response = await this.rrcsMethodCall(rrcsMethods.status.isConnectedToArtist.rpc, [], rrcsServer)
+		if (response === undefined) {
+			return
+		}
+		if (this.config.verbose) {
+			this.log('debug', `checkConnectedToArtist: \n${JSON.stringify(response)}`)
+		}
+		// spec 8.8 replies with a struct { IsConnected, TransKey }, not the usual array
+		if (typeof response.IsConnected !== 'boolean') {
+			this.log('warn', `Invalid response to checkConnectedToArtist. \n${JSON.stringify(response)}`)
+			return undefined
+		}
+		this.rrcsArtistConnected = response.IsConnected
+		this.setVariableValues({ artistConnected: response.IsConnected })
+		if (!response.IsConnected) {
+			this.updateStatus(InstanceStatus.UnknownWarning, `RRCS ${rrcsServer} is not connected to Artist`)
+		} else if (!this.rrcsAlarmActive) {
+			this.updateStatus(InstanceStatus.Ok)
+		}
+		return response.IsConnected
 	})
 }
