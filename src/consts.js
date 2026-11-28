@@ -561,6 +561,15 @@ export const options = {
 		choices: choices.ifb,
 		default: rrcsMethods.ifbVolume.set.rpc,
 	},
+	nodeAddress: {
+		id: 'nodeAddress',
+		type: 'textinput',
+		label: 'Node',
+		default: '-1',
+		useVariables: { local: true },
+		regex: Regex.SIGNED_NUMBER,
+		tooltip: `Node address to query. Use -1 for all nodes within the ring.`,
+	},
 	ifbNumber: {
 		id: 'ifbNumber',
 		type: 'textinput',

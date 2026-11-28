@@ -13,6 +13,11 @@ export function startKeepAlive() {
 	if (this.rrcsSec) {
 		this.sendKeepAlive('sec')
 	}
+	// GetAlive only proves the gateway answers. Whether RRCS can reach Artist is a
+	// separate question, and it is the one that decides whether this module can work.
+	if (this.rrcsPri || this.rrcsSec) {
+		this.checkConnectedToArtist(this.rrcs.activeServer)
+	}
 	this.keepAliveTimer = setTimeout(() => {
 		this.startKeepAlive()
 	}, keepAliveTime)

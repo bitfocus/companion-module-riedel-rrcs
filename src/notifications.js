@@ -123,6 +123,33 @@ export const notifications = {
 			description: `SIC failed on Artist-1024.`,
 		},
 	},
+	panelSpy: {
+		stateChange: {
+			rpc: 'PanelSpyStateChange',
+			name: 'Panel Spy State Change',
+			description: `Notifies panel spy status changes for a list of panels.`,
+		},
+		rotateEvent: {
+			rpc: 'PanelSpyRotateEvent',
+			name: 'Panel Spy Rotate Event',
+			description: `Rotary encoder change notification.`,
+		},
+		keyEvent: {
+			rpc: 'PanelSpyKeyEvent',
+			name: 'Panel Spy Key Event',
+			description: `Key event notification.`,
+		},
+		funcKeyEvent: {
+			rpc: 'PanelSpyFuncKeyEvent',
+			name: 'Panel Spy Function Key Event',
+			description: `Function key event notification.`,
+		},
+		numKeyEvent: {
+			rpc: 'PanelSpyNumKeyEvent',
+			name: 'Panel Spy Numerical Key Event',
+			description: `Numerical key event notification.`,
+		},
+	},
 	ping: {
 		getAlive: {
 			rpc: 'GetAlive',
